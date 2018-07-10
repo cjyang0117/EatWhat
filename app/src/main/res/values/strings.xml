@@ -1,0 +1,63 @@
+<resources>
+
+    <string name="signIn">登入</string>
+    <string name="signUp">註冊</string>
+    <string name="dbsetUp">資料庫</string>
+    <string name="account">帳號</string>
+    <string name="password">密碼</string>
+    <string name="forgotAcc"><u>忘記帳號</u></string>
+    <string name="forgotPass"><u>忘記密碼</u></string>
+    <string name="forgotAccOrPass">忘記帳號或密碼</string>
+    <string name="inputEmail">請輸入email</string>
+    <string name="sent">送出</string>
+    <string name="name">姓名</string>
+    <string name="email">信箱</string>
+    <string name="checkPass">確認密碼</string>
+    <string name="nextStep">下一步</string>
+    <string name="inputLikeLevel">請填寫喜好程度</string>
+    <string name="finish">完成</string>
+    <string name="mainAct">主頁</string>
+    <string name="userSuggest">用戶推薦</string>
+    <string name="followUserSuggest">追蹤用戶\n推薦</string>
+    <string name="contentSuggest">內容推薦</string>
+    <string name="priceSort">依價格排序</string>
+    <string name="distanceSort">依距離排序</string>
+    <string name="starSort">依星級排序</string>
+    <string name="randomSuggest">隨機推薦</string>
+    <string name="randomSuggestRul">隨機推薦結果</string>
+    <string name="questionSuggest">提問推薦</string>
+    <string name="record">紀錄</string>
+    <string name="followUser">追蹤用戶</string>
+    <string name="consider">考慮</string>
+    <string name="eat">吃</string>
+    <string name="search">搜尋</string>
+    <string name="storeName">店名</string>
+    <string name="title_activity_record">recordAct</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="meal">料理</string>
+    <string name="setDistance">設定距離</string>
+    <string name="storeInformation">店家資訊</string>
+    <string name="remember">記住我</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="comment">回饋意見</string>
+    <string name="setting">設定</string>
+    <string name="newstore">新增店家</string>
+    <string name="newmenu">新增菜單</string>
+    <string name="modifystore">修改店家</string>
+    <string-array name="dist">
+        <item>請選擇(不限)</item>
+        <item>不想走太遠</item>
+        <item>沒事多走路</item>
+        <item>騎車去買飯</item>
+    </string-array>
+    <string-array name="disttime">
+        <item>主餐</item>
+        <item>早餐</item>
+        <item>點心</item>
+    </string-array>
+
+
+</resources>

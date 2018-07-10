@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="tw.com.flag.eatwhat">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <application
+        android:name=".GlobalVariable"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/signIn"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".forgotAccPassAct"
+            android:label="@string/forgotAccOrPass"
+            android:theme="@style/forgotAccPass" />
+        <activity
+            android:name=".signUpAct"
+            android:label="@string/signUp"
+            android:theme="@style/signUp" />
+        <activity
+            android:name=".signUpAct2"
+            android:label="@string/signUp"
+            android:theme="@style/signUp" />
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/mainAct"
+            android:theme="@style/main2Activity" />
+        <activity android:name=".userSuggestAct" />
+        <activity
+            android:name=".SearchAct"
+            android:label="@string/search" />
+        <activity
+            android:name=".recordAct"
+            android:label="紀錄" />
+        <activity android:name=".userSuggestAct2" />
+        <activity android:name=".storeResultAct" />
+        <activity
+            android:name=".questionSuggestAct"
+            android:label="@string/questionSuggest" />
+        <activity
+            android:name=".questionSuggestAct2"
+            android:label="@string/questionSuggest" />
+        <activity
+            android:name=".storeInformationAct"
+            android:label="@string/storeInformation" />
+        <activity
+            android:name=".randomSuggestAct"
+            android:label="@string/randomSuggest" />
+        <activity android:name=".settingAct"
+            android:label="@string/setting"
+            android:theme="@style/main2Activity"/>
+        <activity android:name=".commentAct"
+            android:label="@string/comment"
+            android:theme="@style/main2Activity"></activity>
+        <activity
+            android:name=".randomSuggestRul"
+            android:label="@string/randomSuggestRul" />
+        <activity
+            android:name=".dbsetUpAct"
+            android:label="@string/dbsetUp" />
+        <activity
+            android:name=".newstoreAct"
+            android:label="@string/newstore" />
+        <activity
+            android:name=".newmenuAct"
+            android:label="@string/newmenu" />
+    </application>
+
+</manifest>

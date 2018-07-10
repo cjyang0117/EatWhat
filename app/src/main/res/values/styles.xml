@@ -1,0 +1,51 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="MyCheckBox" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorControlNormal">#666665</item>   <!-- normal border color change as you wish -->
+        <item name="colorControlActivated">#666665</item> <!-- activated color change as you wish -->
+    </style>
+
+    <style name="forgotAccPass" parent="Theme.AppCompat.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#FFDEAD</item>
+        <item name="colorPrimaryDark">#f5c883</item>
+        <item name="colorAccent">#bfada771</item>
+        <item name="android:textColorPrimary">#9b855f</item>
+    </style>
+
+    <style name="signUp" parent="Theme.AppCompat.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#A8BA82</item>
+        <item name="colorPrimaryDark">#727e57</item>
+        <item name="colorAccent">#C7815D</item>
+        <item name="android:textColorPrimary">#8B7765</item>
+    </style>
+
+    <style name="main2Activity" parent="Theme.AppCompat.DayNight">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#795548</item>
+        <item name="colorPrimaryDark">#5D4037</item>
+        <item name="android:textColorPrimary">#ffffff</item>
+    </style>
+
+
+
+
+</resources>
