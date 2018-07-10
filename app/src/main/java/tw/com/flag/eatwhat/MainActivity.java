@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox checkBox;
     private GlobalVariable globalVariable;
     String tmp;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
