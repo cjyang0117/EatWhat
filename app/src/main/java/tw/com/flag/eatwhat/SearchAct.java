@@ -42,7 +42,7 @@ public class SearchAct extends AppCompatActivity {
         if(dm.widthPixels<=480){
             sp=12;
         }
-    }
+    }//444
     public void storeMenuClick(View v){
         Button b=(Button)v;
         switch (b.getId()){
