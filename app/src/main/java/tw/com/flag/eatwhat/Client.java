@@ -31,7 +31,7 @@ public class Client extends Thread {
     public Client(String ip, int port){
         IP=ip;
         Port=port;
-
+        //123
         handlerThread=new HandlerThread("name"); //宣告常駐工人(執行緒)，等待執行工作
         handlerThread.start();
         handler=new Handler(handlerThread.getLooper());
