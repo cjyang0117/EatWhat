@@ -36,21 +36,29 @@ public class randomSuggestRul extends AppCompatActivity {
         TextView[] tvmap={textViewrul ,textViewaddr, textViewmenu, textViewprice};
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
-        b = this.getIntent().getExtras(); //取得隨機資料
+        b = this.getIntent().getExtras();
 
         if (b != null) {
             try {
-                JSONObject json_read = new JSONObject(b.getString("data"));
-                JSONArray j1 = json_read.getJSONArray("data");
-                JSONArray j2 = new JSONArray();
-                for (int i = 0; i < j1.length(); i++) {
-                    j2 = j1.getJSONArray(i);
+                if(b.getInt("check")!=2) {
+                    JSONObject json_read = new JSONObject(b.getString("data"));
+                    JSONArray j1 = json_read.getJSONArray("data");
+                    JSONArray j2 = new JSONArray();
+                    for (int i = 0; i < j1.length(); i++) {
+                        j2 = j1.getJSONArray(i);
+                    }
+                    textViewrul.setText(j2.get(0).toString());//店家名稱
+                    textViewmenu.setText(j2.get(2).toString());//菜品
+                    textViewprice.setText("價格" + j2.get(3).toString() + "元");//價格
+                    addr = j2.get(1).toString().trim();//店家地址
+                    textViewaddr.setText(addr);
+                }else{
+                    textViewrul.setText(b.getString("data1"));//店家名稱
+                    textViewmenu.setText(b.getString("data3"));//菜品
+                    textViewprice.setText("價格" + b.getString("data4") + "元");//價格
+                    addr = b.getString("data2");//店家地址
+                    textViewaddr.setText(addr);
                 }
-                textViewrul.setText(j2.get(0).toString());
-                textViewmenu.setText(j2.get(2).toString());
-                textViewprice.setText("價格"+j2.get(3).toString()+"元");
-                addr =j2.get(1).toString().trim();
-                textViewaddr.setText(addr);
                 for(int i = 0 ; i <tvmap.length ; i++) {
                     tvmap[i].setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -63,7 +71,6 @@ public class randomSuggestRul extends AppCompatActivity {
                 e.printStackTrace();
                 Log.e("Exception", "StoreError=" + e.toString());
             }
-
         }
     }//onCreate
     @Override
