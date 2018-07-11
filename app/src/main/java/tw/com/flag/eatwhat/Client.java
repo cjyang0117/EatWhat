@@ -16,7 +16,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URLDecoder;
 
-public class Client extends Thread {//2222222222222222222222222223
+public class Client extends Thread {
     private Socket clientSocket;        //客戶端的socket
     private BufferedWriter bw;            //取得網路輸出串流
     private BufferedReader br;            //取得網路輸入串流
