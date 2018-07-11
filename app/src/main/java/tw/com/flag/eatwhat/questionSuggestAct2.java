@@ -25,18 +25,20 @@ public class questionSuggestAct2 extends AppCompatActivity {
     Button OK , soso , NO;
     TextView question;
     int questioncount , score ,countlike , countsoso , countdont;
+    Bundle b;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_suggest_act2);
 
+        b = this.getIntent().getExtras();
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
         OK = (Button)findViewById(R.id.button54);
         soso = (Button)findViewById(R.id.button55);
         NO = (Button)findViewById(R.id.button56);
         questioncount = 0; score = 0;
-        like = new String[18];
-        sosolike = new String[18];
-        dontlike = new String[18];
+        like = new String[19];
+        sosolike = new String[19];
+        dontlike = new String[19];
         countlike =0;countsoso =0; countdont=0;
         question = (TextView)findViewById(R.id.question);
         for(int i=0; i < bd.length; i ++){
@@ -75,11 +77,13 @@ public class questionSuggestAct2 extends AppCompatActivity {
                         if (bdroute) {
                             like[countlike]=  bd[questioncount];
                             score += 2;
+                            questioncount++;
                             countlike++;
-                            if(score<5 ||score<3 && questioncount <5 ){
-                                questioncount++;
+                            if (score < 5 && questioncount <4) {
                                 question.setText("要吃" + bd[questioncount] + "嗎?");
-                            }else {
+                            }else if(score > 3 && questioncount >=4){
+                                send();
+                            }else{
                                 send();
                             }
                         }
@@ -87,10 +91,12 @@ public class questionSuggestAct2 extends AppCompatActivity {
                             like[countlike]=  mn[questioncount];
                             score += 2;
                             countlike++;
-                            if(score<5 ||score<3 && questioncount <5 ){
-                                questioncount++;
+                            questioncount++;
+                            if (score < 5 && questioncount <4) {
                                 question.setText("要吃" + mn[questioncount] + "嗎?");
-                            }else {
+                            }else if(score > 3 && questioncount >=4){
+                                send();
+                            }else{
                                 send();
                             }
                         }
@@ -121,24 +127,28 @@ public class questionSuggestAct2 extends AppCompatActivity {
                     }
                     else{
                         if (bdroute) {
-                            sosolike[countsoso]=  bd[questioncount - 1];
+                            sosolike[countsoso]=  bd[questioncount];
                             countsoso++;
+                            questioncount++;
                             score += 1;
-                            if(score<5 ||score<3 && questioncount <5 ){
-                                questioncount++;
+                            if (score < 5 && questioncount <4) {
                                 question.setText("要吃" + bd[questioncount] + "嗎?");
-                            }else {
+                            }else if(score > 3 && questioncount >=4){
+                                send();
+                            }else{
                                 send();
                             }
                         }
                         if (mnroute) {
                             sosolike[countsoso] = mn[questioncount];
                             countsoso++;
+                            questioncount++;
                             score += 1;
-                            if (score < 5 || score < 3 && questioncount < 5) {
-                                questioncount++;
+                            if (score < 5 && questioncount <4) {
                                 question.setText("要吃" + mn[questioncount] + "嗎?");
-                            } else {
+                            }else if(score > 3 && questioncount >=4){
+                                send();
+                            }else{
                                 send();
                             }
                         }
@@ -155,24 +165,26 @@ public class questionSuggestAct2 extends AppCompatActivity {
                     if(!bdroute && !mnroute){
                         randomeatmain();
                     }
-                    if (bdroute) {
-                        dontlike[countdont]=  bd[questioncount - 1];
-                        countdont++;
-                        if(score<5 ||score<3 && questioncount <5 ){
+                    else {
+                        if (bdroute) {
+                            dontlike[countdont] = bd[questioncount];
+                            countdont++;
                             questioncount++;
-                            question.setText("要吃" + bd[questioncount] + "嗎?");
-                        }else {
-                            send();
+                            if (score < 3 | questioncount < 4) {
+                                question.setText("要吃" + bd[questioncount] + "嗎?");
+                            } else {
+                                send();
+                            }
                         }
-                    }
-                    if (mnroute) {
-                        dontlike[countdont]=  bd[questioncount];
-                        countdont++;
-                        if (score < 5 || score < 3 && questioncount < 5) {
+                        if (mnroute) {
+                            dontlike[countdont] = mn[questioncount];
+                            countdont++;
                             questioncount++;
-                            question.setText("要吃" + mn[questioncount] + "嗎?");
-                        } else {
-                            send();
+                            if ( score < 3 | questioncount < 4) {
+                                question.setText("要吃" + mn[questioncount] + "嗎?");
+                            } else {
+                                send();
+                            }
                         }
                     }
                 }catch(Exception e) {
@@ -227,30 +239,43 @@ public class questionSuggestAct2 extends AppCompatActivity {
         json_write = new JSONObject();
         try {
             json_write.put("action", "Question");
+            if (b != null) {
+                json_write.put("Longitude", b.getString("Longitude"));//經度
+                json_write.put("Latitude",b.getString("Latitude"));//緯度
+                json_write.put("Distlimit", b.getString("Distlimit"));
+            }
             String[] like2 = new String[countlike];
             for(int i = 0;i < countlike ; i++){
                 like2[i] = like[i];
             }
             JSONArray jlike= new JSONArray(like2);
             json_write.put("Like", jlike);
+            String[] soso2;
             if(countsoso!=0){
-                String[] soso2 = new String[countsoso];
+                soso2 = new String[countsoso];
                 for(int i = 0;i < countsoso ; i++){
                     soso2[i] = sosolike[i];
                 }
-                JSONArray jsoso= new JSONArray(soso2);
-                json_write.put("Soso", jsoso);
+            }else {
+                soso2 = new String[1];
+                soso2 [0] = "false";
             }
-            if(countdont!=0){
-                String[] dont2 = new String[countdont];
-                for(int i = 0;i < countdont ; i++){
+            //JSONArray jsoso= new JSONArray(soso2);
+            //json_write.put("Soso", jsoso);
+            String[] dont2;
+            if(countdont!=0) {
+                dont2 = new String[countdont];
+                for (int i = 0; i < countdont; i++) {
                     dont2[i] = dontlike[i];
                 }
-                JSONArray jdont= new JSONArray(dont2);
-                json_write.put("Dont", jdont);
+            }else {
+                dont2 = new String[1];
+                dont2 [0] = "false";
             }
+            JSONArray jdont= new JSONArray(dont2);
+            json_write.put("Dont", jdont);
             soso.setVisibility(View.INVISIBLE);
-            //globalVariable.c.send(json_write);
+            globalVariable.c.send(json_write);
             //String tmp = globalVariable.c.receive();
             //json_read = new JSONObject(tmp);
         }catch(Exception e) {
