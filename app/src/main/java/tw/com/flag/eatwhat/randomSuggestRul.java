@@ -111,4 +111,9 @@ public class randomSuggestRul extends AppCompatActivity {
             Toast.makeText(this, "未輸入地址", Toast.LENGTH_SHORT).show();
         }
     }
+    public void gotoMain2Activity(android.view.View v){
+        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
+        startActivity(it);
+        this.finish();
+    }
 }

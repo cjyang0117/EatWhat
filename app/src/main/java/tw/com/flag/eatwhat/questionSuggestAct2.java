@@ -23,39 +23,40 @@ public class questionSuggestAct2 extends AppCompatActivity {
     private String[] ans = {"牛肉炒飯","火腿炒飯","大麥克"};
     boolean bdroute = false , mnroute = false ,anstrue = false, First ;
     Button[] maintype,osn;
-    String[] like;
-    String[][] tmp1;
-    String[] sosolike;
-    String[] dontlike;
-    Button OK , soso , NO ,bf ,ds,im,ne;
-    TextView question;
+    String[] like;//放置OK的種類
+    String[][] tmp1;//放置3個答案的資訊
+    String[] sosolike;//放置還好的種類
+    String[] dontlike;//放置NO的種類
+    Button OK ,soso ,NO ,bf ,ds,im,ne;
+    TextView question;//問題
     int questioncount , score ,countlike , countsoso , countdont,a,aa,eatype;
     Bundle b;
-    String tmp;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_suggest_act2);
 
-        First=true;
-        b = this.getIntent().getExtras();
+        b = this.getIntent().getExtras();//接收經緯度
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
+
         OK = (Button)findViewById(R.id.button54);
         soso = (Button)findViewById(R.id.button55);
         NO = (Button)findViewById(R.id.button56);
         bf = (Button)findViewById(R.id.button57);
         ds = (Button)findViewById(R.id.button58);
         im = (Button)findViewById(R.id.button59);
-        ne = (Button)findViewById(R.id.button60);
-        questioncount = 0; score = 0;a=0;
-        maintype = new Button[]{bf, ds, im, ne};
+        ne = (Button)findViewById(R.id.button60);//按鍵設置
+        question = (TextView)findViewById(R.id.question);
+
+        score = 0;a=0;//問題記分初始為0
+        countlike =0;countsoso =0; countdont=0;
+        maintype = new Button[]{bf, ds, im, ne};//早餐,點心,主餐,宵夜
         osn = new Button[]{OK,soso,NO};
         like = new String[19];
         sosolike = new String[19];
         dontlike = new String[19];
-        countlike =0;countsoso =0; countdont=0;
-        question = (TextView)findViewById(R.id.question);
-        for(int i=0; i < bd.length; i ++){
+
+        for(int i=0; i < bd.length; i ++){//洗問題順序
             int b =(int)(Math.random()*12);
             String tmp = bd[b];
             bd[b] = bd[i];
@@ -67,31 +68,18 @@ public class questionSuggestAct2 extends AppCompatActivity {
             mn[m] = mn[i];
             mn[i] = tmp;
         }
-        question.setText("要吃哪類呢?");
-        for(int i = 0 ; i < maintype.length; i++){
-            final int ii = i;
-            maintype[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(maintype[ii].getText().equals("早餐")||maintype[ii].getText().equals("點心")){
-                        sbdroute(maintype[ii]);
-                    }else if(maintype[ii].getText().equals("正餐")||maintype[ii].getText().equals("宵夜")){
-                        smnroute(maintype[ii]);
-                    }
-                }
-            });
-        }
+        setQuestion1();
         OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     if(a==0) {
                         if (bdroute) {
-                            like[countlike] = bd[questioncount];
-                            score += 2;
-                            questioncount++;
-                            countlike++;
-                            checkbdroute();
+                            like[countlike] = bd[questioncount];//儲存至喜歡陣列
+                            score += 2;//分數+2
+                            questioncount++;//問題+1
+                            countlike++;//喜歡數+1
+                            checkbdroute();//判斷是否繼續問問題
                         }
                         if (mnroute) {
                             like[countlike] = mn[questioncount];
@@ -159,23 +147,40 @@ public class questionSuggestAct2 extends AppCompatActivity {
             }
         });
     }
-    public String setquestiontype(String ww){
+    public void setQuestion1(){
+        question.setText("要吃哪類呢?");//第一個問題固定為問早餐,點心,主餐,宵夜(4選1)
+        First=true;//判斷是不是第一輪回答用
+        questioncount=0;
+        for(int i = 0 ; i < maintype.length; i++){//依選擇選擇問題路線
+            final int ii = i;
+            maintype[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(maintype[ii].getText().equals("早餐")||maintype[ii].getText().equals("點心")){
+                        sbdroute(maintype[ii]);
+                    }else if(maintype[ii].getText().equals("正餐")||maintype[ii].getText().equals("宵夜")){
+                        smnroute(maintype[ii]);
+                    }
+                }
+            });
+        }
+    }
+    public String setquestiontype(String ww){//問題型態變化設定
         String[] questiontype ={"要吃" + ww + "嗎?","吃" + ww + "好嗎?","要不要吃" + ww + "呢?","不如吃" + ww + "?"};
         int s =(int)(Math.random()*questiontype.length);
         return questiontype[s];
     }
-    public void checkbdroute(){
-        if(questioncount == 13){
+    public void checkbdroute(){//早餐.點心問題線
+        if(questioncount == 13){//問題問完的話向server取答案
             send();
         }
-        if (score < 3 | questioncount < 4) {
-            //setquestiontype(bd[questioncount]);
+        if (score < 3 | questioncount < 4) {//如果問題數不為5的話繼續問，如問題數超過5分數不達3分繼續問
             question.setText(setquestiontype(bd[questioncount]));
         } else {
             send();
         }
     }
-    public void checkmnroute(){
+    public void checkmnroute(){//主餐,宵夜問題線(同上)
         if(questioncount == 19){
             send();
         }
@@ -185,6 +190,172 @@ public class questionSuggestAct2 extends AppCompatActivity {
             send();
         }
     }
+    public void sbdroute(Button xx){//早餐.點心問題判斷設定
+        bdroute = true;
+        geteatype(xx);
+        OK.setText("OK");soso.setText("還好");
+        question.setText("要吃" + bd[questioncount] + "嗎?");
+        score +=2;
+        buttonstart();
+    }
+    public void smnroute(Button yy){//主餐,宵夜問題判斷設定
+        mnroute = true;
+        question.setText("要吃" + mn[questioncount] + "嗎?");
+        geteatype(yy);
+        OK.setText("OK");soso.setText("還好");
+        score +=2;
+        buttonstart();
+    }
+    public void buttonstart(){//主種類按鍵隱藏，喜好按鍵顯示
+        for(int i=0;i<maintype.length;i++){
+            maintype[i].setVisibility(View.INVISIBLE);
+        }
+        for(int i=0;i<osn.length;i++){
+            osn[i].setVisibility(VISIBLE);
+        }
+    }
+    public void geteatype(Button zz){//取得主種類
+        if(zz.getText().toString().equals("早餐")){
+            eatype = 1;
+        }
+        if(zz.getText().toString().equals("點心")){
+            eatype = 2;
+        }
+        if(zz.getText().toString().equals("正餐")){
+            eatype = 3;
+        }
+        if(zz.getText().toString().equals("宵夜")){
+            eatype = 4;
+        }
+    }
+    public void showans(){//顯示答案
+        if(!anstrue){//判斷使用者對於推薦答案是否有按OK
+            if (aa<ans.length) {//3次答案
+                question.setText("要吃" + tmp1[aa][0] + "的"+ tmp1[aa][2]+"嗎?\n價格是"+ tmp1[aa][3]+"元");
+            }else {
+                return0();
+                soso.setVisibility(View.VISIBLE);//還好鍵顯示
+                if (bdroute) {//判斷問題是否問完
+                    if(questioncount == 13){
+                        question.setText("你去吃土吧");
+                        questioncount=0;
+                    }else{
+                        question.setText("要吃" + bd[questioncount] + "嗎?");
+                    }
+                }
+                if(mnroute) {
+                    if (questioncount == 19) {
+                        question.setText("你去吃土吧");
+                        questioncount=0;
+                    } else {
+                        question.setText("要吃" + mn[questioncount] + "嗎?");
+                    }
+                }
+            }
+        }else{//當對於推薦答案點擊OK傳送該資料至答案頁面
+            Bundle b = new Bundle();
+            Intent i;
+            i = new Intent(this, randomSuggestRul.class);
+            b.putInt("check",2);
+            b.putString("data1", tmp1[aa][0]);//店家名稱
+            b.putString("data2", tmp1[aa][1]);//地址
+            b.putString("data3", tmp1[aa][2]);//餐點
+            b.putString("data4", tmp1[aa][3]);//價格
+            i.putExtras(b);
+            startActivity(i);
+            this.finish();
+        }
+    }
+    public void return0(){
+        aa=0;//答案序規0
+        a = 0;// 跳回問問題
+        countlike = 0;//OK數歸0
+        countsoso = 0; //都可以歸0
+        countdont = 0;//NO數歸0
+        score = 0;//分數歸0
+    }
+    public void send(){//送出使用者資料
+        json_write = new JSONObject();
+        try {
+            json_write.put("action", "Question");
+            json_write.put("First", First);
+            if(First) {
+                if (b != null) {
+                    json_write.put("Longitude", Double.valueOf(b.getString("Longitude")));//經度
+                    json_write.put("Latitude", Double.valueOf(b.getString("Latitude")));//緯度
+                    json_write.put("Distlimit", Double.valueOf(b.getString("Distlimit")));//距離限制
+                }
+                json_write.put("Eatype",eatype);//主要種類(早餐,點心,主餐,宵夜)
+                First = false;
+            }
+            String[] like2 = new String[countlike];
+            if(countlike!=0){
+                for(int i = 0;i < countlike ; i++){
+                    like2[i] = like[i];
+                }
+            }else{
+                like2 = new String[1];
+                like2 [0] = "false";
+            }
+            JSONArray jlike= new JSONArray(like2);
+            json_write.put("Like", jlike);
+           /*String[] soso2;
+            if(countsoso!=0){
+                soso2 = new String[countsoso];
+                for(int i = 0;i < countsoso ; i++){
+                    soso2[i] = sosolike[i];
+                }
+            }else {
+                soso2 = new String[1];
+                soso2 [0] = "false";
+            }
+            JSONArray jsoso= new JSONArray(soso2);
+            json_write.put("Soso", jsoso);*/
+            String[] dont2;
+            if(countdont!=0) {
+                dont2 = new String[countdont];
+                for (int i = 0; i < countdont; i++) {
+                    dont2[i] = dontlike[i];
+                }
+            }else {
+                dont2 = new String[1];
+                dont2 [0] = "false";
+            }
+            JSONArray jdont= new JSONArray(dont2);
+            json_write.put("Dont", jdont);
+            soso.setVisibility(View.INVISIBLE);
+            globalVariable.c.send(json_write);
+            a=2;
+            String tmp = globalVariable.c.receive();
+            json_read = new JSONObject(tmp);
+            if(tmp!=null) {
+                if (!json_read.getBoolean("check")) {//如果查無資料回到距離限制頁面，重新選擇
+                    String reason = json_read.getString("data");
+                    Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
+                    android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
+                    startActivity(it);
+                    this.finish();
+                } else {//接收距離內答案
+                    JSONArray j1 = json_read.getJSONArray("data");
+                    JSONArray j2;
+                    tmp1 = new String[j1.length()][5];
+                    for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並放入答案陣列
+                        j2 = j1.getJSONArray(i);
+                        for (int j = 0; j < 4; j++) {
+                            tmp1[i][j] = j2.get(j).toString();
+                        }
+                        ans[i] = j2.get(2).toString();
+                    }
+                    showans();
+                }
+            }else{
+                Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void gotoRandomSuggestAct(android.view.View v){
         android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
         startActivity(it);
@@ -217,157 +388,5 @@ public class questionSuggestAct2 extends AppCompatActivity {
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
-    }
-    public void sbdroute(Button xx){
-        bdroute = true;
-        geteatype(xx);
-        OK.setText("OK");soso.setText("還好");
-        question.setText("要吃" + bd[questioncount] + "嗎?");
-        score +=2;
-        buttonstart();
-    }
-    public void smnroute(Button yy){
-        mnroute = true;
-        question.setText("要吃" + mn[questioncount] + "嗎?");
-        geteatype(yy);
-        OK.setText("OK");soso.setText("還好");
-        score +=2;
-        buttonstart();
-    }
-    public void buttonstart(){
-        for(int i=0;i<maintype.length;i++){
-            maintype[i].setVisibility(View.INVISIBLE);
-        }
-        for(int i=0;i<osn.length;i++){
-            osn[i].setVisibility(VISIBLE);
-        }
-    }
-    public void geteatype(Button zz){
-        if(zz.getText().toString().equals("早餐")){
-            eatype = 1;
-        }
-        if(zz.getText().toString().equals("點心")){
-            eatype = 2;
-        }
-        if(zz.getText().toString().equals("正餐")){
-            eatype = 3;
-        }
-        if(zz.getText().toString().equals("宵夜")){
-            eatype = 4;
-        }
-    }
-    public void showans(){
-        if(!anstrue){
-            if (aa<ans.length) {
-                question.setText("要吃" + tmp1[aa][0] + "的"+ tmp1[aa][2]+"嗎?\n價格是"+ tmp1[aa][3]+"元");
-            }else {
-                aa=0;
-                a = 0;
-                countlike = 0;
-                countdont = 0;
-                score = 0;
-                soso.setVisibility(View.VISIBLE);
-                if (bdroute) {
-                    if(questioncount == 13){
-                        question.setText("你去吃土吧");
-                    }else{
-                        question.setText("要吃" + bd[questioncount] + "嗎?");
-                    }
-                }
-                if(mnroute) {
-                    if (questioncount == 19) {
-                        question.setText("你去吃土吧");
-                    } else {
-                        question.setText("要吃" + mn[questioncount] + "嗎?");
-                    }
-                }
-            }
-        }else{
-            Bundle b = new Bundle();
-            Intent i;
-            i = new Intent(this, randomSuggestRul.class);
-            b.putInt("check",2);
-            b.putString("data1", tmp1[aa][0]);
-            b.putString("data2", tmp1[aa][1]);
-            b.putString("data3", tmp1[aa][2]);
-            b.putString("data4", tmp1[aa][3]);
-            i.putExtras(b);
-            startActivity(i);
-            this.finish();
-        }
-    }
-    public void send(){
-        json_write = new JSONObject();
-        try {
-            json_write.put("action", "Question");
-            json_write.put("First", First);
-            if(First) {
-                if (b != null) {
-                    json_write.put("Longitude", Double.valueOf(b.getString("Longitude")));//經度
-                    json_write.put("Latitude", Double.valueOf(b.getString("Latitude")));//緯度
-                    json_write.put("Distlimit", Double.valueOf(b.getString("Distlimit")));
-                }
-                json_write.put("Eatype",eatype);
-                First = false;
-            }
-            String[] like2 = new String[countlike];
-            if(countlike!=0){
-                for(int i = 0;i < countlike ; i++){
-                    like2[i] = like[i];
-                }
-            }else{
-                like2 = new String[1];
-                like2 [0] = "false";
-            }
-            JSONArray jlike= new JSONArray(like2);
-            json_write.put("Like", jlike);
-           /* String[] soso2;
-            if(countsoso!=0){
-                soso2 = new String[countsoso];
-                for(int i = 0;i < countsoso ; i++){
-                    soso2[i] = sosolike[i];
-                }
-            }else {
-                soso2 = new String[1];
-                soso2 [0] = "false";
-            }*/
-            //JSONArray jsoso= new JSONArray(soso2);
-            //json_write.put("Soso", jsoso);
-            String[] dont2;
-            if(countdont!=0) {
-                dont2 = new String[countdont];
-                for (int i = 0; i < countdont; i++) {
-                    dont2[i] = dontlike[i];
-                }
-            }else {
-                dont2 = new String[1];
-                dont2 [0] = "false";
-            }
-            JSONArray jdont= new JSONArray(dont2);
-            json_write.put("Dont", jdont);
-            soso.setVisibility(View.INVISIBLE);
-            globalVariable.c.send(json_write);
-            a=2;
-            tmp = globalVariable.c.receive();
-            json_read = new JSONObject(tmp);
-            if (!json_read.getBoolean("check")) {
-                String reason = json_read.getString("data");
-                Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
-            }else{
-                JSONArray j1 = json_read.getJSONArray("data");
-                JSONArray j2= new JSONArray();
-                tmp1 = new String[j1.length()][5];
-                for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
-                    j2 = j1.getJSONArray(i);
-                    for(int j = 0 ;j < 4;j++ ){
-                        tmp1[i][j]=j2.get(j).toString();
-                    }
-                    ans[i] = j2.get(2).toString();
-                }
-                showans();
-            }
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
     }
 }

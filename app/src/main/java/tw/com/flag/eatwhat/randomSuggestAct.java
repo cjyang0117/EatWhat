@@ -52,7 +52,6 @@ public class randomSuggestAct extends AppCompatActivity  {
 
     public void gotoResult(android.view.View v){
         try {
-
             if(gps1.isGetGPSService()) {
                 int index = disttime.getSelectedItemPosition();
                 int time = eatime[index];
@@ -83,7 +82,6 @@ public class randomSuggestAct extends AppCompatActivity  {
                 tv.setText("緯度 :" + gps1.getGPSLatitude() + "  , 經度 :  " + gps1.getGPSLongitude());
                 String tmp = globalVariable.c.receive();
                 json_read = new JSONObject(tmp);
-                //String tmp="123";
                 if(tmp!=null) {
                     if (!json_read.getBoolean("check")) {//接收失敗原因
                         String reason = json_read.getString("data");
@@ -111,23 +109,28 @@ public class randomSuggestAct extends AppCompatActivity  {
     }
 
     public void gotoRandomSuggestAct(android.view.View v){
-        Intent it = new Intent(this,randomSuggestAct.class);
+        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
         startActivity(it);
+        this.finish();
     }
     public void gotoQuestionSuggestAct(android.view.View v){
-        Intent it = new Intent(this,questionSuggestAct.class);
+        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
         startActivity(it);
+        this.finish();
     }
     public void gotoRecordAct(android.view.View v){
-        Intent it = new Intent(this,recordAct.class);
+        android.content.Intent it = new android.content.Intent(this,recordAct.class);
         startActivity(it);
+        this.finish();
     }
     public void gotoSearchAct(android.view.View v){
-        Intent it = new Intent(this,SearchAct.class);
+        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
         startActivity(it);
+        this.finish();
     }
     public void gotoMain2Activity(android.view.View v){
-        Intent it = new Intent(this,Main2Activity.class);
+        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
         startActivity(it);
+        this.finish();
     }
 }

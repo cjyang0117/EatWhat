@@ -113,14 +113,18 @@ public class signUpAct extends AppCompatActivity {
                 globalVariable.c.send(json_write);
                 String tmp = globalVariable.c.receive();
                 json_read = new JSONObject(tmp);
-                if (!json_read.getBoolean("check")) {//接收失敗原因
-                    String reason = json_read.getString("data");
-                    Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
-                }else{//成功並關閉
-                    Toast.makeText(this, name + "註冊成功", Toast.LENGTH_SHORT).show();
-                    android.content.Intent it = new android.content.Intent(this, signUpAct2.class);
-                    startActivity(it);
-                    this.finish();
+                if(tmp!=null) {
+                    if (!json_read.getBoolean("check")) {//接收失敗原因
+                        String reason = json_read.getString("data");
+                        Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
+                    }else{//成功並關閉
+                        Toast.makeText(this, name + "註冊成功", Toast.LENGTH_SHORT).show();
+                        android.content.Intent it = new android.content.Intent(this, signUpAct2.class);
+                        startActivity(it);
+                        this.finish();
+                    }
+                }else{
+                    Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
                 }
             }
         } catch (Exception e) {
