@@ -90,6 +90,7 @@ public class randomSuggestAct extends AppCompatActivity  {
                         Bundle b = new Bundle();
                         Intent i = new Intent(this, randomSuggestRul.class);
                         b.putString("data", tmp);
+                        b.putInt("check",1);
                         b.putString("Latitude", String.valueOf(gps1.getGPSLatitude()));
                         b.putString("Longitude", String.valueOf(gps1.getGPSLongitude()));
                         i.putExtras(b);

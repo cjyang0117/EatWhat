@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,9 @@ public class randomSuggestRul extends AppCompatActivity {
     TextView textViewrul ,textViewaddr, textViewmenu, textViewprice;
     String addr;
     double geoLatitude, geoLongitude;
+    private TableRow[] row,row2;
+    private TableLayout tblayout, tblayout2;
+    TableLayout tbrulLayout;
     Bundle b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +39,7 @@ public class randomSuggestRul extends AppCompatActivity {
         textViewmenu = (TextView)findViewById(R.id.textViewmenu);
         textViewprice = (TextView)findViewById(R.id.textViewprice);
         TextView[] tvmap={textViewrul ,textViewaddr, textViewmenu, textViewprice};
+        TextView[] tw,tw1 ;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         b = this.getIntent().getExtras();
@@ -52,20 +58,53 @@ public class randomSuggestRul extends AppCompatActivity {
                     textViewprice.setText("價格" + j2.get(3).toString() + "元");//價格
                     addr = j2.get(1).toString().trim();//店家地址
                     textViewaddr.setText(addr);
+                    for(int i = 0 ; i <tvmap.length ; i++) {
+                        tvmap[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                openMap();
+                            }
+                        });
+                    }
                 }else{
-                    textViewrul.setText(b.getString("data1"));//店家名稱
+                    tbrulLayout = (TableLayout)findViewById(R.id.tbrulLayout);
+                    String store = new String();
+                    row = new TableRow[b.getStringArray("data1").length];
+                    tw1 = new TextView[b.getStringArray("data1").length];
+                    for(int i =0;i<b.getStringArray("data1").length;i++){
+                        store = b.getStringArray("data1")[i].toString().trim();
+                        tw1[i] = new TextView(this);
+                        tw1[i].setText(store);
+                    }
+                    for(int i =0;i<b.getStringArray("data1").length;i++){
+                        row[i] = new TableRow(this);
+                        tbrulLayout.addView(row[i]);
+                        row[i].addView(tw1[i]);
+                    }
+                    addr = new String();
+                    tw = new TextView[b.getStringArray("data2").length];
+                    row2 = new TableRow[b.getStringArray("data1").length];
+                    for(int i =0;i<b.getStringArray("data2").length;i++){
+                        addr = b.getStringArray("data2")[i].toString().trim();
+                        tw[i] = new TextView(this);
+                        tw[i].setText(addr);
+                    }
+                    for(int i =0;i<b.getStringArray("data2").length;i++){
+                        row2[i] = new TableRow(this);
+                        tbrulLayout.addView(row2[i]);
+                        row2[i].addView(tw[i]);
+                    }
                     textViewmenu.setText(b.getString("data3"));//菜品
                     textViewprice.setText("價格" + b.getString("data4") + "元");//價格
-                    addr = b.getString("data2");//店家地址
-                    textViewaddr.setText(addr);
-                }
-                for(int i = 0 ; i <tvmap.length ; i++) {
-                    tvmap[i].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View arg0) {
-                            openMap();
-                        }
-                    });
+                    for(int i = 0 ; i <tw.length ; i++) {
+                        final String x =tw[i].getText().toString().trim();
+                        tw[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                openMaptw(x);
+                            }
+                        });
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -83,6 +122,15 @@ public class randomSuggestRul extends AppCompatActivity {
     }
     public  void openMap(){//google map 路徑
         getGPFromAddress(addr);
+        Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+b.getString("Latitude")+","+b.getString("Longitude")+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
+        Intent it = new Intent(Intent.ACTION_VIEW);
+        it.setData(uri);
+        if (it.resolveActivity(getPackageManager()) != null) {
+            startActivity(it);
+        }
+    }
+    public  void openMaptw(String storeaddr){//google map 路徑
+        getGPFromAddress(storeaddr);
         Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+b.getString("Latitude")+","+b.getString("Longitude")+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
         Intent it = new Intent(Intent.ACTION_VIEW);
         it.setData(uri);

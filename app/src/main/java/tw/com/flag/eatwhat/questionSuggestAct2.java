@@ -25,6 +25,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
     Button[] maintype,osn;
     String[] like;//放置OK的種類
     String[][] tmp1;//放置3個答案的資訊
+    String [] storea0,addressa0,storea1,addressa1,storea2,addressa2;
     String[] sosolike;//放置還好的種類
     String[] dontlike;//放置NO的種類
     Button OK ,soso ,NO ,bf ,ds,im,ne;
@@ -56,23 +57,12 @@ public class questionSuggestAct2 extends AppCompatActivity {
         sosolike = new String[19];
         dontlike = new String[19];
 
-        for(int i=0; i < bd.length; i ++){//洗問題順序
-            int b =(int)(Math.random()*12);
-            String tmp = bd[b];
-            bd[b] = bd[i];
-            bd[i] = tmp;
-        }
-        for(int i=0; i < mn.length; i ++){
-            int m =(int)(Math.random()*18);
-            String tmp = mn[m];
-            mn[m] = mn[i];
-            mn[i] = tmp;
-        }
         setQuestion1();
         OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
+                    checkquestion();
                     if(a==0) {
                         if (bdroute) {
                             like[countlike] = bd[questioncount];//儲存至喜歡陣列
@@ -101,6 +91,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    checkquestion();
                     if (bdroute) {
                         sosolike[countsoso]=bd[questioncount];
                         countsoso++;
@@ -124,6 +115,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    checkquestion();
                     if(a==0) {
                         if (bdroute) {
                             dontlike[countdont] = bd[questioncount];
@@ -149,8 +141,28 @@ public class questionSuggestAct2 extends AppCompatActivity {
     }
     public void setQuestion1(){
         question.setText("要吃哪類呢?");//第一個問題固定為問早餐,點心,主餐,宵夜(4選1)
+        for(int i=0; i < bd.length; i ++){//洗問題順序
+            int b =(int)(Math.random()*12);
+            String tmp = bd[b];
+            bd[b] = bd[i];
+            bd[i] = tmp;
+        }
+        for(int i=0; i < mn.length; i ++){
+            int m =(int)(Math.random()*18);
+            String tmp = mn[m];
+            mn[m] = mn[i];
+            mn[i] = tmp;
+        }
         First=true;//判斷是不是第一輪回答用
         questioncount=0;
+        bdroute = false;
+        mnroute = false;
+        for(int i=0;i<maintype.length;i++){
+            maintype[i].setVisibility(VISIBLE);
+        }
+        for(int i=0;i<osn.length;i++){
+            osn[i].setVisibility(View.INVISIBLE);
+        }
         for(int i = 0 ; i < maintype.length; i++){//依選擇選擇問題路線
             final int ii = i;
             maintype[i].setOnClickListener(new View.OnClickListener() {
@@ -231,14 +243,14 @@ public class questionSuggestAct2 extends AppCompatActivity {
     public void showans(){//顯示答案
         if(!anstrue){//判斷使用者對於推薦答案是否有按OK
             if (aa<ans.length) {//3次答案
-                question.setText("要吃" + tmp1[aa][0] + "的"+ tmp1[aa][2]+"嗎?\n價格是"+ tmp1[aa][3]+"元");
+                question.setText("要吃" + ans[aa]);
+                //question.setText("要吃" + tmp1[aa][1] + "嗎?\n價格是"+ tmp1[aa][2]+"元");
             }else {
                 return0();
                 soso.setVisibility(View.VISIBLE);//還好鍵顯示
                 if (bdroute) {//判斷問題是否問完
                     if(questioncount == 13){
                         question.setText("你去吃土吧");
-                        questioncount=0;
                     }else{
                         question.setText("要吃" + bd[questioncount] + "嗎?");
                     }
@@ -246,7 +258,6 @@ public class questionSuggestAct2 extends AppCompatActivity {
                 if(mnroute) {
                     if (questioncount == 19) {
                         question.setText("你去吃土吧");
-                        questioncount=0;
                     } else {
                         question.setText("要吃" + mn[questioncount] + "嗎?");
                     }
@@ -257,13 +268,28 @@ public class questionSuggestAct2 extends AppCompatActivity {
             Intent i;
             i = new Intent(this, randomSuggestRul.class);
             b.putInt("check",2);
-            b.putString("data1", tmp1[aa][0]);//店家名稱
-            b.putString("data2", tmp1[aa][1]);//地址
-            b.putString("data3", tmp1[aa][2]);//餐點
-            b.putString("data4", tmp1[aa][3]);//價格
+            if(aa==0){
+                b.putStringArray("data1",storea0);
+                b.putStringArray("data2",addressa0);
+            }else if(aa==1){
+                b.putStringArray("data1",storea1);
+                b.putStringArray("data2",addressa1);
+            }else if(aa==2){
+                b.putStringArray("data1",storea2);
+                b.putStringArray("data2",addressa2);
+            }
+            b.putString("data3", tmp1[aa][1]);//餐點
+            b.putString("data4", tmp1[aa][2]);//價格
+            b.getString("Latitude",String.valueOf(b.getString("Latitude")));
+            b.getString("Latitude",String.valueOf(b.getString("Longitude")));
             i.putExtras(b);
             startActivity(i);
             this.finish();
+        }
+    }
+    public void checkquestion(){
+        if(question.getText().equals("你去吃土吧")){
+            setQuestion1();
         }
     }
     public void return0(){
@@ -277,7 +303,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
     public void send(){//送出使用者資料
         json_write = new JSONObject();
         try {
-            json_write.put("action", "Question");
+            json_write.put("action", "Question2");
             json_write.put("First", First);
             if(First) {
                 if (b != null) {
@@ -299,7 +325,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
             }
             JSONArray jlike= new JSONArray(like2);
             json_write.put("Like", jlike);
-           /*String[] soso2;
+            String[] soso2;
             if(countsoso!=0){
                 soso2 = new String[countsoso];
                 for(int i = 0;i < countsoso ; i++){
@@ -310,7 +336,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
                 soso2 [0] = "false";
             }
             JSONArray jsoso= new JSONArray(soso2);
-            json_write.put("Soso", jsoso);*/
+            json_write.put("Soso", jsoso);
             String[] dont2;
             if(countdont!=0) {
                 dont2 = new String[countdont];
@@ -338,13 +364,40 @@ public class questionSuggestAct2 extends AppCompatActivity {
                 } else {//接收距離內答案
                     JSONArray j1 = json_read.getJSONArray("data");
                     JSONArray j2;
-                    tmp1 = new String[j1.length()][5];
+                    tmp1 = new String[j1.length()][3];
                     for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並放入答案陣列
                         j2 = j1.getJSONArray(i);
-                        for (int j = 0; j < 4; j++) {
+                        for (int j = 0; j < 3; j++) {
                             tmp1[i][j] = j2.get(j).toString();
                         }
-                        ans[i] = j2.get(2).toString();
+                        ans[i] = j2.get(1).toString();
+                    }
+                    JSONArray j1A0 = json_read.getJSONArray("A0");
+                    JSONArray j2A0;
+                    storea0 =  new String[j1A0.length()];
+                    addressa0 = new String[j1A0.length()];
+                    for (int i = 0; i < j1A0.length(); i++) { //拆解接收的JSON包並放入答案陣列
+                        j2A0 = j1A0.getJSONArray(i);
+                        storea0[i]=j2A0.get(0).toString();
+                        addressa0[i]=j2A0.get(1).toString();
+                    }
+                    JSONArray j1A1 = json_read.getJSONArray("A1");
+                    JSONArray j2A1;
+                    storea1 =  new String[j1A1.length()];
+                    addressa1 = new String[j1A1.length()];
+                    for (int i = 0; i < j1A1.length(); i++) { //拆解接收的JSON包並放入答案陣列
+                        j2A1 = j1A1.getJSONArray(i);
+                        storea1[i]=j2A1.get(0).toString();
+                        addressa1[i]=j2A1.get(1).toString();
+                    }
+                    JSONArray j1A2 = json_read.getJSONArray("A2");
+                    JSONArray j2A2;
+                    storea2 =  new String[j1A2.length()];
+                    addressa2 = new String[j1A2.length()];
+                    for (int i = 0; i < j1A2.length(); i++) { //拆解接收的JSON包並放入答案陣列
+                        j2A2 = j1A2.getJSONArray(i);
+                        storea2[i]=j2A2.get(0).toString();
+                        addressa2[i]=j2A2.get(1).toString();
                     }
                     showans();
                 }
