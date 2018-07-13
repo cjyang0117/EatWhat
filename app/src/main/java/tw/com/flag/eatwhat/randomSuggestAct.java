@@ -109,6 +109,25 @@ public class randomSuggestAct extends AppCompatActivity  {
             e.printStackTrace();
         }
     }
-
+    public void gotoRandomSuggestAct(android.view.View v){
+                Intent it = new Intent(this,randomSuggestAct.class);
+                startActivity(it);
+            }
+    public void gotoQuestionSuggestAct(android.view.View v){
+                Intent it = new Intent(this,questionSuggestAct.class);
+                startActivity(it);
+            }
+    public void gotoRecordAct(android.view.View v){
+                Intent it = new Intent(this,recordAct.class);
+                startActivity(it);
+            }
+    public void gotoSearchAct(android.view.View v){
+                Intent it = new Intent(this,SearchAct.class);
+                startActivity(it);
+            }
+    public void gotoMain2Activity(android.view.View v){
+                Intent it = new Intent(this,Main2Activity.class);
+                startActivity(it);
+            }
 
 }
