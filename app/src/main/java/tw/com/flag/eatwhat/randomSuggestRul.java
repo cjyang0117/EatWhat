@@ -22,7 +22,6 @@ import java.util.List;
 
 public class randomSuggestRul extends AppCompatActivity {
     private GlobalVariable globalVariable;
-    private JSONObject json_read, json_write;
     TextView textViewrul ,textViewaddr, textViewmenu, textViewprice;
     String addr;
     double geoLatitude, geoLongitude;
@@ -131,7 +130,7 @@ public class randomSuggestRul extends AppCompatActivity {
     }
     public  void openMaptw(String storeaddr){//google map 路徑
         getGPFromAddress(storeaddr);
-        Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+b.getString("Latitude")+","+b.getString("Longitude")+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
+        Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+b.getString("Latitude2")+","+b.getString("Longitude2")+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
         Intent it = new Intent(Intent.ACTION_VIEW);
         it.setData(uri);
         if (it.resolveActivity(getPackageManager()) != null) {

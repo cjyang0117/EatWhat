@@ -28,6 +28,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
     String [] storea0,addressa0,storea1,addressa1,storea2,addressa2;
     String[] sosolike;//放置還好的種類
     String[] dontlike;//放置NO的種類
+    String lat,lng;
     Button OK ,soso ,NO ,bf ,ds,im,ne;
     TextView question;//問題
     int questioncount , score ,countlike , countsoso , countdont,a,aa,eatype;
@@ -51,6 +52,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
 
         score = 0;a=0;//問題記分初始為0
         countlike =0;countsoso =0; countdont=0;
+        lat= b.getString("Latitude");lng =  b.getString("Longitude");
         maintype = new Button[]{bf, ds, im, ne};//早餐,點心,主餐,宵夜
         osn = new Button[]{OK,soso,NO};
         like = new String[19];
@@ -280,8 +282,8 @@ public class questionSuggestAct2 extends AppCompatActivity {
             }
             b.putString("data3", tmp1[aa][1]);//餐點
             b.putString("data4", tmp1[aa][2]);//價格
-            b.getString("Latitude",String.valueOf(b.getString("Latitude")));
-            b.getString("Latitude",String.valueOf(b.getString("Longitude")));
+            b.putString("Latitude2",lat);
+            b.putString("Longitude2",lng);
             i.putExtras(b);
             startActivity(i);
             this.finish();
@@ -307,8 +309,8 @@ public class questionSuggestAct2 extends AppCompatActivity {
             json_write.put("First", First);
             if(First) {
                 if (b != null) {
-                    json_write.put("Longitude", Double.valueOf(b.getString("Longitude")));//經度
-                    json_write.put("Latitude", Double.valueOf(b.getString("Latitude")));//緯度
+                    json_write.put("Longitude", Double.valueOf(lng));//經度
+                    json_write.put("Latitude", Double.valueOf(lat));//緯度
                     json_write.put("Distlimit", Double.valueOf(b.getString("Distlimit")));//距離限制
                 }
                 json_write.put("Eatype",eatype);//主要種類(早餐,點心,主餐,宵夜)
