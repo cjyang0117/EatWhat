@@ -1,6 +1,7 @@
 package tw.com.flag.eatwhat;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -185,6 +186,8 @@ public class SearchAct extends AppCompatActivity {
                                    String s=((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
                                    out.write(s.getBytes());
                                    out.close();
+
+                                   b.setEnabled(false);
                                }catch (IOException e){
                                    e.printStackTrace();
                                }
