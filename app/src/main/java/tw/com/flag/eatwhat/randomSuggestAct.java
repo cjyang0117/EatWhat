@@ -92,6 +92,7 @@ public class randomSuggestAct extends AppCompatActivity  {
                         Bundle b = new Bundle();
                         Intent i = new Intent(this, randomSuggestRul.class);
                         b.putString("data", tmp);
+                        b.putInt("check",1);
                         b.putString("Latitude", String.valueOf(gps1.getGPSLatitude()));
                         b.putString("Longitude", String.valueOf(gps1.getGPSLongitude()));
                         i.putExtras(b);
@@ -109,25 +110,30 @@ public class randomSuggestAct extends AppCompatActivity  {
             e.printStackTrace();
         }
     }
-    public void gotoRandomSuggestAct(android.view.View v){
-                Intent it = new Intent(this,randomSuggestAct.class);
-                startActivity(it);
-            }
-    public void gotoQuestionSuggestAct(android.view.View v){
-                Intent it = new Intent(this,questionSuggestAct.class);
-                startActivity(it);
-            }
-    public void gotoRecordAct(android.view.View v){
-                Intent it = new Intent(this,recordAct.class);
-                startActivity(it);
-            }
-    public void gotoSearchAct(android.view.View v){
-                Intent it = new Intent(this,SearchAct.class);
-                startActivity(it);
-            }
-    public void gotoMain2Activity(android.view.View v){
-                Intent it = new Intent(this,Main2Activity.class);
-                startActivity(it);
-            }
 
+    public void gotoRandomSuggestAct(android.view.View v){
+        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
+        startActivity(it);
+        this.finish();
+    }
+    public void gotoQuestionSuggestAct(android.view.View v){
+        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
+        startActivity(it);
+        this.finish();
+    }
+    public void gotoRecordAct(android.view.View v){
+        android.content.Intent it = new android.content.Intent(this,recordAct.class);
+        startActivity(it);
+        this.finish();
+    }
+    public void gotoSearchAct(android.view.View v){
+        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
+        startActivity(it);
+        this.finish();
+    }
+    public void gotoMain2Activity(android.view.View v){
+        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
+        startActivity(it);
+        this.finish();
+    }
 }
