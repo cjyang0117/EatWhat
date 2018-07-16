@@ -47,16 +47,28 @@
     <string name="newstore">新增店家</string>
     <string name="newmenu">新增菜單</string>
     <string name="modifystore">修改店家</string>
+    <string name="mainEat_button">主餐</string>
+    <string name="breakfast">早餐</string>
+    <string name="dessert">點心</string>
+    <string name="noodles">麵食</string>
+    <string name="rice">米食</string>
+    <string name="dumpling">餃子類</string>
+    <string name="beef">牛肉</string>
+    <string name="sweet">甜</string>
+    <string name="spicy">辣</string>
+    <string name="fries">炸</string>
+    <string name="fry">炒</string>
+    <string name="unlimited">不限距離</string>
+    <string name="panda">不想走太遠</string>
+    <string name="step">沒事多走路</string>
+    <string name="scooter">騎車去買飯</string>
+    <string name="want2eat">現在想吃</string>
+
     <string-array name="dist">
         <item>請選擇(不限)</item>
         <item>不想走太遠</item>
         <item>沒事多走路</item>
         <item>騎車去買飯</item>
-    </string-array>
-    <string-array name="disttime">
-        <item>主餐</item>
-        <item>早餐</item>
-        <item>點心</item>
     </string-array>
 
 

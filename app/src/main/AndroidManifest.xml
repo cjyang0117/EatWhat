@@ -60,7 +60,8 @@
             android:label="@string/storeInformation" />
         <activity
             android:name=".randomSuggestAct"
-            android:label="@string/randomSuggest" />
+            android:label="@string/randomSuggest"
+            android:theme="@style/forgotAccPass"/>
         <activity android:name=".settingAct"
             android:label="@string/setting"
             android:theme="@style/main2Activity"/>
