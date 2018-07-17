@@ -1,9 +1,18 @@
 package tw.com.flag.eatwhat;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.AttrRes;
 import android.support.v7.app.AppCompatActivity;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -14,17 +23,22 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.xml.sax.Attributes;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class recordAct extends AppCompatActivity {
+public class recordAct extends AppCompatActivity
+    implements DialogInterface.OnClickListener{
     private TableLayout tblayout, tblayout2;
     ArrayList<TableRow> row;
     private int sp=14;
     private int count, count2;
-    boolean change=true, change2=false;
+    private boolean change=true, change2=false;
+    private boolean isDel=false;
+    private Button ebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +64,6 @@ public class recordAct extends AppCompatActivity {
             }
             in.close();
 
-            //if(tblayout!=null) tblayout.removeAllViews();
-
             if(s!="") {
                 tblayout = (TableLayout) findViewById(R.id.tbLayout);
                 tblayout.setColumnShrinkable(0,true);
@@ -64,6 +76,7 @@ public class recordAct extends AppCompatActivity {
                 row=new ArrayList<>();
                 while (s.contains(",")){
                     row.add(new TableRow(this));
+                    row.get(count).setBackgroundResource(R.drawable.ripple);
                     TextView[] tv=new TextView[3];
                     for(int i=0;i<3;i++){
                         idx=s.indexOf(",");
@@ -72,35 +85,61 @@ public class recordAct extends AppCompatActivity {
                         s=s.substring(idx+1);
                         row.get(count).addView(tv[i]);
                     }
-                    Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
+                    final Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
                     btn.setId(count);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Button b=(Button)v;
-                            try {
-                                int i;
-                                for(i=0;i<row.size();i++){
-                                    if(((Button)row.get(i).getChildAt(3)).getId()==b.getId()){
-                                        FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-                                        String s=((TextView)row.get(i).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+",";
-                                        out.write(s.getBytes());
-                                        out.close();
-
-                                        tblayout.removeView(row.get(i));
-                                        row.remove(i);
-                                        change=true; change2=true;
-                                        break;
-                                    }
-                                }
-                            }catch (IOException e){
-                                e.printStackTrace();
-                            }
+                            ebtn=(Button)v;
+                            AlertDialog.Builder b=new AlertDialog.Builder(recordAct.this);
+                            //串聯呼叫法
+                            b.setTitle("確認")
+                                    .setMessage("確定要吃這個嗎?")
+                                    .setPositiveButton("GO", recordAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                    .setNegativeButton("Cancel", null)
+                                    .show();
                         }
                     });
                     btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     row.get(count).addView(btn);
+                    row.get(count).setTag(count);
+                    row.get(count).setOnLongClickListener(new View.OnLongClickListener() {
+                        @Override
+                        public boolean onLongClick(View v) {
+                            if(!isDel) {
+                                isDel = true;
+                                Button btn = (Button) findViewById(R.id.clearBtn);
+                                btn.setVisibility(View.VISIBLE);
+
+                                CheckBox cb;
+                                for (int i = 0; i < row.size(); i++) {
+                                    cb = new CheckBox(recordAct.this);
+                                    row.get(i).addView(cb);
+                                }
+                                return false;
+                            }
+                            return true;
+                        }
+                    });
+                    row.get(count).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(isDel){
+                                TableRow tr=(TableRow)v;
+                                for(int i=0;i<row.size();i++){
+                                    if(row.get(i).getTag()==tr.getTag()){
+                                        if(((CheckBox)row.get(i).getChildAt(4)).isChecked()){
+                                            ((CheckBox)row.get(i).getChildAt(4)).setChecked(false);
+                                        }else{
+                                            ((CheckBox)row.get(i).getChildAt(4)).setChecked(true);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    });
                     tblayout.addView(row.get(count));
                     count++;
                 }
@@ -180,11 +219,13 @@ public class recordAct extends AppCompatActivity {
         }
     }
     public void clearClick(View v){
-        CheckBox cb;
-        for(int i=0;i<row.size();i++){
-            cb=new CheckBox(this);
-            row.get(i).addView(cb);
-        }
+        AlertDialog.Builder b=new AlertDialog.Builder(this);
+        //串聯呼叫法
+        b.setTitle("刪除確認")
+                .setMessage("確定要刪除嗎?")
+                .setPositiveButton("GO", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                .setNegativeButton("Cancel", null)
+                .show();
     }
     @Override
     protected void onDestroy() {
@@ -205,8 +246,20 @@ public class recordAct extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(isDel) {
+                isDel = false;
+                Button btn=(Button)findViewById(R.id.clearBtn);
+                btn.setVisibility(View.INVISIBLE);
+
+                for (int i = 0; i < row.size(); i++) {
+                    row.get(i).removeViewAt(4);
+                }
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event); //需在最後面
     }
 
     public boolean onCreateOptionMenu(Menu menu){
@@ -234,5 +287,45 @@ public class recordAct extends AppCompatActivity {
     public void gotoMain2Activity(View v){
         android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
         startActivity(it);
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if(isDel) {
+            for (int i = 0; i < row.size(); i++) {
+                if (((CheckBox) row.get(i).getChildAt(4)).isChecked()) {
+                    tblayout.removeView(row.get(i));
+                    row.remove(i);
+                    i -= 1;
+                    change2 = true;
+                }
+            }
+            Button btn = (Button) findViewById(R.id.clearBtn);
+            btn.setVisibility(View.INVISIBLE);
+
+            for (int i = 0; i < row.size(); i++) {
+                row.get(i).removeViewAt(4);
+            }
+            isDel = false;
+        }else{
+            try {
+                int i;
+                for(i=0;i<row.size();i++){
+                    if(((Button)row.get(i).getChildAt(3)).getId()==ebtn.getId()){
+                        FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                        String s=((TextView)row.get(i).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+",";
+                        out.write(s.getBytes());
+                        out.close();
+
+                        tblayout.removeView(row.get(i));
+                        row.remove(i);
+                        change=true; change2=true;
+                        break;
+                    }
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
     }
 }
