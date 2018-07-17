@@ -70,7 +70,8 @@
             android:theme="@style/main2Activity"></activity>
         <activity
             android:name=".randomSuggestRul"
-            android:label="@string/randomSuggestRul" />
+            android:label="@string/randomSuggestRul"
+            android:theme="@style/forgotAccPass"/>
         <activity
             android:name=".dbsetUpAct"
             android:label="@string/dbsetUp" />
