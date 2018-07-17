@@ -2,9 +2,15 @@ package tw.com.flag.eatwhat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.CheckBox;
-import android.widget.Spinner;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,17 +18,22 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-public class randomSuggestAct extends AppCompatActivity  {
+public class randomSuggestAct extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
-    private Spinner dist, disttime;
+   // private Spinner dist, disttime;
     private CheckBox chk;
-    private int[] chk_id = {R.id.chk1, R.id.chk2, R.id.chk3, R.id.chk4, R.id.chk5, R.id.chk6, R.id.chk7, R.id.chk8, R.id.chk9};
+    private int[] chk_id = {R.id.chk1, R.id.chk2, R.id.chk3, R.id.chk4, R.id.chk5, R.id.chk6, R.id.chk7, R.id.chk8};
     //private String[] eatime;int123
     private int[] eatime={1,2,3};//主食、早餐、點心
     private double[] limit = {100000, 300, 1000, 3000};
     TextView tv;
     Gps gps1;
+    RadioGroup radioGroup1;
+    RadioGroup radioGroup2;
+    private DrawerLayout mDrawerlayout;
+    private ActionBarDrawerToggle mToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +44,15 @@ public class randomSuggestAct extends AppCompatActivity  {
         gps1 = new Gps(this);
         tv = (TextView) findViewById(R.id.textView);
 
-        dist = (Spinner) findViewById(R.id.dist);
-        disttime = (Spinner) findViewById(R.id.disttime);
+        mDrawerlayout = (DrawerLayout)findViewById(R.id.drawer);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
+        mDrawerlayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        radioGroup1 = findViewById(R.id.radioGroup1);
+        radioGroup2 = findViewById(R.id.radioGroup2);
     }
 
     @Override
@@ -54,9 +72,26 @@ public class randomSuggestAct extends AppCompatActivity  {
         try {
 
             if(gps1.isGetGPSService()) {
-                int index = disttime.getSelectedItemPosition();
+                //int index = disttime.getSelectedItemPosition();
+                int index=0;
+                for(int i = 0 ;i < radioGroup1.getChildCount();i++) {
+                    RadioButton rb = (RadioButton) radioGroup1.getChildAt(i);
+                    if (rb.isChecked()) {
+                        index = i;
+                        break;
+                    }
+                }
                 int time = eatime[index];
-                int index2 = dist.getSelectedItemPosition();
+
+                //int index2 = dist.getSelectedItemPosition();
+                int index2=0;
+                for(int i = 0 ;i < radioGroup2.getChildCount();i++) {
+                    RadioButton rb = (RadioButton) radioGroup2.getChildAt(i);
+                    if (rb.isChecked()) {
+                        index = i;
+                        break;
+                    }
+                }
                 double distlimit = limit[index2];
                 json_write = new JSONObject();
                 json_write.put("action", "Random");
@@ -67,7 +102,7 @@ public class randomSuggestAct extends AppCompatActivity  {
                 int count =0;
                 for (int id : chk_id) {
                     chk = (CheckBox) findViewById(id);
-                    if (chk.isChecked()) {
+                    if (chk.isClickable()) {
                         dont1[count]= chk.getText().toString().trim();//不要吃的口味
                         count++;
                     }
@@ -110,30 +145,38 @@ public class randomSuggestAct extends AppCompatActivity  {
             e.printStackTrace();
         }
     }
+    public void onBackPressed() { //案返回健
+        if (mDrawerlayout.isDrawerOpen(findViewById(R.id.nav_view))) //側選單開著
+            mDrawerlayout.closeDrawers(); //關抽屜
+        else
+            super.onBackPressed();
+    }
 
-    public void gotoRandomSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
-        startActivity(it);
-        this.finish();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
-    public void gotoQuestionSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoRecordAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,recordAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoSearchAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoMain2Activity(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
-        startActivity(it);
-        this.finish();
+
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        Intent it;
+        switch(id){
+            case R.id.home:
+                it = new android.content.Intent(this, Main2Activity.class);
+                startActivity(it);
+                break;
+            case R.id.setting:
+                it = new android.content.Intent(this, settingAct.class);
+                startActivity(it);
+                break;
+            case R.id.comment:
+                it = new android.content.Intent(this, commentAct.class);
+                startActivity(it);
+                break;
+        }
+        return false;
     }
 }

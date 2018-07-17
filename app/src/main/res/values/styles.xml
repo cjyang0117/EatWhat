@@ -35,7 +35,7 @@
         <item name="colorPrimary">#A8BA82</item>
         <item name="colorPrimaryDark">#727e57</item>
         <item name="colorAccent">#C7815D</item>
-        <item name="android:textColorPrimary">#8B7765</item>
+        <item name="android:textColorPrimary">#ffffff</item>
     </style>
 
     <style name="main2Activity" parent="Theme.AppCompat.DayNight">
@@ -44,7 +44,6 @@
         <item name="colorPrimaryDark">#5D4037</item>
         <item name="android:textColorPrimary">#ffffff</item>
     </style>
-
 
 
 
