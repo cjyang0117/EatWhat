@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,12 +10,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import android.view.ViewGroup.LayoutParams;
+import android.widget.RatingBar;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONObject;
+
 public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    private GlobalVariable globalVariable;
     private DrawerLayout mDrawerlayout;
     private ActionBarDrawerToggle mToggle;
+    private JSONObject json_read, json_write;
+    String store;
+    String[] dish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +56,23 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         para.width = width;
         imageView2.setLayoutParams(para);
 
-
+        dish = new String[]{"雞腿飯", "魯肉飯", "排骨飯", "水餃", "陽春麵"};
+        globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
+        try {
+            json_write.put("action", "re");
+            globalVariable.c.send(json_write);
+            String tmp = globalVariable.c.receive();
+            json_read = new JSONObject(tmp);
+            if(tmp!=null) {
+                json_read.getString("data");
+                dish = new String[]{"雞腿飯", "魯肉飯", "排骨飯", "水餃", "陽春麵"};
+            }else{
+                Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        commitrate();
 
 
     }
@@ -97,5 +128,43 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
 
         return false;
 
+    }
+    public void commitrate(){
+        final Dialog rankDialog;
+        RatingBar rating ;
+        rankDialog = new Dialog(Main2Activity.this, R.style.FullHeightDialog);
+        rankDialog.setContentView(R.layout.rank_dialog);
+        rankDialog.setCancelable(true);
+        rating = (RatingBar)rankDialog.findViewById(R.id.dialog_ratingbar);
+        rating.setRating(5);
+
+        TextView storename = (TextView)rankDialog.findViewById(R.id.rank_dialog_text1);
+        storename.setText("老八");
+        Spinner myeatlist = (Spinner)rankDialog.findViewById(R.id.myeatlist);
+        ArrayAdapter<String> eatList = new ArrayAdapter<>(Main2Activity.this,android.R.layout.simple_spinner_item,dish);
+        myeatlist.setAdapter(eatList);
+
+        Button skipButton = (Button) rankDialog.findViewById(R.id.rank_dialog_skip);
+        skipButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rankDialog.dismiss();
+            }
+        });
+        Button okButton = (Button) rankDialog.findViewById(R.id.rank_dialog_ok);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        Button recommend = (Button) rankDialog.findViewById(R.id.rank_dialog_recommend);
+        recommend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rankDialog.dismiss();
+            }
+        });
+        rankDialog.show();
     }
 }

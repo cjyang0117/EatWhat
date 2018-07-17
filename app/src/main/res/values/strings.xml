@@ -63,6 +63,11 @@
         <item>早餐</item>
         <item>點心</item>
     </string-array>
-
+    <string name="quickstart_message">開啟通知</string>
+    <string name="subscribe_to_news">Subscribe To News</string>
+    <string name="msg_subscribed">Subscribed to news topic</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">News</string>
+    <string name="msg_subscribe_failed">Failed to subscribe to news topic</string>
 
 </resources>

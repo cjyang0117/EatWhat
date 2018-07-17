@@ -159,10 +159,13 @@ public class SearchAct extends AppCompatActivity {
 
                            }
                        });
+                       float ratecount;
+                       ratecount = Float.valueOf(j2.get(2).toString());
                        row[i].addView(tw);
                        RatingBar rb=new RatingBar(this, null, android.R.attr.ratingBarStyleSmall);
                        rb.setNumStars(5);
-                       rb.setRating(1);
+                       //rb.setRating(ratecount);
+                       rb.setRating(2);
                        //rb.setIsIndicator(true);
                        row[i].addView(rb);
                        TableRow.LayoutParams tlp=(TableRow.LayoutParams) rb.getLayoutParams();

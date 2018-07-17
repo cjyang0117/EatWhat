@@ -44,7 +44,9 @@
         <item name="colorPrimaryDark">#5D4037</item>
         <item name="android:textColorPrimary">#ffffff</item>
     </style>
-
+    <style name="FullHeightDialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
 
 
 
