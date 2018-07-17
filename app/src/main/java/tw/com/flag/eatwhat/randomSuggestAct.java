@@ -164,7 +164,8 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
         Intent it;
         switch(id){
             case R.id.home:
-                mDrawerlayout.closeDrawers();
+                it = new android.content.Intent(this, Main2Activity.class);
+                startActivity(it);
                 break;
             case R.id.setting:
                 it = new android.content.Intent(this, settingAct.class);

@@ -24,7 +24,9 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="190dp"
+        android:background="@drawable/main2activity_button_activity"
         android:text="@string/finish"
+        android:textColor="@color/darkgray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
