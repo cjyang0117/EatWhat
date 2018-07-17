@@ -7,6 +7,8 @@
     tools:context=".questionSuggestAct2"
     tools:layout_editor_absoluteY="81dp">
 
+
+
     <ImageButton
         android:id="@+id/imageButton13"
         android:layout_width="wrap_content"
@@ -81,49 +83,101 @@
 
     <Button
         android:id="@+id/button54"
-        android:onClick="ILike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/button55"
         android:layout_marginStart="31dp"
+        android:onClick="ILike"
         android:text="OK"
+        android:visibility="invisible"
         app:layout_constraintBaseline_toBaselineOf="@+id/button55"
         app:layout_constraintEnd_toStartOf="@+id/button55"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button55"
-        android:onClick="Soso"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="174dp"
+        android:onClick="Soso"
         android:text="都行"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button56"
         app:layout_constraintStart_toEndOf="@+id/button54" />
 
     <Button
         android:id="@+id/button56"
-        android:onClick="Notlike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/button55"
         android:layout_marginEnd="36dp"
+        android:onClick="Notlike"
         android:text="no"
+        android:visibility="invisible"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button55"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button55" />
+
+    <Button
+        android:id="@+id/button57"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/button54"
+        android:onClick="ILike"
+        android:text="早餐"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button55"
+        app:layout_constraintEnd_toStartOf="@+id/button55"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button58"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/button54"
+        android:layout_marginStart="100dp"
+        android:onClick="Soso"
+        android:text="點心"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button56"
+        app:layout_constraintStart_toEndOf="@+id/button54" />
+
+    <Button
+        android:id="@+id/button59"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/button54"
+        android:layout_marginEnd="100dp"
+        android:onClick="Notlike"
+        android:text="正餐"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button55"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button55" />
+
+    <Button
+        android:id="@+id/button60"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/button54"
+        android:onClick="Notlike"
+        android:text="宵夜"
         app:layout_constraintBaseline_toBaselineOf="@+id/button55"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button55" />
 
     <TextView
+        android:id="@+id/question"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="260dp"
-        android:id="@+id/question"
-        />
+        android:layout_marginTop="260dp" />
 </RelativeLayout>

@@ -77,7 +77,14 @@
         app:layout_constraintEnd_toEndOf="@+id/button62"
         app:layout_constraintStart_toStartOf="@+id/button61"
         app:layout_constraintTop_toTopOf="parent" />
-
+    <Spinner
+        android:id="@+id/dist2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="121dp"
+        android:entries="@array/dist2" />
     <Button
         android:id="@+id/button53"
         android:layout_width="wrap_content"

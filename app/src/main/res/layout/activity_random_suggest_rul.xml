@@ -48,5 +48,10 @@
         tools:layout_editor_absoluteX="98dp"
         tools:layout_editor_absoluteY="153dp" />
 
-
+    <TableLayout
+        android:id="@+id/tbrulLayout"
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingRight="5dp"></TableLayout>
 </RelativeLayout>
