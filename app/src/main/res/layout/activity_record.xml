@@ -18,6 +18,7 @@
         android:layout_marginTop="32dp"
         android:enabled="false"
         android:text="@string/consider"
+        android:onClick="switchClick"
         app:layout_constraintStart_toStartOf="@+id/button31"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -31,6 +32,7 @@
         android:layout_marginRight="32dp"
         android:layout_marginTop="32dp"
         android:text="@string/eat"
+        android:onClick="switchClick"
         app:layout_constraintEnd_toEndOf="@+id/button33"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -118,5 +120,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"></TableLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/clearBtn"
+        android:layout_width="54dp"
+        android:layout_height="39dp"
+        android:onClick="clearClick"
+        android:text="刪除"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
