@@ -2,6 +2,7 @@ package tw.com.flag.eatwhat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 
 public class userSuggestAct extends AppCompatActivity {
 
@@ -9,6 +10,9 @@ public class userSuggestAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_suggest);
+    }
+    public void switchClick(View v){
+
     }
     public void gotoUsersuggestAct2(android.view.View v){
         android.content.Intent it = new android.content.Intent(this,userSuggestAct2.class);
