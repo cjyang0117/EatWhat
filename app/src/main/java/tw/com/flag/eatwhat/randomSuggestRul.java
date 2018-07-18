@@ -57,14 +57,12 @@ public class randomSuggestRul extends AppCompatActivity {
                     textViewprice.setText("價格" + j2.get(3).toString() + "元");//價格
                     addr = j2.get(1).toString().trim();//店家地址
                     textViewaddr.setText(addr);
-                    for(int i = 0 ; i <tvmap.length ; i++) {
-                        tvmap[i].setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View arg0) {
-                                openMap();
-                            }
-                        });
-                    }
+                    textViewaddr.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            openMap();
+                        }
+                    });
                 }else{
                     tbrulLayout = (TableLayout)findViewById(R.id.tbrulLayout);
                     String store = new String();
@@ -96,15 +94,21 @@ public class randomSuggestRul extends AppCompatActivity {
                     textViewmenu.setText(b.getString("data3"));//菜品
                     textViewprice.setText("價格" + b.getString("data4") + "元");//價格
                     for(int i = 0 ; i <tw.length ; i++) {
-                        final String x =tw[i].getText().toString().trim();
+                        addr =tw[i].getText().toString().trim();
                         tw[i].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View arg0) {
-                                openMaptw(x);
+                                openMaptw(addr);
                             }
                         });
                     }
                 }
+                textViewrul.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View arg0) {
+                        gotostore();
+                    }
+                });
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("Exception", "StoreError=" + e.toString());
@@ -118,6 +122,15 @@ public class randomSuggestRul extends AppCompatActivity {
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
+    }
+    public void gotostore(){
+        Bundle b = new Bundle();
+        Intent i = new Intent(this, StoreAct.class);
+        b.putString("data", textViewrul.getText().toString());
+        b.putString("dataddr", addr);
+        i.putExtras(b);
+        startActivity(i);
+        this.finish();
     }
     public  void openMap(){//google map 路徑
         getGPFromAddress(addr);

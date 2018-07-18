@@ -64,10 +64,11 @@
             android:theme="@style/forgotAccPass"/>
         <activity android:name=".settingAct"
             android:label="@string/setting"
-            android:theme="@style/main2Activity"/>
-        <activity android:name=".commentAct"
+            android:theme="@style/main2Activity" />
+        <activity
+            android:name=".commentAct"
             android:label="@string/comment"
-            android:theme="@style/main2Activity"></activity>
+            android:theme="@style/main2Activity" />
         <activity
             android:name=".randomSuggestRul"
             android:label="@string/randomSuggestRul"
@@ -81,6 +82,22 @@
         <activity
             android:name=".newmenuAct"
             android:label="@string/newmenu" />
+
+        <service android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- [END firebase_service] -->
+        <service
+            android:name=".MyJobService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".StoreAct"></activity>
     </application>
 
 </manifest>
