@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tw.com.flag.eatwhat">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_GPS" />
+
     <application
         android:name=".GlobalVariable"
         android:allowBackup="true"
@@ -61,12 +63,14 @@
         <activity
             android:name=".randomSuggestAct"
             android:label="@string/randomSuggest" />
-        <activity android:name=".settingAct"
+        <activity
+            android:name=".settingAct"
             android:label="@string/setting"
-            android:theme="@style/main2Activity"/>
-        <activity android:name=".commentAct"
+            android:theme="@style/main2Activity" />
+        <activity
+            android:name=".commentAct"
             android:label="@string/comment"
-            android:theme="@style/main2Activity"></activity>
+            android:theme="@style/main2Activity" />
         <activity
             android:name=".randomSuggestRul"
             android:label="@string/randomSuggestRul" />
@@ -79,6 +83,7 @@
         <activity
             android:name=".newmenuAct"
             android:label="@string/newmenu" />
+
         <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -92,6 +97,8 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
             </intent-filter>
         </service>
+
+        <activity android:name=".StoreAct"></activity>
     </application>
 
 </manifest>
