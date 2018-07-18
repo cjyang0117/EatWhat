@@ -170,7 +170,7 @@ public class SearchAct extends AppCompatActivity
                            }
                        });
                        float ratecount;
-                       ratecount = Float.valueOf(j2.get(2).toString());
+                       //ratecount = Float.valueOf(j2.get(2).toString());
                        row[i].addView(tw);
                        RatingBar rb=new RatingBar(this, null, android.R.attr.ratingBarStyleSmall);
                        rb.setNumStars(5);
