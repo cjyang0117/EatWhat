@@ -52,6 +52,7 @@
             android:drawableTop="@drawable/ic_people_black_36dp"
             android:paddingTop="12dp"
             android:text="@string/userSuggest"
+            android:onClick="gotoUsersuggestAct"
             android:textColor="@color/darkgray"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/button15"
