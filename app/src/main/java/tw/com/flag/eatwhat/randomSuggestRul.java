@@ -27,6 +27,7 @@ public class randomSuggestRul extends AppCompatActivity {
     double geoLatitude, geoLongitude;
     private TableRow[] row,row2;
     private TableLayout tblayout, tblayout2;
+    String cell,star,menunum,storename,mname;
     TableLayout tbrulLayout;
     Bundle b;
     @Override
@@ -38,7 +39,7 @@ public class randomSuggestRul extends AppCompatActivity {
         textViewmenu = (TextView)findViewById(R.id.textViewmenu);
         textViewprice = (TextView)findViewById(R.id.textViewprice);
         TextView[] tvmap={textViewrul ,textViewaddr, textViewmenu, textViewprice};
-        TextView[] tw,tw1 ;
+        TextView[] tw,tw1;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         b = this.getIntent().getExtras();
@@ -52,15 +53,25 @@ public class randomSuggestRul extends AppCompatActivity {
                     for (int i = 0; i < j1.length(); i++) {
                         j2 = j1.getJSONArray(i);
                     }
-                    textViewrul.setText(j2.get(0).toString());//店家名稱
-                    textViewmenu.setText(j2.get(2).toString());//菜品
-                    textViewprice.setText("價格" + j2.get(3).toString() + "元");//價格
-                    addr = j2.get(1).toString().trim();//店家地址
+                    storename = j2.get(1).toString();
+                    menunum =  j2.get(0).toString().trim();
+                    textViewrul.setText(storename);//店家名稱
+                    textViewmenu.setText(j2.get(5).toString().trim());//菜品
+                    textViewprice.setText("價格" + j2.get(6).toString() + "元");//價格
+                    addr = j2.get(2).toString().trim();//店家地址
+                    cell = j2.get(3).toString();
+                    star = j2.get(4).toString();
                     textViewaddr.setText(addr);
                     textViewaddr.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View arg0) {
                             openMap();
+                        }
+                    });
+                    textViewrul.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            gotostore();
                         }
                     });
                 }else{
@@ -102,13 +113,21 @@ public class randomSuggestRul extends AppCompatActivity {
                             }
                         });
                     }
-                }
-                textViewrul.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View arg0) {
-                        gotostore();
+                    for(int i = 0 ; i <tw1.length ; i++) {
+                        final int ii = i;
+                        tw1[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View arg0) {
+                                storename = b.getStringArray("data1")[ii].toString().trim();
+                                menunum =  b.getStringArray("data5")[ii].toString().trim();
+                                addr =  b.getStringArray("data2")[ii].toString().trim();
+                                cell = b.getStringArray("data6")[ii].toString().trim();
+                                star =  b.getStringArray("data7")[ii].toString().trim();
+                                gotostore();
+                            }
+                        });
                     }
-                });
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("Exception", "StoreError=" + e.toString());
@@ -126,11 +145,14 @@ public class randomSuggestRul extends AppCompatActivity {
     public void gotostore(){
         Bundle b = new Bundle();
         Intent i = new Intent(this, StoreAct.class);
-        b.putString("data", textViewrul.getText().toString());
+        b.putString("data", storename);
+        b.putString("datamname",textViewmenu.getText().toString());
+        b.putString("datanum", menunum);
+        b.putString("datastar", star);
+        b.putString("datacell", cell);
         b.putString("dataddr", addr);
         i.putExtras(b);
         startActivity(i);
-        this.finish();
     }
     public  void openMap(){//google map 路徑
         getGPFromAddress(addr);

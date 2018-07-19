@@ -88,7 +88,7 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 for(int i = 0 ;i < radioGroup2.getChildCount();i++) {
                     RadioButton rb = (RadioButton) radioGroup2.getChildAt(i);
                     if (rb.isChecked()) {
-                        index = i;
+                        index2 = i;
                         break;
                     }
                 }
@@ -102,7 +102,7 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 int count =0;
                 for (int id : chk_id) {
                     chk = (CheckBox) findViewById(id);
-                    if (chk.isClickable()) {
+                    if (chk.isChecked()) {
                         dont1[count]= chk.getText().toString().trim();//不要吃的口味
                         count++;
                     }
@@ -118,7 +118,6 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 tv.setText("緯度 :" + gps1.getGPSLatitude() + "  , 經度 :  " + gps1.getGPSLongitude());
                 String tmp = globalVariable.c.receive();
                 json_read = new JSONObject(tmp);
-                //String tmp="123";
                 if(tmp!=null) {
                     if (!json_read.getBoolean("check")) {//接收失敗原因
                         String reason = json_read.getString("data");
