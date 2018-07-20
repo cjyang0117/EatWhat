@@ -92,6 +92,10 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         android.content.Intent it = new android.content.Intent(this,SearchAct.class);
         startActivity(it);
     }
+    public void gotoUsersuggestAct(View v){
+        android.content.Intent it = new android.content.Intent(this,userSuggestAct.class);
+        startActivity(it);
+    }
     @Override
     public void onBackPressed() { //案返回健
         if (mDrawerlayout.isDrawerOpen(findViewById(R.id.nav_view))) //側選單開著
