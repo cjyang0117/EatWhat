@@ -98,6 +98,9 @@
         </service>
 
         <activity android:name=".StoreAct"></activity>
+
+        <activity android:name=".Pop"
+            android:theme="@style/AppTheme.CustomTheme"/>
     </application>
 
 </manifest>

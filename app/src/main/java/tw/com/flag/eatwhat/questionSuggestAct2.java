@@ -25,7 +25,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
     Button[] maintype,osn;
     String[] like;//放置OK的種類
     String[][] tmp1;//放置3個答案的資訊
-    String [] storea0,addressa0,storea1,addressa1,storea2,addressa2;
+    String [] storea0,addressa0,sid0,sphone0,star0,storea1,addressa1,sid1,sphone1,star1,storea2,addressa2,sid2,sphone2,star2;
     String[] sosolike;//放置還好的種類
     String[] dontlike;//放置NO的種類
     String lat,lng;
@@ -273,12 +273,21 @@ public class questionSuggestAct2 extends AppCompatActivity {
             if(aa==0){
                 b.putStringArray("data1",storea0);
                 b.putStringArray("data2",addressa0);
+                b.putStringArray("data5",sid0);
+                b.putStringArray("data6",sphone0);
+                b.putStringArray("data7",star0);
             }else if(aa==1){
                 b.putStringArray("data1",storea1);
                 b.putStringArray("data2",addressa1);
+                b.putStringArray("data5",sid1);
+                b.putStringArray("data6",sphone1);
+                b.putStringArray("data7",star1);
             }else if(aa==2){
                 b.putStringArray("data1",storea2);
                 b.putStringArray("data2",addressa2);
+                b.putStringArray("data5",sid2);
+                b.putStringArray("data6",sphone2);
+                b.putStringArray("data7",star2);
             }
             b.putString("data3", tmp1[aa][1]);//餐點
             b.putString("data4", tmp1[aa][2]);//價格
@@ -378,28 +387,46 @@ public class questionSuggestAct2 extends AppCompatActivity {
                     JSONArray j2A0;
                     storea0 =  new String[j1A0.length()];
                     addressa0 = new String[j1A0.length()];
+                    sid0 = new String[j1A0.length()];
+                    sphone0 = new String[j1A0.length()];
+                    star0= new String[j1A0.length()];
                     for (int i = 0; i < j1A0.length(); i++) { //拆解接收的JSON包並放入答案陣列
                         j2A0 = j1A0.getJSONArray(i);
-                        storea0[i]=j2A0.get(0).toString();
-                        addressa0[i]=j2A0.get(1).toString();
+                        sid0[i]=j2A0.get(0).toString();
+                        storea0[i]=j2A0.get(1).toString();
+                        addressa0[i]=j2A0.get(2).toString();
+                        sphone0[i]=j2A0.get(3).toString();
+                        star0[i]=j2A0.get(4).toString();
                     }
                     JSONArray j1A1 = json_read.getJSONArray("A1");
                     JSONArray j2A1;
                     storea1 =  new String[j1A1.length()];
                     addressa1 = new String[j1A1.length()];
+                    sid1 = new String[j1A1.length()];
+                    sphone1 = new String[j1A1.length()];
+                    star1 = new String[j1A1.length()];
                     for (int i = 0; i < j1A1.length(); i++) { //拆解接收的JSON包並放入答案陣列
                         j2A1 = j1A1.getJSONArray(i);
-                        storea1[i]=j2A1.get(0).toString();
-                        addressa1[i]=j2A1.get(1).toString();
+                        storea1[i]=j2A1.get(1).toString();
+                        addressa1[i]=j2A1.get(2).toString();
+                        sid1[i]=j2A1.get(0).toString();
+                        sphone1[i]=j2A1.get(3).toString();
+                        star1[i]=j2A1.get(4).toString();
                     }
                     JSONArray j1A2 = json_read.getJSONArray("A2");
                     JSONArray j2A2;
                     storea2 =  new String[j1A2.length()];
                     addressa2 = new String[j1A2.length()];
+                    sid2 = new String[j1A2.length()];
+                    sphone2 = new String[j1A2.length()];
+                    star2 = new String[j1A2.length()];
                     for (int i = 0; i < j1A2.length(); i++) { //拆解接收的JSON包並放入答案陣列
                         j2A2 = j1A2.getJSONArray(i);
-                        storea2[i]=j2A2.get(0).toString();
-                        addressa2[i]=j2A2.get(1).toString();
+                        storea2[i]=j2A2.get(1).toString();
+                        addressa2[i]=j2A2.get(2).toString();
+                        sid2[i]=j2A2.get(0).toString();
+                        sphone2[i]=j2A2.get(3).toString();
+                        star2[i]=j2A2.get(4).toString();
                     }
                     showans();
                 }
