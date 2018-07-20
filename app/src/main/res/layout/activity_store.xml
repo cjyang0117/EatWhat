@@ -7,7 +7,8 @@
     tools:context=".StoreAct"
     tools:layout_editor_absoluteY="81dp"
     android:background="#ffffff"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/activity_store">
 
     <LinearLayout
         android:layout_width="match_parent"

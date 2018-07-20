@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 if (!json_read.getBoolean("Checklogin")) {//當回傳為false
                     Toast.makeText(MainActivity.this, "請檢查帳密是否錯誤", Toast.LENGTH_SHORT).show();
                 } else {//當回傳為true跳轉進入首頁
+                    globalVariable.recmdtime = json_read.getInt("recmdTime");
                     android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
                     startActivity(it);
                     if (checkBox.isChecked()) {//當記住帳密有被勾選記住帳號密碼的資訊

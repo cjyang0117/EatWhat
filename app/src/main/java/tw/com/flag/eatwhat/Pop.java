@@ -91,18 +91,9 @@ public class Pop extends Activity{
                 for (int i = 0; i < j3.length(); i++) { //動態產生TableRow
                     j4 = j3.getJSONArray(i);
                 }
-                ed1.setFocusable(false);
-                //ed1.setFocusableInTouchMode(true);
                 ed1.setText(j4.get(0).toString());
                 storerate.setRating(Float.valueOf(j4.get(1).toString()));
-                storerate.setIsIndicator(true);
-                submit.setText("編輯");
-                submit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        sub();
-                    }
-                });
+                Commented();
             }else{
                 sub();
             }
@@ -132,12 +123,23 @@ public class Pop extends Activity{
                         //String reason = json_read.getString("data");
                         //Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
                     }else{
-                        ed1.setFocusable(false);
-                        storerate.setIsIndicator(true);
+                        Commented();
                     }
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+    public void Commented(){
+        ed1.setFocusable(false);
+        //ed1.setFocusableInTouchMode(true);
+        storerate.setIsIndicator(true);
+        submit.setText("編輯");
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sub();
             }
         });
     }
