@@ -44,10 +44,10 @@ public class userSuggestAct extends AppCompatActivity
             sp=12;
         }
 
-        loadUserData(true, R.id.tbLayout, row);
-        loadUserData(false, R.id.tb2Layout, row2);
+        row=loadUserData(true, R.id.tbLayout, row);
+        row2=loadUserData(false, R.id.tb2Layout, row2);
     }
-    private void loadUserData(boolean isUser, int tbId, TableRow[] r){
+    private TableRow[] loadUserData(boolean isUser, int tbId, TableRow[] r){
         try {
             json_write=new JSONObject(); //接收店家資料，並動態產生表格顯示
             json_write.put("action", "User");
@@ -135,11 +135,14 @@ public class userSuggestAct extends AppCompatActivity
                     });
                     r[i].addView(btn);
                 }
+                return r;
             }else{
                 Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                return null;
             }
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
     }
     public void switchClick(View v){
