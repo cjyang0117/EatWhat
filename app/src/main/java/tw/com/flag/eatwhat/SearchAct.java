@@ -1,6 +1,9 @@
 package tw.com.flag.eatwhat;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
@@ -23,13 +26,15 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class SearchAct extends AppCompatActivity {
+public class SearchAct extends AppCompatActivity
+        implements DialogInterface.OnClickListener{
     private JSONObject json_read, json_write;
     private GlobalVariable globalVariable;
     private TableRow[] row,row2;
     private int sp=14;
     private TableLayout tblayout, tblayout2;
     private Boolean isStore=true, isSort=false, sort=true;
+    private Button ebtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +118,11 @@ public class SearchAct extends AppCompatActivity {
                     int t=t1.getId();
                     t1.setId(t2.getId());
                     t2.setId(t);
+                    t1=((Button) tr[j].getChildAt(4));
+                    t2=((Button) tr[j+1].getChildAt(4));
+                    t=t1.getId();
+                    t1.setId(t2.getId());
+                    t2.setId(t);
 
                     TableRow tmp = tr[j];
                     tr[j] = tr[j + 1];
@@ -159,10 +169,13 @@ public class SearchAct extends AppCompatActivity {
 
                            }
                        });
+                       float ratecount;
+                       //ratecount = Float.valueOf(j2.get(2).toString());
                        row[i].addView(tw);
                        RatingBar rb=new RatingBar(this, null, android.R.attr.ratingBarStyleSmall);
                        rb.setNumStars(5);
-                       rb.setRating(1);
+                       //rb.setRating(ratecount);
+                       rb.setRating(2);
                        //rb.setIsIndicator(true);
                        row[i].addView(rb);
                        TableRow.LayoutParams tlp=(TableRow.LayoutParams) rb.getLayoutParams();
@@ -185,6 +198,8 @@ public class SearchAct extends AppCompatActivity {
                                    String s=((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
                                    out.write(s.getBytes());
                                    out.close();
+
+                                   b.setEnabled(false);
                                }catch (IOException e){
                                    e.printStackTrace();
                                }
@@ -193,11 +208,19 @@ public class SearchAct extends AppCompatActivity {
                        row[i].addView(btn);
                        btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                        btn.setText("吃");
+                       btn.setId(i);
                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                        btn.setOnClickListener(new View.OnClickListener() {
                            @Override
                            public void onClick(View v) {
-
+                               ebtn=(Button)v;
+                               AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+                               //串聯呼叫法
+                               b.setTitle("確認")
+                                       .setMessage("確定要吃這個嗎?")
+                                       .setPositiveButton("GO", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                       .setNegativeButton("Cancel", null)
+                                       .show();
                            }
                        });
                        row[i].addView(btn);
@@ -258,6 +281,8 @@ public class SearchAct extends AppCompatActivity {
                                    String s=((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(1)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
                                    out.write(s.getBytes());
                                    out.close();
+
+                                   b.setEnabled(false);
                                }catch (IOException e){
                                    e.printStackTrace();
                                }
@@ -266,11 +291,19 @@ public class SearchAct extends AppCompatActivity {
                        row2[i].addView(btn);
                        btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                        btn.setText("吃");
+                       btn.setId(i);
                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                        btn.setOnClickListener(new View.OnClickListener() {
                            @Override
                            public void onClick(View v) {
-
+                               ebtn=(Button)v;
+                               AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+                               //串聯呼叫法
+                               b.setTitle("確認")
+                                       .setMessage("確定要吃這個嗎?")
+                                       .setPositiveButton("GO", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                       .setNegativeButton("Cancel", null)
+                                       .show();
                            }
                        });
                        row2[i].addView(btn);
@@ -303,5 +336,23 @@ public class SearchAct extends AppCompatActivity {
     public void gotoMain2Activity(View v){
         android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
         startActivity(it);
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        try {
+            FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+            String s;
+            if(isStore) {
+                s = ((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + ",-,-,";
+            }else {
+                s = ((TextView) row2[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
+            }
+            out.write(s.getBytes());
+            out.close();
+            ebtn.setEnabled(false);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }

@@ -118,7 +118,6 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 tv.setText("緯度 :" + gps1.getGPSLatitude() + "  , 經度 :  " + gps1.getGPSLongitude());
                 String tmp = globalVariable.c.receive();
                 json_read = new JSONObject(tmp);
-                //String tmp="123";
                 if(tmp!=null) {
                     if (!json_read.getBoolean("check")) {//接收失敗原因
                         String reason = json_read.getString("data");

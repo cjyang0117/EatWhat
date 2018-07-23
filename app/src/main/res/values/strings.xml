@@ -65,16 +65,26 @@
     <string name="want2eat">現在想吃</string>
 
     <string-array name="dist">
-    <item>請選擇(不限)</item>
-    <item>不想走太遠</item>
-    <item>沒事多走路</item>
-    <item>騎車去買飯</item>
+        <item>請選擇(不限)</item>
+        <item>不想走太遠</item>
+        <item>沒事多走路</item>
+        <item>騎車去買飯</item>
     </string-array>
     <string-array name="dist2">
         <item>請選擇(不限)</item>
         <item>沒事多走路</item>
         <item>騎車去買飯</item>
     </string-array>
-
+    <string-array name="disttime">
+        <item>主餐</item>
+        <item>早餐</item>
+        <item>點心</item>
+    </string-array>
+    <string name="quickstart_message">開啟通知</string>
+    <string name="subscribe_to_news">Subscribe To News</string>
+    <string name="msg_subscribed">Subscribed to news topic</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">News</string>
+    <string name="msg_subscribe_failed">Failed to subscribe to news topic</string>
 
 </resources>
