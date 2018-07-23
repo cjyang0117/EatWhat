@@ -134,6 +134,7 @@
             android:paddingTop="10dp"
             android:text="@string/userSuggest"
             android:textColor="@color/darkgray"
+            android:onClick="gotoUsersuggestAct"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/button16"
             app:layout_constraintEnd_toStartOf="@+id/button11"
