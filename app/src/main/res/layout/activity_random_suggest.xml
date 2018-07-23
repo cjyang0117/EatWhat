@@ -153,6 +153,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:button="@null"
+            android:checked="false"
             android:drawableTop="@drawable/rice_selector"
             android:gravity="center"
             android:text="@string/rice"

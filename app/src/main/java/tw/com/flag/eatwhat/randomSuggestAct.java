@@ -88,7 +88,7 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 for(int i = 0 ;i < radioGroup2.getChildCount();i++) {
                     RadioButton rb = (RadioButton) radioGroup2.getChildAt(i);
                     if (rb.isChecked()) {
-                        index = i;
+                        index2 = i;
                         break;
                     }
                 }
@@ -102,7 +102,7 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 int count =0;
                 for (int id : chk_id) {
                     chk = (CheckBox) findViewById(id);
-                    if (chk.isClickable()) {
+                    if (chk.isChecked()) {
                         dont1[count]= chk.getText().toString().trim();//不要吃的口味
                         count++;
                     }
