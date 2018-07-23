@@ -270,7 +270,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
             Intent i;
             i = new Intent(this, randomSuggestRul.class);
             b.putInt("check",2);
-            if(aa==0){
+            /*if(aa==0){
                 b.putStringArray("data1",storea0);
                 b.putStringArray("data2",addressa0);
                 b.putStringArray("data5",sid0);
@@ -288,7 +288,26 @@ public class questionSuggestAct2 extends AppCompatActivity {
                 b.putStringArray("data5",sid2);
                 b.putStringArray("data6",sphone2);
                 b.putStringArray("data7",star2);
-            }
+            }*/
+            /*if(aa==0){
+                b.putString("data1",tmp1[0][1]);
+                b.putString("data2",tmp1[0][2]);
+                b.putString("data5",tmp1[0][0]);
+                b.putString("data6",tmp1[0][3]);
+                b.putString("data7",tmp1[0][4]);
+            }else if(aa==1){
+                b.putString("data1",tmp1[1][1]);
+                b.putString("data2",tmp1[1][2]);
+                b.putString("data5",tmp1[1][0]);
+                b.putString("data6",tmp1[1][3]);
+                b.putString("data7",tmp1[1][4]);
+            }else if(aa==2){
+                b.putString("data1",tmp1[2][1]);
+                b.putString("data2",tmp1[2][2]);
+                b.putString("data5",tmp1[2][0]);
+                b.putString("data6",tmp1[2][3]);
+                b.putString("data7",tmp1[2][4]);
+            }*/
             b.putString("data3", tmp1[aa][1]);//餐點
             b.putString("data4", tmp1[aa][2]);//價格
             b.putString("Latitude2",lat);
@@ -375,14 +394,15 @@ public class questionSuggestAct2 extends AppCompatActivity {
                 } else {//接收距離內答案
                     JSONArray j1 = json_read.getJSONArray("data");
                     JSONArray j2;
-                    tmp1 = new String[j1.length()][3];
+                    tmp1 = new String[j1.length()][6];
                     for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並放入答案陣列
                         j2 = j1.getJSONArray(i);
-                        for (int j = 0; j < 3; j++) {
+                        for (int j = 0; j < 6; j++) {
                             tmp1[i][j] = j2.get(j).toString();
                         }
                         ans[i] = j2.get(1).toString();
                     }
+                    /*
                     JSONArray j1A0 = json_read.getJSONArray("A0");
                     JSONArray j2A0;
                     storea0 =  new String[j1A0.length()];
@@ -428,6 +448,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
                         sphone2[i]=j2A2.get(3).toString();
                         star2[i]=j2A2.get(4).toString();
                     }
+                    */
                     showans();
                 }
             }else{

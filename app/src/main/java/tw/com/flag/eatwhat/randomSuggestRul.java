@@ -44,7 +44,7 @@ public class randomSuggestRul extends AppCompatActivity {
 
         b = this.getIntent().getExtras();
 
-        if (b != null) {
+        if (b != null) {//隨機
             try {
                 if(b.getInt("check")!=2) {
                     JSONObject json_read = new JSONObject(b.getString("data"));
@@ -145,6 +145,7 @@ public class randomSuggestRul extends AppCompatActivity {
     public void gotostore(){
         Bundle b = new Bundle();
         Intent i = new Intent(this, StoreAct.class);
+        b.putBoolean("mode", false);
         b.putString("data", storename);
         b.putString("datamname",textViewmenu.getText().toString());
         b.putString("datanum", menunum);

@@ -37,9 +37,12 @@ public class signUpAct extends AppCompatActivity {
 
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
-        editText5.setOnKeyListener(new EditText.OnKeyListener() {//檢查信箱格式
+        editText5.addTextChangedListener(new TextWatcher() {  //檢查信箱格式
             @Override
-            public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (Linkify.addLinks(editText5.getText(), Linkify.EMAIL_ADDRESSES)) {
                     img2.setImageResource(android.R.drawable.button_onoff_indicator_on);
                     a = true;//判斷是否正確
@@ -47,8 +50,9 @@ public class signUpAct extends AppCompatActivity {
                     img2.setImageResource(android.R.drawable.checkbox_off_background);
                     a = false;
                 }
-                return false;
             }
+            @Override
+            public void afterTextChanged(Editable s) { }
         });
 
         editText6.addTextChangedListener(new TextWatcher() {  //檢查帳號不得為空值
@@ -68,10 +72,12 @@ public class signUpAct extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) { }
         });
-
-        editText8.setOnKeyListener(new EditText.OnKeyListener() {//提示密碼是否相同
+        editText8.addTextChangedListener(new TextWatcher() {  //檢查帳號不得為空值
             @Override
-            public boolean onKey(View arg0, int arg1, KeyEvent arg2) {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String password = editText7.getText().toString();
                 String passwordAgain = editText8.getText().toString();
                 if (password.equals(passwordAgain)) {
@@ -81,8 +87,9 @@ public class signUpAct extends AppCompatActivity {
                     img3.setImageResource(android.R.drawable.checkbox_off_background);
                     c = false;
                 }
-                return false;
             }
+            @Override
+            public void afterTextChanged(Editable s) { }
         });
     }
 
