@@ -67,8 +67,8 @@ public class StoreAct extends AppCompatActivity {
         try {
         json_write = new JSONObject();
         b = this.getIntent().getExtras();
-        sid = Integer.parseInt(b.getString("datanum"));
-        if(b.getBoolean("mode")){
+        sid = Integer.parseInt(b.getString("datanum"));//取得店號
+        if(b.getBoolean("mode")){//從搜尋近店家頁面
             json_write.put("action", "Store2");
             json_write.put("Id", sid);
             globalVariable.c.send(json_write);
@@ -77,18 +77,18 @@ public class StoreAct extends AppCompatActivity {
             if(tmp!=null) {
                 JSONArray j1 = json_read.getJSONArray("Store");
                 JSONArray j2;
-                for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包
                     j2 = j1.getJSONArray(i);
-                    storename.setText(j2.get(0).toString());
+                    storename.setText(j2.get(0).toString());//店名
                     storeaddr.setText("地址:"+j2.get(1).toString());
                     storecell.setText("電話:"+j2.get(2).toString());
-                    float starmum = Float.valueOf((j2.get(3).toString()));
-                    rb.setRating(starmum);
+                    float starmum = Float.valueOf((j2.get(3).toString()));//星星數
+                    rb.setRating(starmum);//設定星星數
                 }
             }
         }
-        if(!b.getBoolean("mode")){
-            storename.setText(b.getString("data"));
+        if(!b.getBoolean("mode")){//從隨機、提問進店家頁面
+            storename.setText(b.getString("data"));//店名
             storeaddr.setText("地址:"+ b.getString("dataddr"));
             storecell.setText("電話:"+b.getString("datacell"));
             float starmum = Float.valueOf(b.getString("datastar"));
@@ -100,7 +100,7 @@ public class StoreAct extends AppCompatActivity {
             json_read = new JSONObject(tmp);
         }
         if(tmp!=null) {
-            storeaddr.setOnClickListener(new View.OnClickListener() {
+            storeaddr.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
                 @Override
                 public void onClick(View v) {
                     String[] ad = storeaddr.getText().toString().split(":");
@@ -124,28 +124,33 @@ public class StoreAct extends AppCompatActivity {
             }
             for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                 j2 = j1.getJSONArray(i);
+
                 TextView tw = new TextView(this);
-                tw.setText(j2.get(0).toString());
+                tw.setText(j2.get(0).toString());//菜名
                 tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                 tw.setTextColor(Color.BLACK);
                 row[i].addView(tw);
+
                 tw = new TextView(this);
-                tw.setText(j2.get(1).toString());
+                tw.setText(j2.get(1).toString());//價格
                 tw.setTextColor(Color.BLACK);
                 row[i].addView(tw);
+
                 tw = new TextView(this);
-                tw.setText("元");
+                tw.setText("元");//單位
                 tw.setTextColor(Color.BLACK);
                 row[i].addView(tw);
+
                 mid[i]=Integer.parseInt(j2.get(2).toString());
+
                 btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                 btn.setText("推薦");
                 btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     final int ii = i;
-                    btn.setOnClickListener(new View.OnClickListener() {
+                    btn.setOnClickListener(new View.OnClickListener() {//推薦按鍵事件
                         @Override
                         public void onClick(View v) {
-                            if( globalVariable.recmdtime <2) {
+                            if( globalVariable.recmdtime <2) {//推薦次數每日2次
                                 AlertDialog.Builder b = new AlertDialog.Builder(StoreAct.this);
                                 b.setTitle("確認")
                                         .setMessage("確定要推薦這道菜嗎?")
@@ -161,7 +166,7 @@ public class StoreAct extends AppCompatActivity {
                                                         json_read = new JSONObject(tmp);
                                                         String reason = json_read.getString("data");
                                                         if (!json_read.getBoolean("check")) {//接收失敗原因
-                                                        } else {//成功並關閉
+                                                        } else {
                                                             btn.setEnabled(false);
                                                             globalVariable.recmdtime++;
                                                         }

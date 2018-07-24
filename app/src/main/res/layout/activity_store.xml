@@ -43,7 +43,7 @@
             android:id="@+id/store_ratingbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
+            android:progressBackgroundTint="@color/colorGrassDark"
             style="?android:attr/ratingBarStyleIndicator"
             android:isIndicator="true"
             android:numStars="5"
@@ -55,14 +55,11 @@
             tools:layout_editor_absoluteY="91dp" />
 
         <Button
+            android:id="@+id/commit"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="考慮" />
-        <Button
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:text="吃"/>
+            android:layout_marginLeft="30dp"
+            android:text="評論"/>
     </LinearLayout>
 
     <TextView
@@ -103,10 +100,4 @@
             android:paddingRight="5dp"></TableLayout>
     </ScrollView>
 
-    <Button
-        android:id="@+id/commit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="評論"
-        android:layout_marginLeft="25dp"/>
 </LinearLayout>

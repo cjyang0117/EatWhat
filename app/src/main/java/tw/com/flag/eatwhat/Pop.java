@@ -104,6 +104,7 @@ public class Pop extends Activity{
     }
     public void sub(){
         storerate.setIsIndicator(false);
+        ed1.setBackgroundColor(Color.WHITE);
         ed1.setFocusable(true);
         ed1.setFocusableInTouchMode(true);
         submit.setText("提交");
@@ -133,6 +134,7 @@ public class Pop extends Activity{
     }
     public void Commented(){
         ed1.setFocusable(false);
+        ed1.setBackgroundColor(Color.GRAY);
         //ed1.setFocusableInTouchMode(true);
         storerate.setIsIndicator(true);
         submit.setText("編輯");

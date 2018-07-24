@@ -89,20 +89,13 @@ public class recordAct extends AppCompatActivity
                     idx=s.indexOf(",");
                     mid = s.substring(0, idx);
                     s=s.substring(idx+1);
-                    final TextView[] tv=new TextView[3];
+                    TextView[] tv=new TextView[3];
                     for(int i=0;i<3;i++){
                         idx=s.indexOf(",");
                         tv[i]=new TextView(this);
                         tv[i].setText(s.substring(0, idx));
                         if(i==0){
                             tv[i].setTag(sid);
-                            tv[i].setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    TextView t=(TextView)v;
-                                    gotostore(t.getTag().toString());
-                                }
-                            });
                         }
                         if(i==1){
                             tv[i].setTag(mid);
@@ -163,7 +156,7 @@ public class recordAct extends AppCompatActivity
                                     }
                                 }
                             }else{
-                                gotostore(tr.getTag().toString());
+                                gotostore(tr.getChildAt(0).getTag().toString());
                             }
                         }
                     });
@@ -228,20 +221,13 @@ public class recordAct extends AppCompatActivity
                                 idx=s.indexOf(",");
                                 mid = s.substring(0, idx);
                                 s=s.substring(idx+1);
-                                final TextView[] tv=new TextView[3];
+                                TextView[] tv=new TextView[3];
                                 for(int i=0;i<3;i++){
                                     idx=s.indexOf(",");
                                     tv[i]=new TextView(this);
                                     tv[i].setText(s.substring(0, idx));
                                     if(i==0){
                                         tv[i].setTag(sid);
-                                        tv[i].setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                TextView t=(TextView)v;
-                                                gotostore(t.getTag().toString());
-                                            }
-                                        });
                                     }
                                     s=s.substring(idx+1);
                                     row2.get(count2).addView(tv[i]);
@@ -293,6 +279,13 @@ public class recordAct extends AppCompatActivity
                                     });
                                 }
                                 row2.get(count2).addView(btn);
+                                row2.get(count2).setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        TableRow tr=(TableRow)v;
+                                        gotostore(tr.getChildAt(0).getTag().toString());
+                                    }
+                                });
                                 tblayout2.addView(row2.get(count2));
                                 count2++;
                             }

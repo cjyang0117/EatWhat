@@ -72,9 +72,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         } catch (Exception e) {
             e.printStackTrace();
         }
-        commitrate();
-
-
+        //commitrate();
     }
     public void gotoRandomSuggestAct(android.view.View v){
         android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
@@ -133,7 +131,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         return false;
 
     }
-    public void commitrate(){
+    /*public void commitrate(){
         final Dialog rankDialog;
         RatingBar rating ;
         rankDialog = new Dialog(Main2Activity.this, R.style.FullHeightDialog);
@@ -170,5 +168,5 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             }
         });
         rankDialog.show();
-    }
+    }*/
 }
