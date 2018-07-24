@@ -1,14 +1,18 @@
 package tw.com.flag.eatwhat;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -62,6 +66,7 @@ public class userSuggestAct extends AppCompatActivity
                 tblayout.setColumnStretchable(1, true);
                 tblayout.setColumnStretchable(2, true);
 
+                if(tblayout!=null) tblayout.removeAllViews();
                 JSONArray j1 = json_read.getJSONArray("data");
                 JSONArray j2;
                 r = new TableRow[j1.length()];
@@ -76,6 +81,14 @@ public class userSuggestAct extends AppCompatActivity
                     TextView tw = new TextView(this);
                     tw.setText(j2.get(1).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                    tw.setTag(j2.get(0).toString());
+                    tw.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TextView t =(TextView)v;
+                            commitrate(t.getText().toString(),Integer.parseInt(t.getTag().toString()));
+                        }
+                    });
                     r[i].addView(tw);
                     tw = new TextView(this);
                     tw.setText(j2.get(3).toString());
@@ -190,5 +203,65 @@ public class userSuggestAct extends AppCompatActivity
         }catch (IOException e){
             e.printStackTrace();
         }
+    }
+    public void commitrate(String name ,int t_uid){
+        final Dialog rankDialog;
+        RatingBar rating ;
+        rankDialog = new Dialog(userSuggestAct.this, R.style.FullHeightDialog);
+        rankDialog.setContentView(R.layout.rank_dialog);
+        rankDialog.setCancelable(true);
+
+        TextView pic = (TextView)rankDialog.findViewById(R.id.rank_dialog_text1);
+        TextView username = (TextView)rankDialog.findViewById(R.id.rank_dialog_text2);
+        username.setText(name);
+        final Button okButton = (Button) rankDialog.findViewById(R.id.rank_dialog_ok);
+        try {
+            json_write = new JSONObject();
+            json_write.put("action", "isTrack");
+            json_write.put("Id", t_uid);
+            globalVariable.c.send(json_write);
+            String tmp = globalVariable.c.receive();
+            json_read = new JSONObject(tmp);
+            okButton.setTag(t_uid);
+            if (!json_read.getBoolean("check")) {
+                okButton.setText("追蹤");
+            }else{
+                okButton.setText("取消追蹤");
+            }
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        Button bt = (Button)v;
+                        json_write = new JSONObject();
+                        json_write.put("action", "Track");
+                        if(!json_read.getBoolean("check")){
+                            json_write.put("isTrack", false);
+                        }else{
+                            json_write.put("isTrack", true);
+                        }
+                        json_write.put("Id", Integer.parseInt(bt.getTag().toString()));
+                        globalVariable.c.send(json_write);
+                        String tmp = globalVariable.c.receive();
+                        json_read = new JSONObject(tmp);
+                        if (json_read.getBoolean("check")) {
+                            if(bt.getText().equals("追蹤")){
+                                bt.setText("已追蹤");
+                            }else{
+                                bt.setText("追蹤");
+                            }
+                            row2=loadUserData(false, R.id.tb2Layout, row2);
+                        }else{
+                            Toast.makeText(userSuggestAct.this,"操作失敗",Toast.LENGTH_SHORT).show();
+                        }
+                    }catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        rankDialog.show();
     }
 }

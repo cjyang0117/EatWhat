@@ -3,6 +3,7 @@ package tw.com.flag.eatwhat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -163,10 +164,12 @@ public class SearchAct extends AppCompatActivity
                        TextView tw = new TextView(this);
                        tw.setText(j2.get(1).toString());
                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                       tw.setTag(j2.get(0).toString());
                        tw.setOnClickListener(new View.OnClickListener() {
                            @Override
                            public void onClick(View v) {
-
+                               TextView t=(TextView)v;
+                               gotostore(t.getTag().toString());
                            }
                        });
                        float ratecount;
@@ -187,6 +190,7 @@ public class SearchAct extends AppCompatActivity
                        Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                        btn.setText("考慮");
                        btn.setId(i);
+                       btn.setTag(j2.get(0).toString()+",-,");
                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                        btn.setSingleLine();
                        btn.setOnClickListener(new View.OnClickListener() {
@@ -195,7 +199,7 @@ public class SearchAct extends AppCompatActivity
                                Button b=(Button)v;
                                try {
                                    FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
-                                   String s=((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
+                                   String s=b.getTag().toString()+((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
                                    out.write(s.getBytes());
                                    out.close();
 
@@ -209,6 +213,7 @@ public class SearchAct extends AppCompatActivity
                        btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                        btn.setText("吃");
                        btn.setId(i);
+                       btn.setTag(j2.get(0).toString()+",-,");
                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                        btn.setOnClickListener(new View.OnClickListener() {
                            @Override
@@ -262,15 +267,26 @@ public class SearchAct extends AppCompatActivity
                    for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                        j2 = j1.getJSONArray(i);
                        TextView[] tw = new TextView[j2.length()];
-                       for(int j=0;j<j2.length()-1;j++){
+                       for(int j=0;j<j2.length()-2;j++){
                            tw[j] = new TextView(this);
-                           tw[j].setText(j2.get(j+1).toString());
+                           tw[j].setText(j2.get(j+2).toString());
                            tw[j].setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                            row2[i].addView(tw[j]);
+                           if(j==0){
+                               tw[j].setTag(j2.get(0).toString());
+                               tw[j].setOnClickListener(new View.OnClickListener() {
+                                   @Override
+                                   public void onClick(View v) {
+                                       TextView t=(TextView)v;
+                                       gotostore(t.getTag().toString());
+                                   }
+                               });
+                           }
                        }
                        Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                        btn.setText("考慮");
                        btn.setId(i);
+                       btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                        btn.setOnClickListener(new View.OnClickListener() {
                            @Override
@@ -278,7 +294,7 @@ public class SearchAct extends AppCompatActivity
                                Button b=(Button)v;
                                try {
                                    FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
-                                   String s=((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(1)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
+                                   String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(1)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
                                    out.write(s.getBytes());
                                    out.close();
 
@@ -292,6 +308,7 @@ public class SearchAct extends AppCompatActivity
                        btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                        btn.setText("吃");
                        btn.setId(i);
+                       btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                        btn.setOnClickListener(new View.OnClickListener() {
                            @Override
@@ -337,16 +354,23 @@ public class SearchAct extends AppCompatActivity
         android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
         startActivity(it);
     }
-
+    public void gotostore(String id){
+        Bundle b = new Bundle();
+        Intent i = new Intent(this, StoreAct.class);
+        b.putBoolean("mode", true);
+        b.putString("datanum", id);
+        i.putExtras(b);
+        startActivity(i);
+    }
     @Override
     public void onClick(DialogInterface dialog, int which) {
         try {
             FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
             String s;
             if(isStore) {
-                s = ((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + ",-,-,";
+                s=ebtn.getTag().toString()+((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + ",-,-,";
             }else {
-                s = ((TextView) row2[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
+                s=ebtn.getTag().toString()+((TextView) row2[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
             }
             out.write(s.getBytes());
             out.close();

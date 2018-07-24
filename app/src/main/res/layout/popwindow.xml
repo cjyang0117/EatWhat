@@ -34,6 +34,7 @@
         android:clickable="true"
         android:id="@+id/store_rate"
         android:layout_gravity="center"
+        android:progressBackgroundTint="@color/colorGrassDark"
         style="?android:attr/ratingBarStyleIndicator"
         android:numStars="5"
         android:stepSize="0.5"
