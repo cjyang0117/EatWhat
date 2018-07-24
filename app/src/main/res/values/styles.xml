@@ -30,6 +30,11 @@
         <item name="android:textColorPrimary">#9b855f</item>
     </style>
 
+    <style name="skinPrimaryDark" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">#f5c883</item>
+    </style>
+
     <style name="signUp" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#A8BA82</item>
