@@ -3,6 +3,7 @@ package tw.com.flag.eatwhat;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -92,6 +93,14 @@ public class userSuggestAct extends AppCompatActivity
                     r[i].addView(tw);
                     tw = new TextView(this);
                     tw.setText(j2.get(3).toString());
+                    tw.setTag(j2.get(2).toString());
+                    tw.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TextView tv = (TextView)v;
+                            gotostore(tv.getTag().toString());
+                        }
+                    });
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
@@ -263,5 +272,13 @@ public class userSuggestAct extends AppCompatActivity
             e.printStackTrace();
         }
         rankDialog.show();
+    }
+    public void gotostore(String id){
+        Bundle b = new Bundle();
+        Intent i = new Intent(this, StoreAct.class);
+        b.putBoolean("mode", true);
+        b.putString("datanum", id);
+        i.putExtras(b);
+        startActivity(i);
     }
 }
