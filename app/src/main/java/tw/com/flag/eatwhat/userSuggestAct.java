@@ -104,17 +104,18 @@ public class userSuggestAct extends AppCompatActivity
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
-                    tw.setText(j2.get(7).toString());
+                    tw.setText(j2.get(8).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
-                    tw.setText(j2.get(8).toString());
+                    tw.setText(j2.get(9).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
 
                     Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("考慮");
                     btn.setId(i);
+                    btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
                     btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -124,9 +125,9 @@ public class userSuggestAct extends AppCompatActivity
                                 FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
                                 String s;
                                 if(Switch) {
-                                    s = ((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    s = b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
                                 }else{
-                                    s = ((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    s = b.getTag().toString()+((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
                                 }
                                 out.write(s.getBytes());
                                 out.close();
@@ -141,6 +142,7 @@ public class userSuggestAct extends AppCompatActivity
                     btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
                     btn.setId(i);
+                    btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
                     btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -202,9 +204,9 @@ public class userSuggestAct extends AppCompatActivity
             FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
             String s;
             if(Switch) {
-                s = ((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
+                s = ebtn.getTag().toString()+((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
             }else {
-                s = ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
+                s = ebtn.getTag().toString()+((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
             }
             out.write(s.getBytes());
             out.close();

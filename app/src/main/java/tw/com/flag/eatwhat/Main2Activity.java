@@ -1,7 +1,9 @@
 package tw.com.flag.eatwhat;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -125,6 +127,13 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             case R.id.comment:
                 it = new android.content.Intent(this, commentAct.class);
                 startActivity(it);
+                break;
+            case R.id.logout:
+                it = new android.content.Intent(this, MainActivity.class);
+                SharedPreferences sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);//取得帳號資料用
+                sp.edit().putBoolean("ISCHECK", false).commit();
+                startActivity(it);
+                finish();
                 break;
         }
 
