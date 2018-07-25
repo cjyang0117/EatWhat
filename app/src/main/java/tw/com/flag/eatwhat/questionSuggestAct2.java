@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -273,25 +274,6 @@ public class questionSuggestAct2 extends AppCompatActivity {
             Intent i;
             i = new Intent(this, randomSuggestRul.class);
             b.putInt("check",2);
-            /*if(aa==0){
-                b.putStringArray("data1",storea0);
-                b.putStringArray("data2",addressa0);
-                b.putStringArray("data5",sid0);
-                b.putStringArray("data6",sphone0);
-                b.putStringArray("data7",star0);
-            }else if(aa==1){
-                b.putStringArray("data1",storea1);
-                b.putStringArray("data2",addressa1);
-                b.putStringArray("data5",sid1);
-                b.putStringArray("data6",sphone1);
-                b.putStringArray("data7",star1);
-            }else if(aa==2){
-                b.putStringArray("data1",storea2);
-                b.putStringArray("data2",addressa2);
-                b.putStringArray("data5",sid2);
-                b.putStringArray("data6",sphone2);
-                b.putStringArray("data7",star2);
-            }*/
             b.putString("data1",tmp1[aa][1]);//店名
             b.putString("data2",tmp1[aa][2]);//地址
             b.putString("data5",tmp1[aa][0]);//店號

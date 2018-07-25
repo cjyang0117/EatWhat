@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.widget.Spinner;
 
 
 public class questionSuggestAct extends AppCompatActivity {
+    static Activity Activityqa;
     private double[] limit = {100000, 1000, 3000};//使用者距離限制
     private Spinner dist2;
     Gps gps2;
@@ -16,6 +18,7 @@ public class questionSuggestAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_suggest);
 
+        Activityqa=this;
         dist2 = (Spinner) findViewById(R.id.dist2);
         gps2 = new Gps(this);
     }
@@ -24,6 +27,10 @@ public class questionSuggestAct extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         gps2.delete();
     }
 
@@ -54,7 +61,7 @@ public class questionSuggestAct extends AppCompatActivity {
         b.putString("Longitude", String.valueOf(gps2.getGPSLongitude()));
         i.putExtras(b);
         startActivity(i);
-        this.finish();
+        //this.finish();
     }
     public void gotoRecordAct(android.view.View v){
         android.content.Intent it = new android.content.Intent(this,recordAct.class);

@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 
 
 public class randomSuggestAct extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+    static Activity ActivityA;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
    // private Spinner dist, disttime;
@@ -40,6 +42,7 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_random_suggest);
 
+        ActivityA=this;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
         gps1 = new Gps(this);
         tv = (TextView) findViewById(R.id.textView);
@@ -58,9 +61,12 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
     @Override
     protected void onPause() {
         super.onPause();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
         gps1.delete();
     }
-
     @Override
     protected void onResume() {
         // TODO Auto-generated method stub
@@ -131,7 +137,7 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                         b.putString("Longitude", String.valueOf(gps1.getGPSLongitude()));
                         i.putExtras(b);
                         startActivity(i);
-                        this.finish();
+                        //this.finish();
                     }
                 }else{
                     Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();

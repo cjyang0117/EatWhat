@@ -48,31 +48,38 @@
         tools:layout_editor_absoluteX="98dp"
         tools:layout_editor_absoluteY="153dp" />
 
-    <TableLayout
-        android:id="@+id/tbrulLayout"
-        android:layout_width="match_parent"
-        android:layout_height="117dp"
-        android:layout_gravity="center_horizontal"
-        android:paddingRight="5dp"></TableLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="88dp"
-        android:gravity="center">
+        android:layout_marginBottom="63dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <Button
-            android:id="@+id/consider"
+            android:id="@+id/again"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="考慮" />
+            android:text="重來" />
 
-        <Button
-            android:id="@+id/eat"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="吃" />
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/consider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="考慮" />
+
+            <Button
+                android:id="@+id/eat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="吃" />
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

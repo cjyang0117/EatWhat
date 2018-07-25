@@ -123,12 +123,28 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
                             .show();
                 }
             });
+            Button again = (Button)findViewById(R.id.again);
+            again.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    randomSuggestRul.this.finish();
+                }
+            });
         }
     }//onCreate
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)//按返回頁面關閉
     {
         if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(b.getInt("check")!=2){
+                if(!randomSuggestAct.ActivityA.isFinishing()){
+                    randomSuggestAct.ActivityA.finish();
+                }
+            }else {
+                if(!questionSuggestAct.Activityqa.isFinishing()){
+                    questionSuggestAct.Activityqa.finish();
+                }
+            }
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
