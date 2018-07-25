@@ -3,10 +3,14 @@ package tw.com.flag.eatwhat;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.support.design.widget.TabItem;
+import android.support.design.widget.TabLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -18,6 +22,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.support.v7.widget.Toolbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +40,9 @@ public class userSuggestAct extends AppCompatActivity
     private int sp=14;
     private Button ebtn;
     private boolean Switch=true;
-
+    private TabLayout mTabLayout,mTabLayout2;
+    private Toolbar toolbar;
+    private int[] TollBarTitle = {R.string.userSuggest,R.string.followUserSuggest};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +58,58 @@ public class userSuggestAct extends AppCompatActivity
 
         row=loadUserData(true, R.id.tbLayout, row);
         row2=loadUserData(false, R.id.tb2Layout, row2);
+        mTabLayout = findViewById(R.id.mTabLayout);
+        mTabLayout2 = findViewById(R.id.mTabLayout2);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch(tab.getPosition()){
+                    case 0:
+                        toolbar.setTitle(TollBarTitle[0]);
+                        Switch=true;
+                        NestedScrollView sc = findViewById(R.id.sc1);
+                        sc.setVisibility(View.VISIBLE);
+                        sc = findViewById(R.id.sc2);
+                        sc.setVisibility(View.INVISIBLE);
+                        break;
+                    case 1:
+                        toolbar.setTitle(TollBarTitle[1]);
+                        Switch=false;
+                        NestedScrollView sc2 = findViewById(R.id.sc2);
+                        sc2.setVisibility(View.VISIBLE);
+                        sc2 = findViewById(R.id.sc1);
+                        sc2.setVisibility(View.INVISIBLE);
+                        break;
+                }
+            }
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+        }
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+        }
+    });
+        mTabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //排序
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch(tab.getPosition()){
+                    case 0: //價格排序
+                        break;
+                    case 1: //距離排序
+                        break;
+                    case 2: //星級排序
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
     }
     private TableRow[] loadUserData(boolean isUser, int tbId, TableRow[] r){
         try {
@@ -169,34 +228,7 @@ public class userSuggestAct extends AppCompatActivity
             return null;
         }
     }
-    public void switchClick(View v){
-        Button b=(Button)v;
-        switch (b.getId()) {
-            case R.id.button22:
-                Switch=true;
-                b.setEnabled(false);
-                b = findViewById(R.id.button30);
-                b.setEnabled(true);
-                ScrollView sc = findViewById(R.id.sc1);
-                sc.setVisibility(View.VISIBLE);
-                sc = findViewById(R.id.sc2);
-                sc.setVisibility(View.INVISIBLE);
-                break;
-            case R.id.button30:
-                Switch=false;
-                b.setEnabled(false);
-                b = findViewById(R.id.button22);
-                b.setEnabled(true);
-                ScrollView sc2 = findViewById(R.id.sc2);
-                sc2.setVisibility(View.VISIBLE);
-                sc2 = findViewById(R.id.sc1);
-                sc2.setVisibility(View.INVISIBLE);
-        }
-    }
-    public void gotoUsersuggestAct2(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,userSuggestAct2.class);
-        startActivity(it);
-    }
+
 
     @Override
     public void onClick(DialogInterface dialog, int which) {

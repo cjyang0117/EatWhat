@@ -1,122 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".userSuggestAct">
 
-    <Button
-        android:id="@+id/button22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:enabled="false"
-        android:text="@string/userSuggest"
-        android:onClick="switchClick"
-        app:layout_constraintStart_toStartOf="@+id/button31"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/followUserSuggest"
-        android:onClick="switchClick"
-        app:layout_constraintEnd_toEndOf="@+id/button33"
-        app:layout_constraintTop_toTopOf="parent" />
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/button31"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button22"
-        android:layout_toStartOf="@+id/button32"
-        android:text="@string/priceSort"
-        app:layout_constraintBottom_toBottomOf="@+id/button32"
-        app:layout_constraintEnd_toStartOf="@+id/button32"
-        app:layout_constraintTop_toTopOf="@+id/button32" />
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="#FFDEAD"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:title="@string/userSuggest" />
 
-    <Button
-        android:id="@+id/button32"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button22"
-        android:layout_centerHorizontal="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:text="@string/distanceSort"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button22" />
+        <android.support.design.widget.TabLayout
+            android:id="@+id/mTabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFDEAD"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="#FFF"
+            app:tabIndicatorHeight="4dp"
+            app:tabMode="fixed"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-    <Button
-        android:id="@+id/button33"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/button31"
-        android:layout_toEndOf="@+id/button32"
-        android:text="@string/starSort"
-        app:layout_constraintBottom_toBottomOf="@+id/button32"
-        app:layout_constraintStart_toEndOf="@+id/button32"
-        app:layout_constraintTop_toTopOf="@+id/button32" />
+            <android.support.design.widget.TabItem
+                android:id="@+id/userSuggest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/userSuggest" />
 
-    <ScrollView
-        android:id="@+id/sc1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button32" >
+            <android.support.design.widget.TabItem
+                android:id="@+id/followUserSuggest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/followUserSuggest" />
+        </android.support.design.widget.TabLayout>
 
-        <TableLayout
-            android:id="@+id/tbLayout"
-            android:paddingRight="5dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></TableLayout>
-    </ScrollView>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/mTabLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFDEAD"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="#FFF"
+            app:tabIndicatorHeight="4dp"
+            app:tabMode="fixed">
 
-    <ScrollView
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/priceSort" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/distanceSort" />
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/starSort" />
+        </android.support.design.widget.TabLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/sc2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
         android:visibility="invisible"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button32" >
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <TableLayout
             android:id="@+id/tb2Layout"
-            android:paddingRight="5dp"
-            android:layout_gravity="center_horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></TableLayout>
-    </ScrollView>
-</android.support.constraint.ConstraintLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingRight="5dp"></TableLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/sc1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <TableLayout
+            android:id="@+id/tbLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingRight="5dp"></TableLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>
