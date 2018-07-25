@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -62,7 +63,7 @@ public class userSuggestAct extends AppCompatActivity
                     case 0:
                         toolbar.setTitle(TollBarTitle[0]);
                         Switch=true;
-                        ScrollView sc = findViewById(R.id.sc1);
+                        NestedScrollView sc = findViewById(R.id.sc1);
                         sc.setVisibility(View.VISIBLE);
                         sc = findViewById(R.id.sc2);
                         sc.setVisibility(View.INVISIBLE);
@@ -70,7 +71,7 @@ public class userSuggestAct extends AppCompatActivity
                     case 1:
                         toolbar.setTitle(TollBarTitle[1]);
                         Switch=false;
-                        ScrollView sc2 = findViewById(R.id.sc2);
+                        NestedScrollView sc2 = findViewById(R.id.sc2);
                         sc2.setVisibility(View.VISIBLE);
                         sc2 = findViewById(R.id.sc1);
                         sc2.setVisibility(View.INVISIBLE);
@@ -140,11 +141,11 @@ public class userSuggestAct extends AppCompatActivity
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
-                    tw.setText(j2.get(7).toString());
+                    tw.setText(j2.get(8).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
-                    tw.setText(j2.get(8).toString());
+                    tw.setText(j2.get(9).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
 
