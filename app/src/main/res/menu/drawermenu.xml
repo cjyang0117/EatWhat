@@ -16,5 +16,10 @@
                     android:icon="@drawable/ic_settings_black_24dp"
                     android:title="@string/setting"
                     />
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/ic_settings_black_24dp"
+                    android:title="@string/logout"
+                    />
         </group>
 </menu>
