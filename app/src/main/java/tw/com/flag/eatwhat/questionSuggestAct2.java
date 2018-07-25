@@ -299,6 +299,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
             b.putString("data7",tmp1[aa][4]);//星
             b.putString("data3", tmp1[aa][6]);//餐點
             b.putString("data4", tmp1[aa][7]);//價格
+            b.putString("data8", tmp1[aa][5]);//菜號
             b.putString("Latitude2",lat);
             b.putString("Longitude2",lng);
             i.putExtras(b);
@@ -391,53 +392,6 @@ public class questionSuggestAct2 extends AppCompatActivity {
                         }
                         ans[i] = j2.get(6).toString();
                     }
-                    /*
-                    JSONArray j1A0 = json_read.getJSONArray("A0");
-                    JSONArray j2A0;
-                    storea0 =  new String[j1A0.length()];
-                    addressa0 = new String[j1A0.length()];
-                    sid0 = new String[j1A0.length()];
-                    sphone0 = new String[j1A0.length()];
-                    star0= new String[j1A0.length()];
-                    for (int i = 0; i < j1A0.length(); i++) { //拆解接收的JSON包並放入答案陣列
-                        j2A0 = j1A0.getJSONArray(i);
-                        sid0[i]=j2A0.get(0).toString();
-                        storea0[i]=j2A0.get(1).toString();
-                        addressa0[i]=j2A0.get(2).toString();
-                        sphone0[i]=j2A0.get(3).toString();
-                        star0[i]=j2A0.get(4).toString();
-                    }
-                    JSONArray j1A1 = json_read.getJSONArray("A1");
-                    JSONArray j2A1;
-                    storea1 =  new String[j1A1.length()];
-                    addressa1 = new String[j1A1.length()];
-                    sid1 = new String[j1A1.length()];
-                    sphone1 = new String[j1A1.length()];
-                    star1 = new String[j1A1.length()];
-                    for (int i = 0; i < j1A1.length(); i++) { //拆解接收的JSON包並放入答案陣列
-                        j2A1 = j1A1.getJSONArray(i);
-                        storea1[i]=j2A1.get(1).toString();
-                        addressa1[i]=j2A1.get(2).toString();
-                        sid1[i]=j2A1.get(0).toString();
-                        sphone1[i]=j2A1.get(3).toString();
-                        star1[i]=j2A1.get(4).toString();
-                    }
-                    JSONArray j1A2 = json_read.getJSONArray("A2");
-                    JSONArray j2A2;
-                    storea2 =  new String[j1A2.length()];
-                    addressa2 = new String[j1A2.length()];
-                    sid2 = new String[j1A2.length()];
-                    sphone2 = new String[j1A2.length()];
-                    star2 = new String[j1A2.length()];
-                    for (int i = 0; i < j1A2.length(); i++) { //拆解接收的JSON包並放入答案陣列
-                        j2A2 = j1A2.getJSONArray(i);
-                        storea2[i]=j2A2.get(1).toString();
-                        addressa2[i]=j2A2.get(2).toString();
-                        sid2[i]=j2A2.get(0).toString();
-                        sphone2[i]=j2A2.get(3).toString();
-                        star2[i]=j2A2.get(4).toString();
-                    }
-                    */
                     showans();
                 }
             }else{

@@ -1,5 +1,7 @@
 package tw.com.flag.eatwhat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -17,18 +21,18 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
-public class randomSuggestRul extends AppCompatActivity {
+public class randomSuggestRul extends AppCompatActivity implements DialogInterface.OnClickListener{
     private GlobalVariable globalVariable;
     TextView textViewrul ,textViewaddr, textViewmenu, textViewprice;
     String addr;
     double geoLatitude, geoLongitude;
-    private TableRow[] row,row2;
-    private TableLayout tblayout, tblayout2;
-    String cell,star,menunum,storename,mname;
+    String cell,star,menunum,storename,mname,num,price;
     TableLayout tbrulLayout;
+    Button ebtn;
     Bundle b;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +42,6 @@ public class randomSuggestRul extends AppCompatActivity {
         textViewaddr = (TextView)findViewById(R.id.textViewaddr);
         textViewmenu = (TextView)findViewById(R.id.textViewmenu);
         textViewprice = (TextView)findViewById(R.id.textViewprice);
-        //TextView[] tvmap={textViewrul ,textViewaddr, textViewmenu, textViewprice};
-        //TextView[] tw,tw1;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         b = this.getIntent().getExtras();
@@ -58,13 +60,17 @@ public class randomSuggestRul extends AppCompatActivity {
                     addr = j2.get(2).toString().trim();//店家地址
                     cell = j2.get(3).toString();//電話
                     star = j2.get(4).toString();//星數
-                    textViewmenu.setText(j2.get(5).toString().trim());//菜品
-                    textViewprice.setText("價格" + j2.get(6).toString() + "元");//價格
+                    num = j2.get(5).toString();//菜號
+                    price = j2.get(7).toString();
+                    textViewmenu.setText(j2.get(6).toString().trim());//菜品
+                    textViewprice.setText("價格" + price + "元");//價格
                 }else{//提問
                     storename = b.getString("data1").toString().trim();//店名
+                    num = b.getString("data8").toString().trim();//菜號
+                    price =b.getString("data4").toString().trim();
                     menunum =  b.getString("data5").toString().trim();//店號
                     textViewmenu.setText( b.getString("data3").toString().trim());//菜名
-                    textViewprice.setText("價格" + b.getString("data4").toString().trim() + "元");//價格
+                    textViewprice.setText("價格" + price + "元");//價格
                     addr =  b.getString("data2").toString().trim();//地址
                     cell = b.getString("data6").toString().trim();//電話
                     star =  b.getString("data7").toString().trim();//星數
@@ -83,11 +89,40 @@ public class randomSuggestRul extends AppCompatActivity {
                         gotostore();//前往店家頁面
                     }
                 });
-
             } catch (Exception e) {
                 e.printStackTrace();
                 Log.e("Exception", "StoreError=" + e.toString());
             }
+            Button consider=(Button)findViewById(R.id.consider);
+            consider.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Button b=(Button)v;
+                    try {
+                        FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
+                        String s=menunum.toString().trim()+","+num.toString().trim()+","+storename.toString().trim()+","+textViewmenu.getText().toString()+","+price.toString()+",";
+                        out.write(s.getBytes());
+                        out.close();
+                        b.setEnabled(false);
+                    }catch (IOException e){
+                        e.printStackTrace();
+                    }
+                }
+            });
+            Button eat=(Button)findViewById(R.id.eat);
+            eat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ebtn=(Button)v;
+                    AlertDialog.Builder b=new AlertDialog.Builder(randomSuggestRul.this);
+                    //串聯呼叫法
+                    b.setTitle("確認")
+                            .setMessage("確定要吃這個嗎?")
+                            .setPositiveButton("GO", randomSuggestRul.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                            .setNegativeButton("Cancel", null)
+                            .show();
+                }
+            });
         }
     }//onCreate
     @Override
@@ -125,17 +160,6 @@ public class randomSuggestRul extends AppCompatActivity {
             startActivity(it);
         }
     }
-    /*
-    public  void openMaptw(String storeaddr){//google map 路徑
-        getGPFromAddress(storeaddr);
-        Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+b.getString("Latitude2")+","+b.getString("Longitude2")+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
-        Intent it = new Intent(Intent.ACTION_VIEW);
-        it.setData(uri);
-        if (it.resolveActivity(getPackageManager()) != null) {
-            startActivity(it);
-        }
-    }
-    */
     public void getGPFromAddress(String addr) {//地址轉經緯
         if (!addr.equals("")) {
             Geocoder geocoder = new Geocoder(this);
@@ -161,5 +185,18 @@ public class randomSuggestRul extends AppCompatActivity {
         android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
         startActivity(it);
         this.finish();
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        try {
+            FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+            String s=menunum.toString().trim()+","+num.toString().trim()+","+storename.toString().trim()+","+textViewmenu.getText().toString()+","+price.toString()+",";
+            out.write(s.getBytes());
+            out.close();
+
+            ebtn.setEnabled(false);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
