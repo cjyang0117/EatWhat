@@ -132,9 +132,45 @@ public class Pop extends Activity{
             }
         });
     }
+    public void info(){
+        try {
+            json_write = new JSONObject();
+
+            if(storecommit!=null) storecommit.removeAllViews();
+            json_write.put("action", "Store");
+            json_write.put("Id", b.getInt("sid"));
+            globalVariable.c.send(json_write);
+            String tmp = globalVariable.c.receive();
+            json_read = new JSONObject(tmp);
+            JSONArray j1 = json_read.getJSONArray("Evaluation");
+            JSONArray j2 = new JSONArray();
+            row = new TableRow[j1.length()];
+            for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+                row[i] = new TableRow(this);
+                row[i].setId(i);
+                storecommit.addView(row[i]);
+            }
+            for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                j2 = j1.getJSONArray(i);
+                TextView tw = new TextView(this);
+                tw.setText(j2.get(0).toString());
+                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                tw.setTextColor(Color.BLACK);
+                row[i].addView(tw);
+                tw = new TextView(this);
+                tw.setText(j2.get(1).toString());
+                tw.setTextColor(Color.BLACK);
+                row[i].addView(tw);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("Exception", "StoreError=" + e.toString());
+        }
+    }
     public void Commented(){
         ed1.setFocusable(false);
         ed1.setBackgroundColor(Color.GRAY);
+        info();
         //ed1.setFocusableInTouchMode(true);
         storerate.setIsIndicator(true);
         submit.setText("編輯");

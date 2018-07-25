@@ -215,7 +215,6 @@ public class userSuggestAct extends AppCompatActivity
     }
     public void commitrate(String name ,int t_uid){
         final Dialog rankDialog;
-        RatingBar rating ;
         rankDialog = new Dialog(userSuggestAct.this, R.style.FullHeightDialog);
         rankDialog.setContentView(R.layout.rank_dialog);
         rankDialog.setCancelable(true);
