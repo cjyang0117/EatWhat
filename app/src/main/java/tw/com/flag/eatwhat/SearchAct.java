@@ -2,6 +2,8 @@ package tw.com.flag.eatwhat;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -51,12 +53,14 @@ public class SearchAct extends AppCompatActivity
             @Override
             public void run() {
                 while (true){
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if(times>2) {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        times = 0;
                     }
-                    times=0;
                 }
             }
         }).start();
@@ -69,6 +73,7 @@ public class SearchAct extends AppCompatActivity
             sp=12;
         }
     }
+
     public void storeMenuClick(View v){
         Button b=(Button)v;
         switch (b.getId()){
@@ -156,8 +161,14 @@ public class SearchAct extends AppCompatActivity
         EditText ed=(EditText)findViewById(R.id.editText10);
         isSort=false;
         times++;
-        if(times>3){
-            Toast.makeText(this, "請勿頻繁搜尋", Toast.LENGTH_SHORT).show();
+        if(times>2){
+            AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+            //串聯呼叫法
+            b.setCancelable(false);
+            b.setTitle("提醒")
+                    .setMessage("請勿連續點擊")
+                    .setPositiveButton("OK", null)
+                    .show();
         }else{
             if(isStore){
                 try {
@@ -418,3 +429,4 @@ public class SearchAct extends AppCompatActivity
         }
     }
 }
+
