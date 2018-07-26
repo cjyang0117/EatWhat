@@ -3,12 +3,8 @@ package tw.com.flag.eatwhat;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,7 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-public class randomSuggestAct extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class randomSuggestAct extends AppCompatActivity{
     static Activity ActivityA;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
@@ -33,8 +29,7 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
     Gps gps1;
     RadioGroup radioGroup1;
     RadioGroup radioGroup2;
-    private DrawerLayout mDrawerlayout;
-    private ActionBarDrawerToggle mToggle;
+
 
 
     @Override
@@ -47,13 +42,6 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
         gps1 = new Gps(this);
         tv = (TextView) findViewById(R.id.textView);
 
-        mDrawerlayout = (DrawerLayout)findViewById(R.id.drawer);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
-        mDrawerlayout.addDrawerListener(mToggle);
-        mToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
         radioGroup1 = findViewById(R.id.radioGroup1);
         radioGroup2 = findViewById(R.id.radioGroup2);
     }
@@ -150,38 +138,5 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
             e.printStackTrace();
         }
     }
-    public void onBackPressed() { //案返回健
-        if (mDrawerlayout.isDrawerOpen(findViewById(R.id.nav_view))) //側選單開著
-            mDrawerlayout.closeDrawers(); //關抽屜
-        else
-            super.onBackPressed();
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        Intent it;
-        switch(id){
-            case R.id.home:
-                it = new android.content.Intent(this, Main2Activity.class);
-                startActivity(it);
-                break;
-            case R.id.setting:
-                it = new android.content.Intent(this, settingAct.class);
-                startActivity(it);
-                break;
-            case R.id.comment:
-                it = new android.content.Intent(this, commentAct.class);
-                startActivity(it);
-                break;
-        }
-        return false;
-    }
 }

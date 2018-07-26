@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
@@ -30,9 +30,11 @@
         <item name="android:textColorPrimary">#9b855f</item>
     </style>
 
+
+
     <style name="skinPrimaryDark" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimaryDark">#f5c883</item>
+        <item name="colorPrimaryDark">#fae5af</item>
     </style>
 
     <style name="signUp" parent="Theme.AppCompat.DayNight">

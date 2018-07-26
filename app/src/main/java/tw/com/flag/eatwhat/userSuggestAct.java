@@ -42,7 +42,7 @@ public class userSuggestAct extends AppCompatActivity
     private boolean Switch=true;
     private TabLayout mTabLayout,mTabLayout2;
     private Toolbar toolbar;
-    private int[] TollBarTitle = {R.string.userSuggest,R.string.followUserSuggest};
+    private int[] TollBarTitle = {R.string.userSuggest,R.string._followUserSuggest};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +59,7 @@ public class userSuggestAct extends AppCompatActivity
         row=loadUserData(true, R.id.tbLayout, row);
         row2=loadUserData(false, R.id.tb2Layout, row2);
         mTabLayout = findViewById(R.id.mTabLayout);
-        mTabLayout2 = findViewById(R.id.mTabLayout2);
+        //mTabLayout2 = findViewById(R.id.mTabLayout2);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
             @Override
@@ -90,7 +90,7 @@ public class userSuggestAct extends AppCompatActivity
         public void onTabReselected(TabLayout.Tab tab) {
         }
     });
-        mTabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //排序
+        /*mTabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //排序
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch(tab.getPosition()){
@@ -108,7 +108,7 @@ public class userSuggestAct extends AppCompatActivity
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }
-        });
+        });*/
 
     }
     private TableRow[] loadUserData(boolean isUser, int tbId, TableRow[] r){
