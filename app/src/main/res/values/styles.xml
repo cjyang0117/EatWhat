@@ -35,7 +35,14 @@
     <style name="skinPrimaryDark" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">#fae5af</item>
+        <item name="android:textColorPrimary">#9b855f</item>
+        <item name="android:textColorHint">#c79b855f</item>
     </style>
+
+    <style name="search" parent="Widget.AppCompat.Light.SearchView">
+        <item name="queryBackground">@color/Transparent</item>
+    </style>
+
 
     <style name="signUp" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
@@ -58,5 +65,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
+
 
 </resources>

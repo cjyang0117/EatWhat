@@ -20,7 +20,8 @@
             android:background="@drawable/toolbar"
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="@string/userSuggest"
-            app:titleTextColor="#9d7f62" />
+            app:titleTextColor="#9d7f62"
+            android:layout_gravity="center"/>
 
         <android.support.design.widget.TabLayout
             android:id="@+id/mTabLayout"
@@ -78,7 +79,7 @@
                     android:paddingTop="5dp"
                     android:text="@string/priceSort"
                     android:textColor="#c95501"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <RadioButton
                     android:id="@+id/radioButton9"
@@ -95,7 +96,7 @@
                     android:paddingTop="5dp"
                     android:text="@string/distanceSort"
                     android:textColor="#c95501"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
 
                 <RadioButton
                     android:id="@+id/radioButton8"
@@ -112,7 +113,7 @@
                     android:paddingTop="7dp"
                     android:text="@string/starSort"
                     android:textColor="#c95501"
-                    android:textSize="12sp" />
+                    android:textSize="13sp" />
             </RadioGroup>
         </android.support.constraint.ConstraintLayout>
 
@@ -152,6 +153,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:paddingRight="5dp"></TableLayout>
-        
+
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

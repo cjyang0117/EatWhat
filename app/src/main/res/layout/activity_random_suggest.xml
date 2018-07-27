@@ -15,14 +15,14 @@
         android:background="@drawable/toolbar"
         app:titleTextColor="#9d7f62"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:title="@string/randomSuggest" />
+        app:title="@string/randomSuggest"
+        android:layout_gravity="center"/>
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="8dp"
-        android:contentDescription=""
         android:layerType="software"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +34,6 @@
         android:layout_width="0dp"
         android:layout_height="4dp"
         android:layout_marginTop="8dp"
-        android:contentDescription=""
         android:layerType="software"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

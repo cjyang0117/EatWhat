@@ -46,7 +46,8 @@
             android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".SearchAct"
-            android:label="@string/search" />
+            android:label="@string/search"
+            android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".recordAct"
             android:label="紀錄" />
@@ -105,8 +106,7 @@
         <activity
             android:name=".Pop"
             android:theme="@style/AppTheme.CustomTheme" />
-        <activity android:name=".user_suggest_fragment_one" />
-        <activity android:name=".user_suggest_fragment_two" />
+
     </application>
 
 </manifest>

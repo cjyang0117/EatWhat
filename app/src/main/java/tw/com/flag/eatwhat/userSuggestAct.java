@@ -34,13 +34,13 @@ import java.io.IOException;
 public class userSuggestAct extends AppCompatActivity
         implements DialogInterface.OnClickListener{
     private JSONObject json_read, json_write;
-    private TableLayout tblayout, tblayout2;
+    private TableLayout tblayout;
     private TableRow[] row, row2;
     private GlobalVariable globalVariable;
     private int sp=14;
     private Button ebtn;
     private boolean Switch=true;
-    private TabLayout mTabLayout,mTabLayout2;
+    private TabLayout mTabLayout;
     private Toolbar toolbar;
     private int[] TollBarTitle = {R.string.userSuggest,R.string._followUserSuggest};
     @Override
@@ -59,7 +59,6 @@ public class userSuggestAct extends AppCompatActivity
         row=loadUserData(true, R.id.tbLayout, row);
         row2=loadUserData(false, R.id.tb2Layout, row2);
         mTabLayout = findViewById(R.id.mTabLayout);
-        //mTabLayout2 = findViewById(R.id.mTabLayout2);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
             @Override
@@ -90,25 +89,7 @@ public class userSuggestAct extends AppCompatActivity
         public void onTabReselected(TabLayout.Tab tab) {
         }
     });
-        /*mTabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //排序
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch(tab.getPosition()){
-                    case 0: //價格排序
-                        break;
-                    case 1: //距離排序
-                        break;
-                    case 2: //星級排序
-                        break;
-                }
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });*/
+
 
     }
     private TableRow[] loadUserData(boolean isUser, int tbId, TableRow[] r){
