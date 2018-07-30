@@ -150,7 +150,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"/>
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"/>
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -168,7 +169,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"/>
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"/>
 
     </android.support.v4.widget.NestedScrollView>
 

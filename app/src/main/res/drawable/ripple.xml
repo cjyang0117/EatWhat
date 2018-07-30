@@ -6,6 +6,6 @@
 
     <!--基本顏色-->
     <item>
-        <color android:color="@color/darkgray"/>
+        <color android:color="#FFF"/>
     </item>
 </ripple>

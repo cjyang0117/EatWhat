@@ -50,7 +50,8 @@
             android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".recordAct"
-            android:label="紀錄" />
+            android:label="紀錄"
+            android:theme="@style/skinPrimaryDark"/>
         <activity android:name=".userSuggestAct2" />
         <activity android:name=".storeResultAct" />
         <activity

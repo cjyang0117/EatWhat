@@ -17,11 +17,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
+            android:layout_gravity="center"
             android:background="@drawable/toolbar"
             app:layout_scrollFlags="scroll|enterAlways"
             app:title="@string/userSuggest"
-            app:titleTextColor="#9d7f62"
-            android:layout_gravity="center"/>
+            app:titleTextColor="#9d7f62" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/mTabLayout"
@@ -134,7 +134,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"></TableLayout>
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"/>
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -152,7 +153,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"></TableLayout>
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"/>
 
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
