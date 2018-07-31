@@ -21,6 +21,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -169,6 +171,7 @@ public class recordAct extends AppCompatActivity
                     tblayout.addView(row.get(count));
                     count++;
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

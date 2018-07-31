@@ -39,82 +39,16 @@
                 android:id="@+id/userSuggest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/userSuggest" />
+                android:text="@string/consider" />
 
             <android.support.design.widget.TabItem
                 android:id="@+id/followUserSuggest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/_followUserSuggest" />
+                android:text="@string/eat" />
         </android.support.design.widget.TabLayout>
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
 
-            <RadioGroup
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:orientation="horizontal"
-                android:padding="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <RadioButton
-                    android:id="@+id/radioButton10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/sort_button_background_selector"
-                    android:button="@null"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="5dp"
-                    android:text="@string/priceSort"
-                    android:textColor="#c95501"
-                    android:textSize="13sp" />
-
-                <RadioButton
-                    android:id="@+id/radioButton9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/sort_button_background_selector"
-                    android:button="@null"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="5dp"
-                    android:text="@string/distanceSort"
-                    android:textColor="#c95501"
-                    android:textSize="13sp" />
-
-                <RadioButton
-                    android:id="@+id/radioButton8"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/sort_button_background_selector"
-                    android:button="@null"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp"
-                    android:paddingTop="7dp"
-                    android:text="@string/starSort"
-                    android:textColor="#c95501"
-                    android:textSize="13sp" />
-            </RadioGroup>
-        </android.support.constraint.ConstraintLayout>
 
 
     </android.support.design.widget.AppBarLayout>

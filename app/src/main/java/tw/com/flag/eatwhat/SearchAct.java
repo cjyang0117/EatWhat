@@ -44,7 +44,7 @@ public class SearchAct extends AppCompatActivity
     private Button ebtn;
     private TabLayout mTabLayout;
     private android.support.v7.widget.SearchView editText10; //搜尋
-    private RadioGroup radioGroup;
+    private RadioButton radioButton10,radioButton9,radioButton8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,10 @@ public class SearchAct extends AppCompatActivity
         }
 
         mTabLayout = findViewById(R.id.mTabLayout);
+        radioButton10 = findViewById(R.id.radioButton10);
+        radioButton9 = findViewById(R.id.radioButton9);
+        radioButton8 = findViewById(R.id.radioButton8);
+
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -84,6 +88,9 @@ public class SearchAct extends AppCompatActivity
                         sc.setVisibility(View.VISIBLE);
                         sc = findViewById(R.id.sc2);
                         sc.setVisibility(View.INVISIBLE);
+                        radioButton10.setEnabled(false);
+                        radioButton9.setEnabled(true);
+                        radioButton8.setEnabled(true);
                         break;
                     case 1:
                         isStore=false;
@@ -91,6 +98,9 @@ public class SearchAct extends AppCompatActivity
                         sc2.setVisibility(View.VISIBLE);
                         sc2 = findViewById(R.id.sc1);
                         sc2.setVisibility(View.INVISIBLE);
+                        radioButton10.setEnabled(true);
+                        radioButton9.setEnabled(false);
+                        radioButton8.setEnabled(false);
                         break;
                 }
             }

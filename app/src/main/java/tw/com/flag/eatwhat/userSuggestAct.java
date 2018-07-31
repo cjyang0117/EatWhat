@@ -148,7 +148,8 @@ public class userSuggestAct extends AppCompatActivity
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
-                    tw.setText(j2.get(9).toString());
+                    String s = "  "+j2.get(9).toString()+"  ";
+                    tw.setText(s);
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
 
