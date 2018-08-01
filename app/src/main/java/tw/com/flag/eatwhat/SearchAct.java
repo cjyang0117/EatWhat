@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -180,6 +181,9 @@ public class SearchAct extends AppCompatActivity
                                         row[i].addView(tw);
                                         Button btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("考慮");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
                                         btn.setId(i);
                                         btn.setTag(j2.get(0).toString()+",-,");
                                         btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -194,6 +198,7 @@ public class SearchAct extends AppCompatActivity
                                                     out.write(s.getBytes());
                                                     out.close();
 
+                                                    b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                                     b.setEnabled(false);
                                                 }catch (IOException e){
                                                     e.printStackTrace();
@@ -203,6 +208,9 @@ public class SearchAct extends AppCompatActivity
                                         row[i].addView(btn);
                                         btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("吃");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
                                         btn.setId(i);
                                         btn.setTag(j2.get(0).toString()+",-,");
                                         btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -282,6 +290,9 @@ public class SearchAct extends AppCompatActivity
                                         }
                                         Button btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("考慮");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
                                         btn.setId(i);
                                         btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
                                         btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -295,6 +306,7 @@ public class SearchAct extends AppCompatActivity
                                                     out.write(s.getBytes());
                                                     out.close();
 
+                                                    b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                                     b.setEnabled(false);
                                                 }catch (IOException e){
                                                     e.printStackTrace();
@@ -304,6 +316,9 @@ public class SearchAct extends AppCompatActivity
                                         row2[i].addView(btn);
                                         btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("吃");
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
                                         btn.setId(i);
                                         btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
                                         btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);

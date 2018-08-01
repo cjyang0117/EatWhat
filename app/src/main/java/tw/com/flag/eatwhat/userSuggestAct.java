@@ -3,6 +3,8 @@ package tw.com.flag.eatwhat;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -155,6 +157,9 @@ public class userSuggestAct extends AppCompatActivity
 
                     Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("考慮");
+                    btn.setTextColor(Color.WHITE);
+                    btn.setTypeface(null, Typeface.BOLD);
+                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
                     btn.setId(i);
                     btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
                     btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -173,6 +178,7 @@ public class userSuggestAct extends AppCompatActivity
                                 out.write(s.getBytes());
                                 out.close();
 
+                                b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                 b.setEnabled(false);
                             }catch (IOException e){
                                 e.printStackTrace();
@@ -182,6 +188,9 @@ public class userSuggestAct extends AppCompatActivity
                     r[i].addView(btn);
                     btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
+                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                    btn.setTextColor(Color.WHITE);
+                    btn.setTypeface(null, Typeface.BOLD);
                     btn.setId(i);
                     btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
                     btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);

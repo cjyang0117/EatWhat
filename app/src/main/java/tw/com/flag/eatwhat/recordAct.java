@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
@@ -17,8 +19,10 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
@@ -113,6 +117,9 @@ public class recordAct extends AppCompatActivity
                     }
                     Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
+                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                    btn.setTextColor(Color.WHITE);
+                    btn.setTypeface(null, Typeface.BOLD);
                     btn.setId(count);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -240,6 +247,9 @@ public class recordAct extends AppCompatActivity
                                         }
                                         btn=new Button(recordAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("推薦");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
                                         btn.setId(count2);
                                         btn.setTag(mid);
                                         btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -261,6 +271,7 @@ public class recordAct extends AppCompatActivity
                                                                             json_write.put("Mid", btn.getTag());
                                                                             globalVariable.c.send(json_write);
                                                                             String tmp = globalVariable.c.receive();
+                                                                            btn.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                                                             if (tmp != null) {
                                                                                 json_read = new JSONObject(tmp);
                                                                                 String reason = json_read.getString("data");

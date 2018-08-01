@@ -5,7 +5,10 @@
     <color name="colorAccent">#ff4081</color>
     <color name="white">#ffffff</color>
     <color name="darkgray">#6c6c6c</color>
-
+    <color name="waterBlue">#F7C9AF</color>
+    <color name="lightBlue">#f9e1d3</color>
+    <color name="pink">#FADFA5</color>
+    <color name="lightPink">#fcefd3</color>
 
     <color name="colorGrapeFruit">#ED5565</color>
     <color name="colorGrapeFruitDark">#da4453</color>
