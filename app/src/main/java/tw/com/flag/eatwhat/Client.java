@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Log;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.URLDecoder;
 
 public class Client extends Thread {
@@ -93,16 +95,10 @@ public class Client extends Thread {
             }
         }
     };
-    public void close() throws IOException {
-        if(handlerThread!=null){
-            handlerThread.quit();
-        }
-        if(handler!=null){
-            handler.removeCallbacks(send);
-        }
-        bw.close();
-        br.close();
-        clientSocket.close();
+    public void close() throws IOException, JSONException {
+        json_write=new JSONObject();
+        json_write.put("action","close");
+        handler.post(send);
     }
     public boolean isConnect(){
         if(clientSocket.isConnected()){

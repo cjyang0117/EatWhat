@@ -23,7 +23,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private GlobalVariable globalVariable;
@@ -133,12 +136,26 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 SharedPreferences sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);//取得帳號資料用
                 sp.edit().putBoolean("ISCHECK", false).commit();
                 startActivity(it);
+                try {
+                    globalVariable.c.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 finish();
                 break;
         }
-
         return false;
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            globalVariable.c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
     /*public void commitrate(){
         final Dialog rankDialog;

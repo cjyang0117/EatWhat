@@ -56,7 +56,6 @@ public class StoreAct extends AppCompatActivity {
         storecell = (TextView)findViewById(R.id.storecell);
         mname = (TextView)findViewById(R.id.mname);
         rb = (RatingBar)findViewById(R.id.store_ratingbar);
-        gps3 = new Gps(this);
 
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -217,6 +216,7 @@ public class StoreAct extends AppCompatActivity {
         startActivity(i);
     }
     public  void openMaptw(String storeaddr){//google map 路徑
+        gps3 = new Gps(this);
         getGPFromAddress(storeaddr);
         Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+String.valueOf(gps3.getGPSLatitude())+","+String.valueOf(gps3.getGPSLongitude())+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
         Intent it = new Intent(Intent.ACTION_VIEW);

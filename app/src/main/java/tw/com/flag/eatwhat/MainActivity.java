@@ -1,10 +1,13 @@
 package tw.com.flag.eatwhat;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
@@ -14,7 +17,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONObject;
+import android.Manifest;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class MainActivity extends AppCompatActivity {
     private JSONObject json_read, json_write;
     private SharedPreferences sp;
@@ -29,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MainActivityPermissionsDispatcher.NeedsPermissionWithPermissionCheck(this);
 
         sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);//取得帳號資料用
         editText = (EditText) findViewById(R.id.editText);//帳號
@@ -57,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });*/
+
     }
     public void gotoforgotAccPass(android.view.View v){//忘記帳密
         android.content.Intent it = new android.content.Intent(this,forgotAccPassAct.class);
@@ -141,4 +156,43 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    @NeedsPermission({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void NeedsPermission() {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @OnShowRationale({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void OnShowRationale(final PermissionRequest request) {
+        new AlertDialog.Builder(MainActivity.this)
+                .setMessage("未允許「" + getString(R.string.app_name) + "」位置存取權限，將使「" + getString(R.string.app_name) + "」無法正常運作，是否重新設定權限？")
+                .setPositiveButton("重新設定權限", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    @OnPermissionDenied({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void OnPermissionDenied() {
+        finish();
+    }
+
+    @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
+    void OnNeverAskAgain() {
+    }
 }
