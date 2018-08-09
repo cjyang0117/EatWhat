@@ -55,13 +55,15 @@
 
     <Button
         android:id="@+id/clearBtn"
-        android:layout_width="54dp"
-        android:layout_height="39dp"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="12dp"
+        android:background="@drawable/delete_button_background"
+        android:drawableTop="@drawable/ic_delete_white_18dp"
         android:onClick="clearClick"
-        android:text="刪除"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="10dp"
+        android:visibility="invisible" />
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/sc1"

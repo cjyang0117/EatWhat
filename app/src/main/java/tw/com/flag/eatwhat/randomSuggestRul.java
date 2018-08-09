@@ -7,12 +7,19 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -34,6 +41,9 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
     TableLayout tbrulLayout;
     Button ebtn;
     Bundle b;
+    private WebView webView;
+    private Handler handler;
+    private ImageView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +55,64 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         b = this.getIntent().getExtras();
+
+        //--動畫
+        webView=findViewById(R.id.webView);
+        imageView = findViewById(R.id.imageView);
+
+        webView.setVerticalScrollBarEnabled(false); //垂直滚动条不显示
+        webView.setHorizontalScrollBarEnabled(false);//水平不显示
+        WebSettings webSettings=webView.getSettings();
+        webSettings.setDisplayZoomControls(false);//隐藏webview缩放按钮
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);//屏幕适配:设置webview推荐使用的窗口，设置为true
+        webSettings.setLoadWithOverviewMode(true);//设置webview加载的页面的模式，也设置为true
+        webSettings.setAllowFileAccess(true);
+        webSettings.setSupportZoom(true);//是否支持缩放
+        webSettings.setBuiltInZoomControls(true);//添加对js功能的支持
+        webView.setWebViewClient(new WebViewClient());
+        webView.setBackgroundColor(0);
+        String gifPath = "file:///android_asset/box.gif";
+        webView.loadUrl(gifPath);
+        handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case 0:
+                        webView.destroy();
+                        webView.setVisibility(View.INVISIBLE);
+                        textViewrul.setVisibility(View.VISIBLE);
+                        imageView.setVisibility(View.VISIBLE);
+                        textViewmenu.setVisibility(View.VISIBLE);
+                        textViewprice.setVisibility(View.VISIBLE);
+//                        MainActivity.this.finish();
+                }
+            }
+        };
+        new Thread(){
+
+            @Override
+            public void run() {
+                long startTime = System.currentTimeMillis();
+                Log.i("test","System.currentTimeMillis()1:"+System.currentTimeMillis());
+                try {
+                    this.currentThread().sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                long endTime = System.currentTimeMillis();
+                Log.i("test","System.currentTimeMillis()2:"+System.currentTimeMillis());
+                if (endTime - startTime >1000){
+                    //startTime = endTime;
+                    Message message=new Message();
+                    message.what=0;
+                    handler.sendMessage(message);
+
+                }
+            }
+        } .start();
+
+        //--動畫end
 
         if (b != null) {//隨機
             try {
@@ -63,14 +131,14 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
                     num = j2.get(5).toString();//菜號
                     price = j2.get(7).toString();
                     textViewmenu.setText(j2.get(6).toString().trim());//菜品
-                    textViewprice.setText("價格" + price + "元");//價格
+                    textViewprice.setText( price + "元");//價格
                 }else{//提問
                     storename = b.getString("data1").toString().trim();//店名
                     num = b.getString("data8").toString().trim();//菜號
                     price =b.getString("data4").toString().trim();
                     menunum =  b.getString("data5").toString().trim();//店號
                     textViewmenu.setText( b.getString("data3").toString().trim());//菜名
-                    textViewprice.setText("價格" + price + "元");//價格
+                    textViewprice.setText(price + "元");//價格
                     addr =  b.getString("data2").toString().trim();//地址
                     cell = b.getString("data6").toString().trim();//電話
                     star =  b.getString("data7").toString().trim();//星數
@@ -215,4 +283,8 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
             e.printStackTrace();
         }
     }
+
+
+
+
 }

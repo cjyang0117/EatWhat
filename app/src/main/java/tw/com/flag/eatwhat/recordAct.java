@@ -83,11 +83,10 @@ public class recordAct extends AppCompatActivity
 
             if(s!="") {
                 tblayout = (TableLayout) findViewById(R.id.tbLayout);
-                tblayout.setColumnShrinkable(0,true);
                 tblayout.setColumnShrinkable(1,true);
-                tblayout.setColumnStretchable(0, true);
+                tblayout.setColumnShrinkable(2,true);
                 tblayout.setColumnStretchable(1, true);
-                tblayout.setColumnStretchable(3, true);
+                tblayout.setColumnStretchable(2, true);
 
                 count=0;
                 row=new ArrayList<>();
@@ -101,6 +100,10 @@ public class recordAct extends AppCompatActivity
                     idx=s.indexOf(",");
                     mid = s.substring(0, idx);
                     s=s.substring(idx+1);
+
+                    View vv=new View(this);
+                    row.get(count).addView(vv);
+
                     TextView[] tv=new TextView[3];
                     for(int i=0;i<3;i++){
                         idx=s.indexOf(",");
@@ -147,8 +150,11 @@ public class recordAct extends AppCompatActivity
 
                                 CheckBox cb;
                                 for (int i = 0; i < row.size(); i++) {
+                                    row.get(i).removeViewAt(0);
+
                                     cb = new CheckBox(recordAct.this);
-                                    row.get(i).addView(cb);
+                                    cb.setButtonTintList(getResources().getColorStateList(R.color.recordCheckbox));
+                                    row.get(i).addView(cb,0);
                                 }
                                 return false;
                             }
@@ -162,16 +168,16 @@ public class recordAct extends AppCompatActivity
                             if(isDel){
                                 for(int i=0;i<row.size();i++){
                                     if(row.get(i).getTag()==tr.getTag()){
-                                        if(((CheckBox)row.get(i).getChildAt(4)).isChecked()){
-                                            ((CheckBox)row.get(i).getChildAt(4)).setChecked(false);
+                                        if(((CheckBox)row.get(i).getChildAt(0)).isChecked()){
+                                            ((CheckBox)row.get(i).getChildAt(0)).setChecked(false);
                                         }else{
-                                            ((CheckBox)row.get(i).getChildAt(4)).setChecked(true);
+                                            ((CheckBox)row.get(i).getChildAt(0)).setChecked(true);
                                         }
                                         break;
                                     }
                                 }
                             }else{
-                                gotostore(tr.getChildAt(0).getTag().toString());
+                                gotostore(tr.getChildAt(1).getTag().toString());
                             }
                         }
                     });
@@ -227,6 +233,7 @@ public class recordAct extends AppCompatActivity
                                     count2=0;
                                     while (s.contains(",")){
                                         row2.add(new TableRow(recordAct.this));
+                                        row2.get(count2).setBackgroundResource(R.drawable.ripple);
                                         final String sid,mid;
                                         idx=s.indexOf(",");
                                         sid = s.substring(0, idx);
@@ -340,7 +347,7 @@ public class recordAct extends AppCompatActivity
                 FileOutputStream out = openFileOutput("think.txt", MODE_PRIVATE);
                 String s="";
                 for(int i=0;i<row.size();i++){
-                    s+=row.get(i).getChildAt(0).getTag().toString()+","+row.get(i).getChildAt(1).getTag().toString()+","+((TextView)row.get(i).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+",";
+                    s+=row.get(i).getChildAt(1).getTag().toString()+","+row.get(i).getChildAt(2).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
                 }
                 out.write(s.getBytes());
                 out.close();
@@ -359,7 +366,8 @@ public class recordAct extends AppCompatActivity
                 btn.setVisibility(View.INVISIBLE);
 
                 for (int i = 0; i < row.size(); i++) {
-                    row.get(i).removeViewAt(4);
+                    row.get(i).removeViewAt(0);
+                    row.get(i).addView(new View(this),0);
                 }
                 return true;
             }
@@ -405,7 +413,7 @@ public class recordAct extends AppCompatActivity
     public void onClick(DialogInterface dialog, int which) {
         if(isDel) {
             for (int i = 0; i < row.size(); i++) {
-                if (((CheckBox) row.get(i).getChildAt(4)).isChecked()) {
+                if (((CheckBox) row.get(i).getChildAt(0)).isChecked()) {
                     tblayout.removeView(row.get(i));
                     row.remove(i);
                     i -= 1;
@@ -416,16 +424,17 @@ public class recordAct extends AppCompatActivity
             btn.setVisibility(View.INVISIBLE);
 
             for (int i = 0; i < row.size(); i++) {
-                row.get(i).removeViewAt(4);
+                row.get(i).removeViewAt(0);
+                row.get(i).addView(new View(this),0);
             }
             isDel = false;
         }else{
             try {
                 int i;
                 for(i=0;i<row.size();i++){
-                    if(((Button)row.get(i).getChildAt(3)).getId()==ebtn.getId()){
+                    if(((Button)row.get(i).getChildAt(4)).getId()==ebtn.getId()){
                         FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-                        String s=row.get(i).getChildAt(0).getTag().toString()+","+row.get(i).getChildAt(1).getTag().toString()+","+((TextView)row.get(i).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+",";
+                        String s=row.get(i).getChildAt(1).getTag().toString()+","+row.get(i).getChildAt(2).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
                         out.write(s.getBytes());
                         out.close();
 

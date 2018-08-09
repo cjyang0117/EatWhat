@@ -148,26 +148,28 @@ public class SearchAct extends AppCompatActivity
                                     row = new TableRow[j1.length()];
                                     for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
                                         row[i] = new TableRow(SearchAct.this);
+                                        row[i].setBackgroundResource(R.drawable.ripple);
                                         row[i].setId(i);
                                         tblayout.addView(row[i]);
                                     }
                                     for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                                         j2 = j1.getJSONArray(i);
-                                        TextView tw = new TextView(SearchAct.this);
-                                        tw.setText(j2.get(1).toString());
-                                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                        tw.setTag(j2.get(0).toString());
-                                        tw.setOnClickListener(new View.OnClickListener() {
+                                        row[i].setTag(j2.get(0).toString());
+                                        row[i].setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                TextView t=(TextView)v;
+                                                TableRow t=(TableRow) v;
                                                 gotostore(t.getTag().toString());
                                             }
                                         });
+                                        TextView tw = new TextView(SearchAct.this);
+                                        tw.setText(j2.get(1).toString());
+                                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                                         float ratecount;
                                         //ratecount = Float.valueOf(j2.get(2).toString());
                                         row[i].addView(tw);
                                         RatingBar rb=new RatingBar(SearchAct.this, null, android.R.attr.ratingBarStyleSmall);
+                                        rb.setProgressTintList(getResources().getColorStateList(R.color.searchRatingbar));
                                         rb.setNumStars(5);
                                         //rb.setRating(ratecount);
                                         rb.setRating(2);
@@ -266,27 +268,26 @@ public class SearchAct extends AppCompatActivity
                                     row2 = new TableRow[j1.length()];
                                     for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
                                         row2[i] = new TableRow(SearchAct.this);
+                                        row2[i].setBackgroundResource(R.drawable.ripple);
                                         row2[i].setId(i);
                                         tblayout2.addView(row2[i]);
                                     }
                                     for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                                         j2 = j1.getJSONArray(i);
+                                        row2[i].setTag(j2.get(0).toString());
+                                        row2[i].setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                TableRow t=(TableRow) v;
+                                                gotostore(t.getTag().toString());
+                                            }
+                                        });
                                         TextView[] tw = new TextView[j2.length()];
                                         for(int j=0;j<j2.length()-2;j++){
                                             tw[j] = new TextView(SearchAct.this);
                                             tw[j].setText(j2.get(j+2).toString());
                                             tw[j].setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                                             row2[i].addView(tw[j]);
-                                            if(j==0){
-                                                tw[j].setTag(j2.get(0).toString());
-                                                tw[j].setOnClickListener(new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        TextView t=(TextView)v;
-                                                        gotostore(t.getTag().toString());
-                                                    }
-                                                });
-                                            }
                                         }
                                         Button btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("考慮");

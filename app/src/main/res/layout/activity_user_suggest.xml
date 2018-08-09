@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
     tools:context=".userSuggestAct">
 
 
@@ -69,12 +70,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="4dp"
                     android:layout_marginTop="4dp"
                     android:layout_weight="1"
                     android:background="@drawable/sort_button_background_selector"
                     android:button="@null"
+                    android:drawableRight="@drawable/sort_icon_selector"
                     android:paddingBottom="5dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"
@@ -88,12 +90,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="4dp"
                     android:layout_weight="1"
                     android:background="@drawable/sort_button_background_selector"
                     android:button="@null"
+                    android:drawableRight="@drawable/sort_icon_selector"
                     android:enabled="false"
                     android:paddingBottom="5dp"
                     android:paddingLeft="8dp"
@@ -108,12 +111,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="0dp"
                     android:layout_marginTop="4dp"
                     android:layout_weight="1"
                     android:background="@drawable/sort_button_background_selector"
                     android:button="@null"
+                    android:drawableRight="@drawable/sort_icon_selector"
                     android:enabled="false"
                     android:paddingBottom="5dp"
                     android:paddingLeft="8dp"
@@ -142,8 +146,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"/>
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -161,8 +165,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"/>
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
 
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

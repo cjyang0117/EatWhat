@@ -115,12 +115,21 @@ public class userSuggestAct extends AppCompatActivity
                 r = new TableRow[j1.length()];
                 for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
                     r[i] = new TableRow(this);
+                    r[i].setBackgroundResource(R.drawable.ripple);
                     r[i].setId(i);
                     tblayout.addView(r[i]);
                 }
 
                 for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                     j2 = j1.getJSONArray(i);
+                    r[i].setTag(j2.get(2).toString());
+                    r[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TableRow t=(TableRow) v;
+                            gotostore(t.getTag().toString());
+                        }
+                    });
                     TextView tw = new TextView(this);
                     tw.setText(j2.get(1).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -135,14 +144,6 @@ public class userSuggestAct extends AppCompatActivity
                     r[i].addView(tw);
                     tw = new TextView(this);
                     tw.setText(j2.get(3).toString());
-                    tw.setTag(j2.get(2).toString());
-                    tw.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            TextView tv = (TextView)v;
-                            gotostore(tv.getTag().toString());
-                        }
-                    });
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);

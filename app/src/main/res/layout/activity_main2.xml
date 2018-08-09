@@ -166,5 +166,17 @@
         app:headerLayout="@layout/header"
         app:itemIconTint="@color/darkgray"
         app:itemTextColor="@color/darkgray"
-        app:menu="@menu/drawermenu" />
+        app:menu="@menu/drawermenu" >
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_gravity="top|left"
+            android:layout_marginTop="162dp"
+            android:layerType="software"
+            app:srcCompat="@drawable/drawer_dash" />
+
+    </android.support.design.widget.NavigationView>
+
 </android.support.v4.widget.DrawerLayout>

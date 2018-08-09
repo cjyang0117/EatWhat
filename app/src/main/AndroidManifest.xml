@@ -78,7 +78,7 @@
         <activity
             android:name=".randomSuggestRul"
             android:label="@string/randomSuggestRul"
-            android:theme="@style/forgotAccPass" />
+            android:theme="@style/skinPrimaryDark" />
         <activity
             android:name=".dbsetUpAct"
             android:label="@string/dbsetUp" />
