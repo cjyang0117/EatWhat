@@ -15,7 +15,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.URLDecoder;
 
 public class Client extends Thread {
@@ -95,10 +94,11 @@ public class Client extends Thread {
             }
         }
     };
-    public void close() throws IOException, JSONException {
-        json_write=new JSONObject();
+    public void close() throws JSONException, IOException {
+        /*json_write=new JSONObject();
         json_write.put("action","close");
-        handler.post(send);
+        handler.post(send);*/
+        br.close(); bw.close(); clientSocket.close();
     }
     public boolean isConnect(){
         if(clientSocket.isConnected()){

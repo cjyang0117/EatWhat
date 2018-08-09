@@ -1,6 +1,8 @@
 package tw.com.flag.eatwhat;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,7 +21,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-public class randomSuggestAct extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener  {
+public class randomSuggestAct extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, DialogInterface.OnClickListener{
     static Activity ActivityA;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
@@ -76,11 +79,10 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
 
     public void gotoResult(android.view.View v){
         try {
-
-            if(gps1.isGetGPSService()) {
+            if (gps1.isGetGPSService()) {
                 //int index = disttime.getSelectedItemPosition();
-                int index=0;
-                for(int i = 0 ;i < radioGroup1.getChildCount();i++) {
+                int index = 0;
+                for (int i = 0; i < radioGroup1.getChildCount(); i++) {
                     RadioButton rb = (RadioButton) radioGroup1.getChildAt(i);
                     if (rb.isChecked()) {
                         index = i;
@@ -90,8 +92,8 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 int time = eatime[index];
 
                 //int index2 = dist.getSelectedItemPosition();
-                int index2=0;
-                for(int i = 0 ;i < radioGroup2.getChildCount();i++) {
+                int index2 = 0;
+                for (int i = 0; i < radioGroup2.getChildCount(); i++) {
                     RadioButton rb = (RadioButton) radioGroup2.getChildAt(i);
                     if (rb.isChecked()) {
                         index2 = i;
@@ -105,45 +107,53 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 json_write.put("Latitude", gps1.getGPSLatitude());//緯度
                 json_write.put("Eatype", time);//主餐1早餐2點心3
                 String[] dont1 = new String[10];
-                int count =0;
+                int count = 0;
                 for (int id : chk_id) {
                     chk = (CheckBox) findViewById(id);
                     if (chk.isChecked()) {
-                        dont1[count]= chk.getText().toString().trim();//不要吃的口味
+                        dont1[count] = chk.getText().toString().trim();//不要吃的口味
                         count++;
                     }
                 }
                 String[] dont2 = new String[count];
-                for(int i = 0;i < count ; i++){
+                for (int i = 0; i < count; i++) {
                     dont2[i] = dont1[i];
                 }
-                JSONArray j2= new JSONArray(dont2);
+                JSONArray j2 = new JSONArray(dont2);
                 json_write.put("Dontwant", j2);
                 json_write.put("Distlimit", distlimit);//距離限制(0為不限距離，分有0, 2, 4, 6)
                 globalVariable.c.send(json_write);
                 tv.setText("緯度 :" + gps1.getGPSLatitude() + "  , 經度 :  " + gps1.getGPSLongitude());
                 String tmp = globalVariable.c.receive();
-                json_read = new JSONObject(tmp);
-                if(tmp!=null) {
+                if (tmp != null) {
+                    json_read = new JSONObject(tmp);
                     if (!json_read.getBoolean("check")) {//接收失敗原因
                         String reason = json_read.getString("data");
                         Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
-                    }else{//成功並關閉
+                    } else {//成功並關閉
                         Bundle b = new Bundle();
                         Intent i = new Intent(this, randomSuggestRul.class);
                         b.putString("data", tmp);
-                        b.putInt("check",1);
+                        b.putInt("check", 1);
                         b.putString("Latitude", String.valueOf(gps1.getGPSLatitude()));
                         b.putString("Longitude", String.valueOf(gps1.getGPSLongitude()));
                         i.putExtras(b);
                         startActivity(i);
                         //this.finish();
                     }
-                }else{
-                    Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                } else {
+                    //Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder b=new AlertDialog.Builder(this);
+                    //串聯呼叫法
+                    b.setCancelable(false);
+                    b.setTitle("警告")
+                            .setMessage("連線逾時，請重新連線")
+                            .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                            .setNegativeButton("離開", this)
+                            .show();
                 }
-            }else{
-                Toast.makeText(this,"位址尚未取得",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "位址尚未取得", Toast.LENGTH_SHORT).show();
             }
             //tv.setText("經度 : " + gps1.getGPSLatitude() + "  , 緯度 : " + gps1.getGPSLongitude());
         } catch (Exception e) {
@@ -183,5 +193,15 @@ public class randomSuggestAct extends AppCompatActivity implements NavigationVie
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if(which==DialogInterface.BUTTON_POSITIVE) {
+            Intent it = new android.content.Intent(this, MainActivity.class);
+            startActivity(it);
+        }
+        if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+        this.finish();
     }
 }

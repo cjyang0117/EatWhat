@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -33,12 +34,15 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     private DrawerLayout mDrawerlayout;
     private ActionBarDrawerToggle mToggle;
     private JSONObject json_read, json_write;
+    static Activity ActivityM;
     String store;
     String[] dish;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityM=this;
+
         setContentView(R.layout.activity_main2);
         mDrawerlayout = (DrawerLayout)findViewById(R.id.drawer);
         mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
