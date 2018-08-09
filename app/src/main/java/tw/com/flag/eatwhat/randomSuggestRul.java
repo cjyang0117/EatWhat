@@ -56,64 +56,6 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
 
         b = this.getIntent().getExtras();
 
-        //--動畫
-        webView=findViewById(R.id.webView);
-        imageView = findViewById(R.id.imageView);
-
-        webView.setVerticalScrollBarEnabled(false); //垂直滚动条不显示
-        webView.setHorizontalScrollBarEnabled(false);//水平不显示
-        WebSettings webSettings=webView.getSettings();
-        webSettings.setDisplayZoomControls(false);//隐藏webview缩放按钮
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setUseWideViewPort(true);//屏幕适配:设置webview推荐使用的窗口，设置为true
-        webSettings.setLoadWithOverviewMode(true);//设置webview加载的页面的模式，也设置为true
-        webSettings.setAllowFileAccess(true);
-        webSettings.setSupportZoom(true);//是否支持缩放
-        webSettings.setBuiltInZoomControls(true);//添加对js功能的支持
-        webView.setWebViewClient(new WebViewClient());
-        webView.setBackgroundColor(0);
-        String gifPath = "file:///android_asset/box.gif";
-        webView.loadUrl(gifPath);
-        handler=new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what){
-                    case 0:
-                        webView.destroy();
-                        webView.setVisibility(View.INVISIBLE);
-                        textViewrul.setVisibility(View.VISIBLE);
-                        imageView.setVisibility(View.VISIBLE);
-                        textViewmenu.setVisibility(View.VISIBLE);
-                        textViewprice.setVisibility(View.VISIBLE);
-//                        MainActivity.this.finish();
-                }
-            }
-        };
-        new Thread(){
-
-            @Override
-            public void run() {
-                long startTime = System.currentTimeMillis();
-                Log.i("test","System.currentTimeMillis()1:"+System.currentTimeMillis());
-                try {
-                    this.currentThread().sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                long endTime = System.currentTimeMillis();
-                Log.i("test","System.currentTimeMillis()2:"+System.currentTimeMillis());
-                if (endTime - startTime >1000){
-                    //startTime = endTime;
-                    Message message=new Message();
-                    message.what=0;
-                    handler.sendMessage(message);
-
-                }
-            }
-        } .start();
-
-        //--動畫end
-
         if (b != null) {//隨機
             try {
                 if(b.getInt("check")!=2) {
@@ -199,6 +141,63 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
                 }
             });
         }
+        //--動畫
+        webView=findViewById(R.id.webView);
+        imageView = findViewById(R.id.imageView);
+
+        webView.setVerticalScrollBarEnabled(false); //垂直滚动条不显示
+        webView.setHorizontalScrollBarEnabled(false);//水平不显示
+        WebSettings webSettings=webView.getSettings();
+        webSettings.setDisplayZoomControls(false);//隐藏webview缩放按钮
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setUseWideViewPort(true);//屏幕适配:设置webview推荐使用的窗口，设置为true
+        webSettings.setLoadWithOverviewMode(true);//设置webview加载的页面的模式，也设置为true
+        webSettings.setAllowFileAccess(true);
+        webSettings.setSupportZoom(true);//是否支持缩放
+        webSettings.setBuiltInZoomControls(true);//添加对js功能的支持
+        webView.setWebViewClient(new WebViewClient());
+        webView.setBackgroundColor(0);
+        String gifPath = "file:///android_asset/box.gif";
+        webView.loadUrl(gifPath);
+        handler=new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what){
+                    case 0:
+                        webView.destroy();
+                        webView.setVisibility(View.INVISIBLE);
+                        textViewrul.setVisibility(View.VISIBLE);
+                        imageView.setVisibility(View.VISIBLE);
+                        textViewmenu.setVisibility(View.VISIBLE);
+                        textViewprice.setVisibility(View.VISIBLE);
+//                        MainActivity.this.finish();
+                }
+            }
+        };
+        new Thread(){
+
+            @Override
+            public void run() {
+                long startTime = System.currentTimeMillis();
+                Log.i("test","System.currentTimeMillis()1:"+System.currentTimeMillis());
+                try {
+                    this.currentThread().sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                long endTime = System.currentTimeMillis();
+                Log.i("test","System.currentTimeMillis()2:"+System.currentTimeMillis());
+                if (endTime - startTime >1000){
+                    //startTime = endTime;
+                    Message message=new Message();
+                    message.what=0;
+                    handler.sendMessage(message);
+
+                }
+            }
+        } .start();
+
+        //--動畫end
     }//onCreate
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)//按返回頁面關閉
