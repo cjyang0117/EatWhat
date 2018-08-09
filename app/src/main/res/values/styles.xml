@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
@@ -30,10 +30,20 @@
         <item name="android:textColorPrimary">#9b855f</item>
     </style>
 
+
+
     <style name="skinPrimaryDark" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimaryDark">#f5c883</item>
+        <item name="colorPrimaryDark">#fae5af</item>
+        <item name="android:textColorPrimary">#9b855f</item>
+        <item name="android:textColorHint">#c79b855f</item>
+        <item name="android:colorControlNormal">#adb59b</item>
     </style>
+
+    <style name="search" parent="Widget.AppCompat.Light.SearchView">
+        <item name="queryBackground">@color/Transparent</item>
+    </style>
+
 
     <style name="signUp" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
@@ -45,8 +55,8 @@
 
     <style name="main2Activity" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#795548</item>
-        <item name="colorPrimaryDark">#5D4037</item>
+        <item name="colorPrimary">#835a4d</item>
+        <item name="colorPrimaryDark">#6c4a40</item>
         <item name="android:textColorPrimary">#ffffff</item>
     </style>
     <style name="FullHeightDialog" parent="android:style/Theme.Dialog">
@@ -56,5 +66,6 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
+
 
 </resources>

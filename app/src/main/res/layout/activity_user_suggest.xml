@@ -4,32 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/background_light"
     tools:context=".userSuggestAct">
 
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="#FFDEAD"
+            android:layout_gravity="center"
+            android:background="@drawable/toolbar"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:title="@string/userSuggest" />
+            app:title="@string/userSuggest"
+            app:titleTextColor="#9d7f62" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/mTabLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFDEAD"
+            android:background="#FFF"
+            app:layout_scrollFlags="scroll|enterAlways"
             app:tabGravity="fill"
-            app:tabIndicatorColor="#FFF"
+            app:tabIndicatorColor="#fad996"
             app:tabIndicatorHeight="4dp"
             app:tabMode="fixed"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:tabSelectedTextColor="#9d7f62"
+            app:tabTextColor="#bfada771">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/userSuggest"
@@ -41,34 +47,88 @@
                 android:id="@+id/followUserSuggest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/followUserSuggest" />
+                android:text="@string/_followUserSuggest" />
         </android.support.design.widget.TabLayout>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/mTabLayout2"
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFDEAD"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="#FFF"
-            app:tabIndicatorHeight="4dp"
-            app:tabMode="fixed">
+            android:layout_height="match_parent"
+            android:background="@color/white">
 
-            <android.support.design.widget.TabItem
+            <RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/priceSort" />
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/distanceSort" />
+                <RadioButton
+                    android:id="@+id/radioButton10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="0dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/sort_button_background_selector"
+                    android:button="@null"
+                    android:drawableRight="@drawable/sort_icon_selector"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/priceSort"
+                    android:textColor="@drawable/sort_color_selector"
+                    android:textSize="13sp" />
 
-            <android.support.design.widget.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/starSort" />
-        </android.support.design.widget.TabLayout>
+                <RadioButton
+                    android:id="@+id/radioButton9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/sort_button_background_selector"
+                    android:button="@null"
+                    android:drawableRight="@drawable/sort_icon_selector"
+                    android:enabled="false"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="5dp"
+                    android:text="@string/distanceSort"
+                    android:textColor="@drawable/sort_color_selector"
+                    android:textSize="13sp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="0dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/sort_button_background_selector"
+                    android:button="@null"
+                    android:drawableRight="@drawable/sort_icon_selector"
+                    android:enabled="false"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:paddingTop="7dp"
+                    android:text="@string/starSort"
+                    android:textColor="@drawable/sort_color_selector"
+                    android:textSize="13sp" />
+            </RadioGroup>
+        </android.support.constraint.ConstraintLayout>
+
 
     </android.support.design.widget.AppBarLayout>
 
@@ -76,7 +136,8 @@
         android:id="@+id/sc2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_margin="1dp"
+        android:background="@color/white"
         android:visibility="invisible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -85,14 +146,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"></TableLayout>
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+
     </android.support.v4.widget.NestedScrollView>
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/sc1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="5dp"
+        android:layout_margin="1dp"
+        android:background="@color/white"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -101,6 +165,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingRight="5dp"></TableLayout>
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp" />
+
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

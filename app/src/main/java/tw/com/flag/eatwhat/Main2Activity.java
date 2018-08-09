@@ -51,7 +51,6 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.setCheckedItem((int)R.id.home);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;
@@ -124,9 +123,6 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
         Intent it;
         switch(id){
-            case R.id.home:
-                mDrawerlayout.closeDrawers();
-                break;
             case R.id.setting:
                 it = new android.content.Intent(this, settingAct.class);
                 startActivity(it);

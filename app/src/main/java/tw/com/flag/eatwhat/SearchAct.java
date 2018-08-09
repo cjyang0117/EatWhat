@@ -7,20 +7,22 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.support.design.widget.TabLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
@@ -44,6 +46,10 @@ public class SearchAct extends AppCompatActivity
     private Boolean isStore=true, isSort=false, sort=true;
     private int times=0;
     private Button ebtn;
+    private TabLayout mTabLayout;
+    private android.support.v7.widget.SearchView editText10; //搜尋
+    private RadioButton radioButton10,radioButton9,radioButton8;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,41 +78,296 @@ public class SearchAct extends AppCompatActivity
         if(dm.widthPixels<=480){
             sp=12;
         }
+
+        mTabLayout = findViewById(R.id.mTabLayout);
+        radioButton10 = findViewById(R.id.radioButton10);
+        radioButton9 = findViewById(R.id.radioButton9);
+        radioButton8 = findViewById(R.id.radioButton8);
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch(tab.getPosition()){
+                    case 0:
+                        isStore=true;
+                        NestedScrollView sc = findViewById(R.id.sc1);
+                        sc.setVisibility(View.VISIBLE);
+                        sc = findViewById(R.id.sc2);
+                        sc.setVisibility(View.INVISIBLE);
+                        radioButton10.setEnabled(false);
+                        radioButton9.setEnabled(true);
+                        radioButton8.setEnabled(true);
+                        break;
+                    case 1:
+                        isStore=false;
+                        NestedScrollView sc2 = findViewById(R.id.sc2);
+                        sc2.setVisibility(View.VISIBLE);
+                        sc2 = findViewById(R.id.sc1);
+                        sc2.setVisibility(View.INVISIBLE);
+                        radioButton10.setEnabled(true);
+                        radioButton9.setEnabled(false);
+                        radioButton8.setEnabled(false);
+                        break;
+                }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
+        editText10 = findViewById(R.id.editText10);
+        editText10.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                isSort=false;
+                times++;
+                if(times>3){
+                    Toast.makeText(SearchAct.this, "請勿頻繁搜尋", Toast.LENGTH_SHORT).show();
+                }else{
+                    if(isStore){
+                        try {
+                            if(tblayout!=null) tblayout.removeAllViews();
+                            json_write=new JSONObject(); //接收店家資料，並動態產生表格顯示
+                            json_write.put("action", "show");
+                            json_write.put("data",query);
+                            globalVariable.c.send(json_write);
+                            String tmp=globalVariable.c.receive();
+                            if(tmp!=null) {
+                                json_read = new JSONObject(tmp);
+                                tblayout = (TableLayout) findViewById(R.id.tbLayout);
+                                tblayout.setColumnShrinkable(0,true);
+                                tblayout.setColumnStretchable(0, true);
+                                tblayout.setColumnStretchable(3, true);
+                                tblayout.setColumnStretchable(4, true);
+
+                                if (!json_read.getBoolean("check")) {//當回傳為false
+                                    String reason;
+                                    reason = json_read.getString("data");
+                                    Toast.makeText(SearchAct.this,reason, Toast.LENGTH_SHORT).show();
+                                }else{
+                                    JSONArray j1 = json_read.getJSONArray("data");
+                                    JSONArray j2;
+                                    row = new TableRow[j1.length()];
+                                    for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+                                        row[i] = new TableRow(SearchAct.this);
+                                        row[i].setBackgroundResource(R.drawable.ripple);
+                                        row[i].setId(i);
+                                        tblayout.addView(row[i]);
+                                    }
+                                    for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                                        j2 = j1.getJSONArray(i);
+                                        row[i].setTag(j2.get(0).toString());
+                                        row[i].setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                TableRow t=(TableRow) v;
+                                                gotostore(t.getTag().toString());
+                                            }
+                                        });
+                                        TextView tw = new TextView(SearchAct.this);
+                                        tw.setText(j2.get(1).toString());
+                                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        float ratecount;
+                                        //ratecount = Float.valueOf(j2.get(2).toString());
+                                        row[i].addView(tw);
+                                        RatingBar rb=new RatingBar(SearchAct.this, null, android.R.attr.ratingBarStyleSmall);
+                                        rb.setProgressTintList(getResources().getColorStateList(R.color.searchRatingbar));
+                                        rb.setNumStars(5);
+                                        //rb.setRating(ratecount);
+                                        rb.setRating(2);
+                                        //rb.setIsIndicator(true);
+                                        row[i].addView(rb);
+                                        TableRow.LayoutParams tlp=(TableRow.LayoutParams) rb.getLayoutParams();
+                                        tlp.gravity=Gravity.CENTER_VERTICAL;
+                                        tw = new TextView(SearchAct.this);
+                                        tw.setText("0.3km");
+                                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        row[i].addView(tw);
+                                        Button btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
+                                        btn.setText("考慮");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
+                                        btn.setId(i);
+                                        btn.setTag(j2.get(0).toString()+",-,");
+                                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        btn.setSingleLine();
+                                        btn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Button b=(Button)v;
+                                                try {
+                                                    FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
+                                                    String s=b.getTag().toString()+((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
+                                                    out.write(s.getBytes());
+                                                    out.close();
+
+                                                    b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
+                                                    b.setEnabled(false);
+                                                }catch (IOException e){
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                        row[i].addView(btn);
+                                        btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
+                                        btn.setText("吃");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                                        btn.setId(i);
+                                        btn.setTag(j2.get(0).toString()+",-,");
+                                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        btn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                ebtn=(Button)v;
+                                                AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+                                                //串聯呼叫法
+                                                b.setTitle("確認")
+                                                        .setMessage("確定要吃這個嗎?")
+                                                        .setPositiveButton("GO", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                                        .setNegativeButton("Cancel", null)
+                                                        .show();
+                                            }
+                                        });
+                                        row[i].addView(btn);
+                                    }
+                                }
+                            }else{
+                                Toast.makeText(SearchAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e("Exception","StoreError="+e.toString());
+                        }
+
+                    }else{
+                        try {
+                            if(tblayout2!=null) tblayout2.removeAllViews();
+                            json_write=new JSONObject();                                //接收店家資料，並動態產生表格顯示
+                            json_write.put("action", "show2");
+                            json_write.put("data",query);
+                            globalVariable.c.send(json_write);
+                            String tmp=globalVariable.c.receive();
+                            if(tmp!=null) {
+                                json_read = new JSONObject(tmp);
+                                tblayout2 = (TableLayout) findViewById(R.id.tb2Layout);
+                                tblayout2.setColumnShrinkable(0,true);
+                                tblayout2.setColumnShrinkable(1,true);
+                                tblayout2.setColumnStretchable(0, true);
+                                tblayout2.setColumnStretchable(1, true);
+                                tblayout2.setColumnStretchable(3, true);
+                                tblayout2.setColumnStretchable(4, true);
+
+                                if (!json_read.getBoolean("check")) {//當回傳為false
+                                    String reason;
+                                    reason = json_read.getString("data");
+                                    Toast.makeText(SearchAct.this,reason, Toast.LENGTH_SHORT).show();
+                                }else{
+                                    JSONArray j1 = json_read.getJSONArray("data");
+                                    JSONArray j2;
+                                    row2 = new TableRow[j1.length()];
+                                    for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+                                        row2[i] = new TableRow(SearchAct.this);
+                                        row2[i].setBackgroundResource(R.drawable.ripple);
+                                        row2[i].setId(i);
+                                        tblayout2.addView(row2[i]);
+                                    }
+                                    for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                                        j2 = j1.getJSONArray(i);
+                                        row2[i].setTag(j2.get(0).toString());
+                                        row2[i].setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                TableRow t=(TableRow) v;
+                                                gotostore(t.getTag().toString());
+                                            }
+                                        });
+                                        TextView[] tw = new TextView[j2.length()];
+                                        for(int j=0;j<j2.length()-2;j++){
+                                            tw[j] = new TextView(SearchAct.this);
+                                            tw[j].setText(j2.get(j+2).toString());
+                                            tw[j].setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                            row2[i].addView(tw[j]);
+                                        }
+                                        Button btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
+                                        btn.setText("考慮");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
+                                        btn.setId(i);
+                                        btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
+                                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        btn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                Button b=(Button)v;
+                                                try {
+                                                    FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
+                                                    String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(1)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
+                                                    out.write(s.getBytes());
+                                                    out.close();
+
+                                                    b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
+                                                    b.setEnabled(false);
+                                                }catch (IOException e){
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                        row2[i].addView(btn);
+                                        btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
+                                        btn.setText("吃");
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setId(i);
+                                        btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
+                                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        btn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                ebtn=(Button)v;
+                                                AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+                                                //串聯呼叫法
+                                                b.setTitle("確認")
+                                                        .setMessage("確定要吃這個嗎?")
+                                                        .setPositiveButton("GO", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                                        .setNegativeButton("Cancel", null)
+                                                        .show();
+                                            }
+                                        });
+                                        row2[i].addView(btn);
+                                    }
+                                }
+                            }else{
+                                Toast.makeText(SearchAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e("Exception","MenuError="+e.toString());
+                        }
+                    }
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String query) {
+                return true;
+            }
+        });
+
+
     }
 
-    public void storeMenuClick(View v){
-        Button b=(Button)v;
-        switch (b.getId()){
-            case R.id.button20:
-                isStore=true;
-                b.setEnabled(false);
-                b=findViewById(R.id.button21);
-                b.setEnabled(true);
-                b=findViewById(R.id.button23);
-                b.setEnabled(false);
-                ScrollView sc=findViewById(R.id.sc1);
-                sc.setVisibility(View.VISIBLE);
-                sc=findViewById(R.id.sc2);
-                sc.setVisibility(View.INVISIBLE);
-                break;
-            case R.id.button21:
-                isStore=false;
-                b.setEnabled(false);
-                b=findViewById(R.id.button20);
-                b.setEnabled(true);
-                b=findViewById(R.id.button23);
-                b.setEnabled(true);
-                ScrollView sc2=findViewById(R.id.sc2);
-                sc2.setVisibility(View.VISIBLE);
-                sc2=findViewById(R.id.sc1);
-                sc2.setVisibility(View.INVISIBLE);
-                break;
-        }
-    }
-    public void orderClick(View v){
-        Button b=(Button)v;
-        switch (b.getId()){
-            case R.id.button23:
+    public void onRadioButtonClicked(View v){
+        int id= v.getId();
+        switch (id){
+            case R.id.radioButton10:
                 tblayout2.removeAllViews();
                 if(!isSort) {
                     isSort = true; sort=true;
@@ -124,10 +385,10 @@ public class SearchAct extends AppCompatActivity
                     }
                 }
                 break;
-            case R.id.button24:
+            case R.id.radioButton9:
 
                 break;
-            case R.id.button25:
+            case R.id.radioButton8:
 
                 break;
         }
@@ -157,232 +418,7 @@ public class SearchAct extends AppCompatActivity
             }
         }
     }
-    public void searchClick(View v){
-        EditText ed=(EditText)findViewById(R.id.editText10);
-        isSort=false;
-        times++;
-        if(times>2){
-            AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
-            //串聯呼叫法
-            b.setCancelable(false);
-            b.setTitle("提醒")
-                    .setMessage("請勿連續點擊")
-                    .setPositiveButton("OK", null)
-                    .show();
-        }else{
-            if(isStore){
-                try {
-                    if(tblayout!=null) tblayout.removeAllViews();
-                    json_write=new JSONObject(); //接收店家資料，並動態產生表格顯示
-                    json_write.put("action", "show");
-                    json_write.put("data", ed.getText().toString());
-                    globalVariable.c.send(json_write);
-                    String tmp=globalVariable.c.receive();
-                    if(tmp!=null) {
-                        json_read = new JSONObject(tmp);
-                        tblayout = (TableLayout) findViewById(R.id.tbLayout);
-                        tblayout.setColumnShrinkable(0,true);
-                        tblayout.setColumnStretchable(0, true);
-                        tblayout.setColumnStretchable(3, true);
-                        tblayout.setColumnStretchable(4, true);
 
-                        if (!json_read.getBoolean("check")) {//當回傳為false
-                            String reason;
-                            reason = json_read.getString("data");
-                            Toast.makeText(SearchAct.this,reason, Toast.LENGTH_SHORT).show();
-                        }else{
-                            JSONArray j1 = json_read.getJSONArray("data");
-                            JSONArray j2;
-                            row = new TableRow[j1.length()];
-                            for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
-                                row[i] = new TableRow(this);
-                                row[i].setId(i);
-                                tblayout.addView(row[i]);
-                            }
-                            for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
-                                j2 = j1.getJSONArray(i);
-                                TextView tw = new TextView(this);
-                                tw.setText(j2.get(1).toString());
-                                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                tw.setTag(j2.get(0).toString());
-                                tw.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        TextView t=(TextView)v;
-                                        gotostore(t.getTag().toString());
-                                    }
-                                });
-                                float ratecount;
-                                //ratecount = Float.valueOf(j2.get(2).toString());
-                                row[i].addView(tw);
-                                RatingBar rb=new RatingBar(this, null, android.R.attr.ratingBarStyleSmall);
-                                rb.setNumStars(5);
-                                //rb.setRating(ratecount);
-                                rb.setRating(2);
-                                //rb.setIsIndicator(true);
-                                row[i].addView(rb);
-                                TableRow.LayoutParams tlp=(TableRow.LayoutParams) rb.getLayoutParams();
-                                tlp.gravity=Gravity.CENTER_VERTICAL;
-                                tw = new TextView(this);
-                                tw.setText("0.3km");
-                                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                row[i].addView(tw);
-                                Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                                btn.setText("考慮");
-                                btn.setId(i);
-                                btn.setTag(j2.get(0).toString()+",-,");
-                                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                btn.setSingleLine();
-                                btn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Button b=(Button)v;
-                                        try {
-                                            FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
-                                            String s=b.getTag().toString()+((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
-                                            out.write(s.getBytes());
-                                            out.close();
-
-                                            b.setEnabled(false);
-                                        }catch (IOException e){
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                                row[i].addView(btn);
-                                btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                                btn.setText("吃");
-                                btn.setId(i);
-                                btn.setTag(j2.get(0).toString()+",-,");
-                                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                btn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ebtn=(Button)v;
-                                        AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
-                                        //串聯呼叫法
-                                        b.setTitle("確認")
-                                                .setMessage("確定要吃這個嗎?")
-                                                .setPositiveButton("GO", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                                                .setNegativeButton("Cancel", null)
-                                                .show();
-                                    }
-                                });
-                                row[i].addView(btn);
-                            }
-                        }
-                    }else{
-                        Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                    Log.e("Exception","StoreError="+e.toString());
-                }
-
-            }else{
-                try {
-                    if(tblayout2!=null) tblayout2.removeAllViews();
-                    json_write=new JSONObject();                                //接收店家資料，並動態產生表格顯示
-                    json_write.put("action", "show2");
-                    json_write.put("data", ed.getText().toString());
-                    globalVariable.c.send(json_write);
-                    String tmp=globalVariable.c.receive();
-                    if(tmp!=null) {
-                        json_read = new JSONObject(tmp);
-                        tblayout2 = (TableLayout) findViewById(R.id.tb2Layout);
-                        tblayout2.setColumnShrinkable(0,true);
-                        tblayout2.setColumnShrinkable(1,true);
-                        tblayout2.setColumnStretchable(0, true);
-                        tblayout2.setColumnStretchable(1, true);
-                        tblayout2.setColumnStretchable(3, true);
-                        tblayout2.setColumnStretchable(4, true);
-
-                        if (!json_read.getBoolean("check")) {//當回傳為false
-                            String reason;
-                            reason = json_read.getString("data");
-                            Toast.makeText(SearchAct.this,reason, Toast.LENGTH_SHORT).show();
-                        }else{
-                            JSONArray j1 = json_read.getJSONArray("data");
-                            JSONArray j2;
-                            row2 = new TableRow[j1.length()];
-                            for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
-                                row2[i] = new TableRow(this);
-                                row2[i].setId(i);
-                                tblayout2.addView(row2[i]);
-                            }
-                            for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
-                                j2 = j1.getJSONArray(i);
-                                TextView[] tw = new TextView[j2.length()];
-                                for(int j=0;j<j2.length()-2;j++){
-                                    tw[j] = new TextView(this);
-                                    tw[j].setText(j2.get(j+2).toString());
-                                    tw[j].setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                    row2[i].addView(tw[j]);
-                                    if(j==0){
-                                        tw[j].setTag(j2.get(0).toString());
-                                        tw[j].setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                TextView t=(TextView)v;
-                                                gotostore(t.getTag().toString());
-                                            }
-                                        });
-                                    }
-                                }
-                                Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                                btn.setText("考慮");
-                                btn.setId(i);
-                                btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
-                                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                btn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Button b=(Button)v;
-                                        try {
-                                            FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
-                                            String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(1)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
-                                            out.write(s.getBytes());
-                                            out.close();
-
-                                            b.setEnabled(false);
-                                        }catch (IOException e){
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                                row2[i].addView(btn);
-                                btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                                btn.setText("吃");
-                                btn.setId(i);
-                                btn.setTag(j2.get(0).toString()+","+j2.get(1).toString()+",");
-                                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                btn.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        ebtn=(Button)v;
-                                        AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
-                                        //串聯呼叫法
-                                        b.setTitle("確認")
-                                                .setMessage("確定要吃這個嗎?")
-                                                .setPositiveButton("GO", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                                                .setNegativeButton("Cancel", null)
-                                                .show();
-                                    }
-                                });
-                                row2[i].addView(btn);
-                            }
-                        }
-                    }else{
-                        Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                    Log.e("Exception","MenuError="+e.toString());
-                }
-            }
-        }
-
-    }
     public void gotoRandomSuggestAct(View v){
         android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
         startActivity(it);
@@ -429,4 +465,3 @@ public class SearchAct extends AppCompatActivity
         }
     }
 }
-

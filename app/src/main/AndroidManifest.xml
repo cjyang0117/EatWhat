@@ -46,10 +46,12 @@
             android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".SearchAct"
-            android:label="@string/search" />
+            android:label="@string/search"
+            android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".recordAct"
-            android:label="紀錄" />
+            android:label="紀錄"
+            android:theme="@style/skinPrimaryDark"/>
         <activity android:name=".userSuggestAct2" />
         <activity android:name=".storeResultAct" />
         <activity
@@ -64,7 +66,7 @@
         <activity
             android:name=".randomSuggestAct"
             android:label="@string/randomSuggest"
-            android:theme="@style/forgotAccPass" />
+            android:theme="@style/skinPrimaryDark" />
         <activity
             android:name=".settingAct"
             android:label="@string/setting"
@@ -76,7 +78,7 @@
         <activity
             android:name=".randomSuggestRul"
             android:label="@string/randomSuggestRul"
-            android:theme="@style/forgotAccPass" />
+            android:theme="@style/skinPrimaryDark" />
         <activity
             android:name=".dbsetUpAct"
             android:label="@string/dbsetUp" />
@@ -105,8 +107,7 @@
         <activity
             android:name=".Pop"
             android:theme="@style/AppTheme.CustomTheme" />
-        <activity android:name=".user_suggest_fragment_one" />
-        <activity android:name=".user_suggest_fragment_two" />
+
     </application>
 
 </manifest>

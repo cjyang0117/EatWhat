@@ -6,18 +6,27 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.AttrRes;
+import android.support.design.widget.TabLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -43,6 +52,9 @@ public class recordAct extends AppCompatActivity
     private boolean change=true, change2=false;
     private boolean isDel=false;
     private Button ebtn,btn;
+    private TabLayout mTabLayout;
+    private Toolbar toolbar;
+    private int[] TollBarTitle = {R.string.consider,R.string.eat};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,11 +83,10 @@ public class recordAct extends AppCompatActivity
 
             if(s!="") {
                 tblayout = (TableLayout) findViewById(R.id.tbLayout);
-                tblayout.setColumnShrinkable(0,true);
                 tblayout.setColumnShrinkable(1,true);
-                tblayout.setColumnStretchable(0, true);
+                tblayout.setColumnShrinkable(2,true);
                 tblayout.setColumnStretchable(1, true);
-                tblayout.setColumnStretchable(3, true);
+                tblayout.setColumnStretchable(2, true);
 
                 count=0;
                 row=new ArrayList<>();
@@ -89,6 +100,10 @@ public class recordAct extends AppCompatActivity
                     idx=s.indexOf(",");
                     mid = s.substring(0, idx);
                     s=s.substring(idx+1);
+
+                    View vv=new View(this);
+                    row.get(count).addView(vv);
+
                     TextView[] tv=new TextView[3];
                     for(int i=0;i<3;i++){
                         idx=s.indexOf(",");
@@ -105,6 +120,9 @@ public class recordAct extends AppCompatActivity
                     }
                     Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
+                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                    btn.setTextColor(Color.WHITE);
+                    btn.setTypeface(null, Typeface.BOLD);
                     btn.setId(count);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -132,8 +150,11 @@ public class recordAct extends AppCompatActivity
 
                                 CheckBox cb;
                                 for (int i = 0; i < row.size(); i++) {
+                                    row.get(i).removeViewAt(0);
+
                                     cb = new CheckBox(recordAct.this);
-                                    row.get(i).addView(cb);
+                                    cb.setButtonTintList(getResources().getColorStateList(R.color.recordCheckbox));
+                                    row.get(i).addView(cb,0);
                                 }
                                 return false;
                             }
@@ -147,156 +168,168 @@ public class recordAct extends AppCompatActivity
                             if(isDel){
                                 for(int i=0;i<row.size();i++){
                                     if(row.get(i).getTag()==tr.getTag()){
-                                        if(((CheckBox)row.get(i).getChildAt(4)).isChecked()){
-                                            ((CheckBox)row.get(i).getChildAt(4)).setChecked(false);
+                                        if(((CheckBox)row.get(i).getChildAt(0)).isChecked()){
+                                            ((CheckBox)row.get(i).getChildAt(0)).setChecked(false);
                                         }else{
-                                            ((CheckBox)row.get(i).getChildAt(4)).setChecked(true);
+                                            ((CheckBox)row.get(i).getChildAt(0)).setChecked(true);
                                         }
                                         break;
                                     }
                                 }
                             }else{
-                                gotostore(tr.getChildAt(0).getTag().toString());
+                                gotostore(tr.getChildAt(1).getTag().toString());
                             }
                         }
                     });
                     tblayout.addView(row.get(count));
                     count++;
                 }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-    public void switchClick(View v){
-        Button b=(Button)v;
-        switch (b.getId()){
-            case R.id.button22:
-                b.setEnabled(false);
-                b=findViewById(R.id.button30);
-                b.setEnabled(true);
-                ScrollView sc=findViewById(R.id.sc1);
-                sc.setVisibility(View.VISIBLE);
-                sc=findViewById(R.id.sc2);
-                sc.setVisibility(View.INVISIBLE);
-                break;
-            case R.id.button30:
-                b.setEnabled(false);
-                b=findViewById(R.id.button22);
-                b.setEnabled(true);
-                ScrollView sc2=findViewById(R.id.sc2);
-                sc2.setVisibility(View.VISIBLE);
-                sc2=findViewById(R.id.sc1);
-                sc2.setVisibility(View.INVISIBLE);
-
-                if(change){
-                    change=false;
-                    if(tblayout2!=null) tblayout2.removeAllViews();
-                    try {
-                        FileInputStream in = openFileInput("eat.txt");
-                        byte[] buffer = new byte[1024];
-                        String s = "";
-                        int idx = in.read(buffer);
-                        while (idx != -1) {
-                            s = s + new String(buffer, 0, idx);
-                            idx = in.read(buffer);
-                        }
-                        in.close();
-
-                        if(s!="") {
-                            tblayout2.setColumnShrinkable(0,true);
-                            tblayout2.setColumnShrinkable(1,true);
-                            tblayout2.setColumnStretchable(0, true);
-                            tblayout2.setColumnStretchable(1, true);
-                            tblayout2.setColumnStretchable(3, true);
-
-                            ArrayList<TableRow> row2=new ArrayList<>();
-                            count2=0;
-                            while (s.contains(",")){
-                                row2.add(new TableRow(this));
-                                final String sid,mid;
-                                idx=s.indexOf(",");
-                                sid = s.substring(0, idx);
-                                s=s.substring(idx+1);
-                                idx=s.indexOf(",");
-                                mid = s.substring(0, idx);
-                                s=s.substring(idx+1);
-                                TextView[] tv=new TextView[3];
-                                for(int i=0;i<3;i++){
-                                    idx=s.indexOf(",");
-                                    tv[i]=new TextView(this);
-                                    tv[i].setText(s.substring(0, idx));
-                                    if(i==0){
-                                        tv[i].setTag(sid);
-                                    }
-                                    s=s.substring(idx+1);
-                                    row2.get(count2).addView(tv[i]);
+        mTabLayout = findViewById(R.id.mTabLayout);
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //考慮or吃
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch(tab.getPosition()){
+                    case 0:
+                        toolbar.setTitle(TollBarTitle[0]);
+                        NestedScrollView sc = findViewById(R.id.sc1);
+                        sc.setVisibility(View.VISIBLE);
+                        sc = findViewById(R.id.sc2);
+                        sc.setVisibility(View.INVISIBLE);
+                        break;
+                    case 1:
+                        toolbar.setTitle(TollBarTitle[1]);
+                        NestedScrollView sc2 = findViewById(R.id.sc2);
+                        sc2.setVisibility(View.VISIBLE);
+                        sc2 = findViewById(R.id.sc1);
+                        sc2.setVisibility(View.INVISIBLE);
+                        if(change){
+                            change=false;
+                            if(tblayout2!=null) tblayout2.removeAllViews();
+                            try {
+                                FileInputStream in = openFileInput("eat.txt");
+                                byte[] buffer = new byte[1024];
+                                String s = "";
+                                int idx = in.read(buffer);
+                                while (idx != -1) {
+                                    s = s + new String(buffer, 0, idx);
+                                    idx = in.read(buffer);
                                 }
-                                btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                                btn.setText("推薦");
-                                btn.setId(count2);
-                                btn.setTag(mid);
-                                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                if(tv[1].getText().toString().equals("-")){
-                                    btn.setEnabled(false);
-                                }else{
-                                    btn.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            if( globalVariable.recmdtime <2) {
-                                                final AlertDialog.Builder b = new AlertDialog.Builder(recordAct.this);
-                                                b.setTitle("確認")
-                                                        .setMessage("確定要推薦這道菜嗎?")
-                                                        .setPositiveButton("GO", new DialogInterface.OnClickListener() {
-                                                            public void onClick(DialogInterface dialog, int id) {
-                                                                json_write = new JSONObject();
-                                                                try {
-                                                                    json_write.put("action", "Recommend");
-                                                                    json_write.put("Mid", btn.getTag());
-                                                                    globalVariable.c.send(json_write);
-                                                                    String tmp = globalVariable.c.receive();
-                                                                    if (tmp != null) {
-                                                                        json_read = new JSONObject(tmp);
-                                                                        String reason = json_read.getString("data");
-                                                                        if (!json_read.getBoolean("check")) {//接收失敗原因
-                                                                        } else {//成功並關閉
-                                                                            btn.setEnabled(false);
-                                                                            globalVariable.recmdtime++;
-                                                                        }
-                                                                        Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                } catch (Exception e) {
-                                                                    e.printStackTrace();
-                                                                }
-                                                            }
-                                                        });
-                                                b.setNegativeButton("Cancel", null);
-                                                b.show();
-                                            }else{
-                                                Toast.makeText(recordAct.this, "本日推薦次數已用完", Toast.LENGTH_SHORT).show();
+                                in.close();
+
+                                if(s!="") {
+                                    tblayout2.setColumnShrinkable(0,true);
+                                    tblayout2.setColumnShrinkable(1,true);
+                                    tblayout2.setColumnStretchable(0, true);
+                                    tblayout2.setColumnStretchable(1, true);
+                                    tblayout2.setColumnStretchable(3, true);
+
+                                    ArrayList<TableRow> row2=new ArrayList<>();
+                                    count2=0;
+                                    while (s.contains(",")){
+                                        row2.add(new TableRow(recordAct.this));
+                                        row2.get(count2).setBackgroundResource(R.drawable.ripple);
+                                        final String sid,mid;
+                                        idx=s.indexOf(",");
+                                        sid = s.substring(0, idx);
+                                        s=s.substring(idx+1);
+                                        idx=s.indexOf(",");
+                                        mid = s.substring(0, idx);
+                                        s=s.substring(idx+1);
+                                        TextView[] tv=new TextView[3];
+                                        for(int i=0;i<3;i++){
+                                            idx=s.indexOf(",");
+                                            tv[i]=new TextView(recordAct.this);
+                                            tv[i].setText(s.substring(0, idx));
+                                            if(i==0){
+                                                tv[i].setTag(sid);
                                             }
+                                            s=s.substring(idx+1);
+                                            row2.get(count2).addView(tv[i]);
                                         }
-                                    });
-                                }
-                                row2.get(count2).addView(btn);
-                                row2.get(count2).setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        TableRow tr=(TableRow)v;
-                                        gotostore(tr.getChildAt(0).getTag().toString());
+                                        btn=new Button(recordAct.this, null, android.R.attr.buttonStyleSmall);
+                                        btn.setText("推薦");
+                                        btn.setTextColor(Color.WHITE);
+                                        btn.setTypeface(null, Typeface.BOLD);
+                                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
+                                        btn.setId(count2);
+                                        btn.setTag(mid);
+                                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        if(tv[1].getText().toString().equals("-")){
+                                            btn.setEnabled(false);
+                                        }else{
+                                            btn.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    if( globalVariable.recmdtime <2) {
+                                                        final AlertDialog.Builder b = new AlertDialog.Builder(recordAct.this);
+                                                        b.setTitle("確認")
+                                                                .setMessage("確定要推薦這道菜嗎?")
+                                                                .setPositiveButton("GO", new DialogInterface.OnClickListener() {
+                                                                    public void onClick(DialogInterface dialog, int id) {
+                                                                        json_write = new JSONObject();
+                                                                        try {
+                                                                            json_write.put("action", "Recommend");
+                                                                            json_write.put("Mid", btn.getTag());
+                                                                            globalVariable.c.send(json_write);
+                                                                            String tmp = globalVariable.c.receive();
+                                                                            btn.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
+                                                                            if (tmp != null) {
+                                                                                json_read = new JSONObject(tmp);
+                                                                                String reason = json_read.getString("data");
+                                                                                if (!json_read.getBoolean("check")) {//接收失敗原因
+                                                                                } else {//成功並關閉
+                                                                                    btn.setEnabled(false);
+                                                                                    globalVariable.recmdtime++;
+                                                                                }
+                                                                                Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
+                                                                            }
+                                                                        } catch (Exception e) {
+                                                                            e.printStackTrace();
+                                                                        }
+                                                                    }
+                                                                });
+                                                        b.setNegativeButton("Cancel", null);
+                                                        b.show();
+                                                    }else{
+                                                        Toast.makeText(recordAct.this, "本日推薦次數已用完", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                        row2.get(count2).addView(btn);
+                                        row2.get(count2).setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                TableRow tr=(TableRow)v;
+                                                gotostore(tr.getChildAt(0).getTag().toString());
+                                            }
+                                        });
+                                        tblayout2.addView(row2.get(count2));
+                                        count2++;
                                     }
-                                });
-                                tblayout2.addView(row2.get(count2));
-                                count2++;
+                                }
+                            }catch (Exception e){
+                                e.printStackTrace();
                             }
                         }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }
+                        break;
                 }
-                break;
-        }
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
+
     public void clearClick(View v){
         AlertDialog.Builder b=new AlertDialog.Builder(this);
         //串聯呼叫法
@@ -314,7 +347,7 @@ public class recordAct extends AppCompatActivity
                 FileOutputStream out = openFileOutput("think.txt", MODE_PRIVATE);
                 String s="";
                 for(int i=0;i<row.size();i++){
-                    s+=row.get(i).getChildAt(0).getTag().toString()+","+row.get(i).getChildAt(1).getTag().toString()+","+((TextView)row.get(i).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+",";
+                    s+=row.get(i).getChildAt(1).getTag().toString()+","+row.get(i).getChildAt(2).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
                 }
                 out.write(s.getBytes());
                 out.close();
@@ -333,7 +366,8 @@ public class recordAct extends AppCompatActivity
                 btn.setVisibility(View.INVISIBLE);
 
                 for (int i = 0; i < row.size(); i++) {
-                    row.get(i).removeViewAt(4);
+                    row.get(i).removeViewAt(0);
+                    row.get(i).addView(new View(this),0);
                 }
                 return true;
             }
@@ -379,7 +413,7 @@ public class recordAct extends AppCompatActivity
     public void onClick(DialogInterface dialog, int which) {
         if(isDel) {
             for (int i = 0; i < row.size(); i++) {
-                if (((CheckBox) row.get(i).getChildAt(4)).isChecked()) {
+                if (((CheckBox) row.get(i).getChildAt(0)).isChecked()) {
                     tblayout.removeView(row.get(i));
                     row.remove(i);
                     i -= 1;
@@ -390,16 +424,17 @@ public class recordAct extends AppCompatActivity
             btn.setVisibility(View.INVISIBLE);
 
             for (int i = 0; i < row.size(); i++) {
-                row.get(i).removeViewAt(4);
+                row.get(i).removeViewAt(0);
+                row.get(i).addView(new View(this),0);
             }
             isDel = false;
         }else{
             try {
                 int i;
                 for(i=0;i<row.size();i++){
-                    if(((Button)row.get(i).getChildAt(3)).getId()==ebtn.getId()){
+                    if(((Button)row.get(i).getChildAt(4)).getId()==ebtn.getId()){
                         FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-                        String s=row.get(i).getChildAt(0).getTag().toString()+","+row.get(i).getChildAt(1).getTag().toString()+","+((TextView)row.get(i).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+",";
+                        String s=row.get(i).getChildAt(1).getTag().toString()+","+row.get(i).getChildAt(2).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
                         out.write(s.getBytes());
                         out.close();
 

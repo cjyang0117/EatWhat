@@ -19,6 +19,7 @@
     <string name="mainAct">主頁</string>
     <string name="userSuggest">用戶推薦</string>
     <string name="followUserSuggest">追蹤用戶\n推薦</string>
+    <string name="_followUserSuggest">追蹤用戶推薦</string>
     <string name="contentSuggest">內容推薦</string>
     <string name="priceSort">依價格排序</string>
     <string name="distanceSort">依距離排序</string>
@@ -64,6 +65,7 @@
     <string name="scooter">騎車去買飯</string>
     <string name="want2eat">現在想吃</string>
     <string name="logout">登出</string>
+    <string name="searchStoreMeal">"搜尋店名、料理"</string>
 
     <string-array name="dist">
         <item>請選擇(不限)</item>

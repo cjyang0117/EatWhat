@@ -3,6 +3,8 @@ package tw.com.flag.eatwhat;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -34,15 +36,15 @@ import java.io.IOException;
 public class userSuggestAct extends AppCompatActivity
         implements DialogInterface.OnClickListener{
     private JSONObject json_read, json_write;
-    private TableLayout tblayout, tblayout2;
+    private TableLayout tblayout;
     private TableRow[] row, row2;
     private GlobalVariable globalVariable;
     private int sp=14;
     private Button ebtn;
     private boolean Switch=true;
-    private TabLayout mTabLayout,mTabLayout2;
+    private TabLayout mTabLayout;
     private Toolbar toolbar;
-    private int[] TollBarTitle = {R.string.userSuggest,R.string.followUserSuggest};
+    private int[] TollBarTitle = {R.string.userSuggest,R.string._followUserSuggest};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,6 @@ public class userSuggestAct extends AppCompatActivity
         row=loadUserData(true, R.id.tbLayout, row);
         row2=loadUserData(false, R.id.tb2Layout, row2);
         mTabLayout = findViewById(R.id.mTabLayout);
-        mTabLayout2 = findViewById(R.id.mTabLayout2);
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
             @Override
@@ -90,25 +91,7 @@ public class userSuggestAct extends AppCompatActivity
         public void onTabReselected(TabLayout.Tab tab) {
         }
     });
-        mTabLayout2.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //排序
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch(tab.getPosition()){
-                    case 0: //價格排序
-                        break;
-                    case 1: //距離排序
-                        break;
-                    case 2: //星級排序
-                        break;
-                }
-            }
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+
 
     }
     private TableRow[] loadUserData(boolean isUser, int tbId, TableRow[] r){
@@ -132,12 +115,21 @@ public class userSuggestAct extends AppCompatActivity
                 r = new TableRow[j1.length()];
                 for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
                     r[i] = new TableRow(this);
+                    r[i].setBackgroundResource(R.drawable.ripple);
                     r[i].setId(i);
                     tblayout.addView(r[i]);
                 }
 
                 for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                     j2 = j1.getJSONArray(i);
+                    r[i].setTag(j2.get(2).toString());
+                    r[i].setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            TableRow t=(TableRow) v;
+                            gotostore(t.getTag().toString());
+                        }
+                    });
                     TextView tw = new TextView(this);
                     tw.setText(j2.get(1).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -152,14 +144,6 @@ public class userSuggestAct extends AppCompatActivity
                     r[i].addView(tw);
                     tw = new TextView(this);
                     tw.setText(j2.get(3).toString());
-                    tw.setTag(j2.get(2).toString());
-                    tw.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            TextView tv = (TextView)v;
-                            gotostore(tv.getTag().toString());
-                        }
-                    });
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
@@ -167,12 +151,16 @@ public class userSuggestAct extends AppCompatActivity
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
                     tw = new TextView(this);
-                    tw.setText(j2.get(9).toString());
+                    String s = "  "+j2.get(9).toString()+"  ";
+                    tw.setText(s);
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
 
                     Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("考慮");
+                    btn.setTextColor(Color.WHITE);
+                    btn.setTypeface(null, Typeface.BOLD);
+                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
                     btn.setId(i);
                     btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
                     btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
@@ -191,6 +179,7 @@ public class userSuggestAct extends AppCompatActivity
                                 out.write(s.getBytes());
                                 out.close();
 
+                                b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                 b.setEnabled(false);
                             }catch (IOException e){
                                 e.printStackTrace();
@@ -200,6 +189,9 @@ public class userSuggestAct extends AppCompatActivity
                     r[i].addView(btn);
                     btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
+                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                    btn.setTextColor(Color.WHITE);
+                    btn.setTypeface(null, Typeface.BOLD);
                     btn.setId(i);
                     btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
                     btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);

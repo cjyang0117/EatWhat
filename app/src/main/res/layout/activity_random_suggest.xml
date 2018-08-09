@@ -1,342 +1,336 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".randomSuggestAct"
-    android:id="@+id/drawer">
-
-    <android.support.constraint.ConstraintLayout
+    android:background="@color/white"
+    tools:context=".randomSuggestAct">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@drawable/toolbar"
+        app:titleTextColor="#9d7f62"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:title="@string/randomSuggest"
+        android:layout_gravity="center"/>
 
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="0dp"
-            android:layout_height="4dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription=""
-            android:layerType="software"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chk6"
-            app:srcCompat="@drawable/dash" />
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:layerType="software"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chk6"
+        app:srcCompat="@drawable/dash" />
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="0dp"
-            android:layout_height="4dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription=""
-            android:layerType="software"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup1"
-            app:srcCompat="@drawable/dash" />
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:layerType="software"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup1"
+        app:srcCompat="@drawable/dash" />
 
-        <TextView
-            android:id="@+id/textView20"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="現在想吃"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="現在不想吃"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
-        <Button
-            android:id="@+id/button68"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="12dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/main2activity_button_activity"
-            android:onClick="gotoResult"
-            android:text="@string/nextStep"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/setDistance"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="128dp"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView20">
-
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:checked="true"
-                android:drawableTop="@drawable/mainfood_selector"
-                android:gravity="center"
-                android:text="@string/mainEat_button"
-                android:textColor="@color/darkgray" />
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/breakfast_selector"
-                android:gravity="center"
-                android:text="@string/breakfast"
-                android:textColor="@color/darkgray" />
-
-            <RadioButton
-                android:id="@+id/radioButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/dessert_selector"
-                android:gravity="center"
-                android:text="@string/dessert"
-                android:textColor="@color/darkgray" />
-        </RadioGroup>
-
-        <CheckBox
-            android:id="@+id/chk1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:button="@null"
-            android:checked="false"
-            android:drawableTop="@drawable/rice_selector"
-            android:gravity="center"
-            android:text="@string/rice"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toStartOf="@+id/chk2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView21" />
-
-        <CheckBox
-            android:id="@+id/chk2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:button="@null"
-            android:drawableTop="@drawable/noodles_selector"
-            android:gravity="center"
-            android:text="@string/noodles"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toStartOf="@+id/chk3"
-            app:layout_constraintStart_toEndOf="@+id/chk1"
-            app:layout_constraintTop_toTopOf="@+id/chk1" />
-
-        <CheckBox
-            android:id="@+id/chk3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:button="@null"
-            android:drawableTop="@drawable/dumpling_selector"
-            android:gravity="center"
-            android:text="@string/dumpling"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toStartOf="@+id/chk4"
-            app:layout_constraintStart_toEndOf="@+id/chk2"
-            app:layout_constraintTop_toTopOf="@+id/chk2" />
-
-        <CheckBox
-            android:id="@+id/chk4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:button="@null"
-            android:drawableTop="@drawable/beef_selector"
-            android:gravity="center"
-            android:text="@string/beef"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/chk3"
-            app:layout_constraintTop_toTopOf="@+id/chk3" />
-
-        <CheckBox
-            android:id="@+id/chk5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:button="@null"
-            android:drawableTop="@drawable/sweet_selector"
-            android:gravity="center"
-            android:text="@string/sweet"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toStartOf="@+id/chk6"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/chk1" />
-
-        <CheckBox
-            android:id="@+id/chk6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:button="@null"
-            android:drawableTop="@drawable/spizy_selector"
-            android:gravity="center"
-            android:text="@string/spicy"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toStartOf="@+id/chk7"
-            app:layout_constraintStart_toEndOf="@+id/chk5"
-            app:layout_constraintTop_toTopOf="@+id/chk5" />
-
-        <CheckBox
-            android:id="@+id/chk7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:button="@null"
-            android:drawableTop="@drawable/fries_selector"
-            android:gravity="center"
-            android:text="@string/fries"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toStartOf="@+id/chk8"
-            app:layout_constraintStart_toEndOf="@+id/chk6"
-            app:layout_constraintTop_toTopOf="@+id/chk6" />
-
-        <CheckBox
-            android:id="@+id/chk8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:button="@null"
-            android:drawableTop="@drawable/fry_selector"
-            android:gravity="center"
-            android:text="@string/fry"
-            android:textColor="@color/darkgray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/chk7"
-            app:layout_constraintTop_toTopOf="@+id/chk7" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView18">
-
-            <RadioButton
-                android:id="@+id/radioButton7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:checked="true"
-                android:drawableTop="@drawable/unlimited_selector"
-                android:gravity="center"
-                android:text="@string/unlimited"
-                android:textColor="@color/darkgray" />
-
-            <RadioButton
-                android:id="@+id/radioButton6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/panda_selector"
-                android:gravity="center"
-                android:text="@string/panda"
-                android:textColor="@color/darkgray" />
-
-            <RadioButton
-                android:id="@+id/radioButton5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/step_selector"
-                android:gravity="center"
-                android:text="@string/step"
-                android:textColor="@color/darkgray" />
-
-            <RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/scooter_selector"
-                android:gravity="center"
-                android:text="@string/scooter"
-                android:textColor="@color/darkgray" />
-        </RadioGroup>
-
-    </android.support.constraint.ConstraintLayout>
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
+    <TextView
+        android:id="@+id/textView20"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/white"
-        app:headerLayout="@layout/header"
-        app:itemIconTint="@color/darkgray"
-        app:itemTextColor="@color/darkgray"
-        app:menu="@menu/drawermenu" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="現在想吃"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-</android.support.v4.widget.DrawerLayout>
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="現在不想吃"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
+    <Button
+        android:id="@+id/button68"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/main2activity_button_activity"
+        android:onClick="gotoResult"
+        android:text="@string/nextStep"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/setDistance"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView20">
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/mainfood_selector"
+            android:gravity="center"
+            android:text="@string/mainEat_button"
+            android:textColor="@color/darkgray" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/breakfast_selector"
+            android:gravity="center"
+            android:text="@string/breakfast"
+            android:textColor="@color/darkgray" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/dessert_selector"
+            android:gravity="center"
+            android:text="@string/dessert"
+            android:textColor="@color/darkgray" />
+    </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/chk1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:button="@null"
+        android:checked="false"
+        android:drawableTop="@drawable/rice_selector"
+        android:gravity="center"
+        android:text="@string/rice"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toStartOf="@+id/chk2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView21" />
+
+    <CheckBox
+        android:id="@+id/chk2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:button="@null"
+        android:drawableTop="@drawable/noodles_selector"
+        android:gravity="center"
+        android:text="@string/noodles"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toStartOf="@+id/chk3"
+        app:layout_constraintStart_toEndOf="@+id/chk1"
+        app:layout_constraintTop_toTopOf="@+id/chk1" />
+
+    <CheckBox
+        android:id="@+id/chk3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:button="@null"
+        android:drawableTop="@drawable/dumpling_selector"
+        android:gravity="center"
+        android:text="@string/dumpling"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toStartOf="@+id/chk4"
+        app:layout_constraintStart_toEndOf="@+id/chk2"
+        app:layout_constraintTop_toTopOf="@+id/chk2" />
+
+    <CheckBox
+        android:id="@+id/chk4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:button="@null"
+        android:drawableTop="@drawable/beef_selector"
+        android:gravity="center"
+        android:text="@string/beef"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/chk3"
+        app:layout_constraintTop_toTopOf="@+id/chk3" />
+
+    <CheckBox
+        android:id="@+id/chk5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:button="@null"
+        android:drawableTop="@drawable/sweet_selector"
+        android:gravity="center"
+        android:text="@string/sweet"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toStartOf="@+id/chk6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chk1" />
+
+    <CheckBox
+        android:id="@+id/chk6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:button="@null"
+        android:drawableTop="@drawable/spizy_selector"
+        android:gravity="center"
+        android:text="@string/spicy"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toStartOf="@+id/chk7"
+        app:layout_constraintStart_toEndOf="@+id/chk5"
+        app:layout_constraintTop_toTopOf="@+id/chk5" />
+
+    <CheckBox
+        android:id="@+id/chk7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:button="@null"
+        android:drawableTop="@drawable/fries_selector"
+        android:gravity="center"
+        android:text="@string/fries"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toStartOf="@+id/chk8"
+        app:layout_constraintStart_toEndOf="@+id/chk6"
+        app:layout_constraintTop_toTopOf="@+id/chk6" />
+
+    <CheckBox
+        android:id="@+id/chk8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:button="@null"
+        android:drawableTop="@drawable/fry_selector"
+        android:gravity="center"
+        android:text="@string/fry"
+        android:textColor="@color/darkgray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/chk7"
+        app:layout_constraintTop_toTopOf="@+id/chk7" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView18">
+
+        <RadioButton
+            android:id="@+id/radioButton7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:drawableTop="@drawable/unlimited_selector"
+            android:gravity="center"
+            android:text="@string/unlimited"
+            android:textColor="@color/darkgray" />
+
+        <RadioButton
+            android:id="@+id/radioButton6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/panda_selector"
+            android:gravity="center"
+            android:text="@string/panda"
+            android:textColor="@color/darkgray" />
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/step_selector"
+            android:gravity="center"
+            android:text="@string/step"
+            android:textColor="@color/darkgray" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/scooter_selector"
+            android:gravity="center"
+            android:text="@string/scooter"
+            android:textColor="@color/darkgray" />
+    </RadioGroup>
+
+</android.support.constraint.ConstraintLayout>
+
