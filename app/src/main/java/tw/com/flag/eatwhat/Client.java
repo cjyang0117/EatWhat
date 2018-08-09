@@ -94,11 +94,10 @@ public class Client extends Thread {
             }
         }
     };
-    public void close() throws JSONException, IOException {
-        /*json_write=new JSONObject();
+    public void close() throws JSONException {
+        json_write=new JSONObject();
         json_write.put("action","close");
-        handler.post(send);*/
-        br.close(); bw.close(); clientSocket.close();
+        handler.post(send);
     }
     public boolean isConnect(){
         if(clientSocket.isConnected()){
