@@ -11,7 +11,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,14 +23,14 @@ public class randomSuggestAct extends AppCompatActivity
    // private Spinner dist, disttime;
     private CheckBox chk;
     private int[] chk_id = {R.id.chk1, R.id.chk2, R.id.chk3, R.id.chk4, R.id.chk5, R.id.chk6, R.id.chk7, R.id.chk8};
+    private int[] k_id = {16, 19, 36, 10, 7, 9, 25, 26};
     //private String[] eatime;int123
-    private int[] eatime={1,2,3};//主食、早餐、點心
+    private int[] eatime={2,1,33};//主食、早餐、點心
     private double[] limit = {100000, 300, 1000, 3000};
     TextView tv;
     Gps gps1;
     RadioGroup radioGroup1;
     RadioGroup radioGroup2;
-
 
 
     @Override
@@ -46,6 +45,11 @@ public class randomSuggestAct extends AppCompatActivity
 
         radioGroup1 = findViewById(R.id.radioGroup1);
         radioGroup2 = findViewById(R.id.radioGroup2);
+
+        for (int id=0;id<chk_id.length;id++) {
+            chk = (CheckBox) findViewById(chk_id[id]);
+            chk.setTag(k_id[id]);
+        }
     }
 
     @Override
@@ -66,7 +70,6 @@ public class randomSuggestAct extends AppCompatActivity
 
     public void gotoResult(android.view.View v){
         try {
-            if (gps1.isGetGPSService()) {
                 //int index = disttime.getSelectedItemPosition();
                 int index = 0;
                 for (int i = 0; i < radioGroup1.getChildCount(); i++) {
@@ -93,18 +96,23 @@ public class randomSuggestAct extends AppCompatActivity
                 json_write.put("Longitude", gps1.getGPSLongitude());//經度
                 json_write.put("Latitude", gps1.getGPSLatitude());//緯度
                 json_write.put("Eatype", time);//主餐1早餐2點心3
-                String[] dont1 = new String[10];
-                int count = 0;
+                int[] dont1 = new int[10];
+                int count =0;
                 for (int id : chk_id) {
                     chk = (CheckBox) findViewById(id);
                     if (chk.isChecked()) {
-                        dont1[count] = chk.getText().toString().trim();//不要吃的口味
+                        dont1[count]= Integer.parseInt(chk.getTag().toString());//不要吃的口味
                         count++;
                     }
                 }
-                String[] dont2 = new String[count];
-                for (int i = 0; i < count; i++) {
-                    dont2[i] = dont1[i];
+                int[] dont2 = new int[count];
+                if(count !=0) {
+                    for (int i = 0; i < count; i++) {
+                        dont2[i] = dont1[i];
+                    }
+                }else{
+                    dont2 = new int[1];
+                    dont2 [0] = -1;
                 }
                 JSONArray j2 = new JSONArray(dont2);
                 json_write.put("Dontwant", j2);
@@ -121,7 +129,6 @@ public class randomSuggestAct extends AppCompatActivity
                         Bundle b = new Bundle();
                         Intent i = new Intent(this, randomSuggestRul.class);
                         b.putString("data", tmp);
-                        b.putInt("check", 1);
                         b.putString("Latitude", String.valueOf(gps1.getGPSLatitude()));
                         b.putString("Longitude", String.valueOf(gps1.getGPSLongitude()));
                         i.putExtras(b);
@@ -139,9 +146,6 @@ public class randomSuggestAct extends AppCompatActivity
                             .setNegativeButton("離開", this)
                             .show();
                 }
-            } else {
-                Toast.makeText(this, "位址尚未取得", Toast.LENGTH_SHORT).show();
-            }
             //tv.setText("經度 : " + gps1.getGPSLatitude() + "  , 緯度 : " + gps1.getGPSLongitude());
         } catch (Exception e) {
             e.printStackTrace();

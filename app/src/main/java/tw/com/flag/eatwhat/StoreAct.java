@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.support.annotation.IntegerRes;
 import android.support.design.widget.Snackbar;
@@ -43,6 +44,7 @@ public class StoreAct extends AppCompatActivity {
     private String tmp;
     double geoLatitude, geoLongitude;
     private RatingBar rb;
+    private LocationManager status;
     Bundle b;
 
     @Override
@@ -57,6 +59,7 @@ public class StoreAct extends AppCompatActivity {
         mname = (TextView)findViewById(R.id.mname);
         rb = (RatingBar)findViewById(R.id.store_ratingbar);
 
+        status = (LocationManager) (this.getSystemService(LOCATION_SERVICE));
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         if(dm.widthPixels<=480){
@@ -104,6 +107,14 @@ public class StoreAct extends AppCompatActivity {
                 public void onClick(View v) {
                     String[] ad = storeaddr.getText().toString().split(":");
                     openMaptw(ad[1]);
+                }
+            });
+            storecell.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
+                @Override
+                public void onClick(View v) {
+                    String[] ad = storecell.getText().toString().split(":");
+                    Intent it = new Intent(Intent.ACTION_VIEW,Uri.parse("tel:"+ad[1]));
+                    startActivity(it);
                 }
             });
             storeLayout = (TableLayout) findViewById(R.id.storeLayout);
@@ -216,13 +227,15 @@ public class StoreAct extends AppCompatActivity {
         startActivity(i);
     }
     public  void openMaptw(String storeaddr){//google map 路徑
-        gps3 = new Gps(this);
-        getGPFromAddress(storeaddr);
-        Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+String.valueOf(gps3.getGPSLatitude())+","+String.valueOf(gps3.getGPSLongitude())+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
-        Intent it = new Intent(Intent.ACTION_VIEW);
-        it.setData(uri);
-        if (it.resolveActivity(getPackageManager()) != null) {
-            startActivity(it);
+        if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) ||status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            gps3 = new Gps(this);
+            getGPFromAddress(storeaddr);
+            Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr=" + String.valueOf(gps3.getGPSLatitude()) + "," + String.valueOf(gps3.getGPSLongitude()) + "&daddr=" + geoLatitude + "," + geoLongitude + "&hl=tw");
+            Intent it = new Intent(Intent.ACTION_VIEW);
+            it.setData(uri);
+            if (it.resolveActivity(getPackageManager()) != null) {
+                startActivity(it);
+            }
         }
     }
     public void getGPFromAddress(String addr) {//地址轉經緯

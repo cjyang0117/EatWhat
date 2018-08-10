@@ -20,15 +20,17 @@ public class questionSuggestAct2 extends AppCompatActivity {
     private JSONObject json_read, json_write;
     private String[] eatime =  {"早餐","點心","正餐","宵夜"};
     private String[] bd =  {"甜","辣","牛肉","豬肉","雞肉","海鮮","漢堡","麵食","炸","煎餅/蛋餅類","吐司","貝果","中式"};
+    private int[] bd_id = {7,9,10,11,12,14,15,19,25,31,32,39,40};
     private String[] mn =  {"牛肉","豬肉","雞肉","羊肉","海鮮","漢堡","米食","鴨肉","粥","麵食","異國料理","咖哩","滷味","日/韓式","炸","鐵板","火鍋","餃子類","中式"};
+    private int[] mn_id = {10,11,12,13,14,15,16,17,18,19,20,21,22,23,25,28,30,36,40};
     private String[] ans = {"牛肉炒飯","火腿炒飯","大麥克"};
     boolean bdroute = false , mnroute = false ,anstrue = false, First ;
     Button[] maintype,osn;
-    String[] like;//放置OK的種類
+    int[] like;//放置OK的種類
     String[][] tmp1;//放置3個答案的資訊
     //String [] storea0,addressa0,sid0,sphone0,star0,storea1,addressa1,sid1,sphone1,star1,storea2,addressa2,sid2,sphone2,star2;
-    String[] sosolike;//放置還好的種類
-    String[] dontlike;//放置NO的種類
+    int[] sosolike;//放置還好的種類
+    int[] dontlike;//放置NO的種類
     String lat,lng;
     Button OK ,soso ,NO ,bf ,ds,im,ne;
     TextView question;//問題
@@ -56,9 +58,9 @@ public class questionSuggestAct2 extends AppCompatActivity {
         lat= b.getString("Latitude");lng =  b.getString("Longitude");
         maintype = new Button[]{bf, ds, im, ne};//早餐,點心,主餐,宵夜
         osn = new Button[]{OK,soso,NO};
-        like = new String[19];
-        sosolike = new String[19];
-        dontlike = new String[19];
+        like = new int[19];
+        sosolike = new int[19];
+        dontlike = new int[19];
 
         setQuestion1();
         OK.setOnClickListener(new View.OnClickListener() {
@@ -68,14 +70,14 @@ public class questionSuggestAct2 extends AppCompatActivity {
                     checkquestion();
                     if(a==0) {
                         if (bdroute) {
-                            like[countlike] = bd[questioncount];//儲存至喜歡陣列
+                            like[countlike] = bd_id[questioncount];//儲存至喜歡陣列
                             score += 2;//分數+2
                             questioncount++;//問題+1
                             countlike++;//喜歡數+1
                             checkbdroute();//判斷是否繼續問問題
                         }
                         if (mnroute) {
-                            like[countlike] = mn[questioncount];
+                            like[countlike] = mn_id[questioncount];
                             score += 2;
                             countlike++;
                             questioncount++;
@@ -96,14 +98,14 @@ public class questionSuggestAct2 extends AppCompatActivity {
                 try {
                     checkquestion();
                     if (bdroute) {
-                        sosolike[countsoso]=bd[questioncount];
+                        sosolike[countsoso]=bd_id[questioncount];
                         countsoso++;
                         questioncount++;
                         score += 1;
                         checkbdroute();
                     }
                     if (mnroute) {
-                        sosolike[countsoso] = mn[questioncount];
+                        sosolike[countsoso] = mn_id[questioncount];
                         countsoso++;
                         questioncount++;
                         score += 1;
@@ -121,13 +123,13 @@ public class questionSuggestAct2 extends AppCompatActivity {
                     checkquestion();
                     if(a==0) {
                         if (bdroute) {
-                            dontlike[countdont] = bd[questioncount];
+                            dontlike[countdont] = bd_id[questioncount];
                             countdont++;
                             questioncount++;
                             checkbdroute();
                         }
                         if (mnroute) {
-                            dontlike[countdont] = mn[questioncount];
+                            dontlike[countdont] = mn_id[questioncount];
                             countdont++;
                             questioncount++;
                             checkmnroute();
@@ -147,14 +149,20 @@ public class questionSuggestAct2 extends AppCompatActivity {
         for(int i=0; i < bd.length; i ++){//洗問題順序
             int b =(int)(Math.random()*12);
             String tmp = bd[b];
+            int tmp1 = bd_id[b];
             bd[b] = bd[i];
             bd[i] = tmp;
+            bd_id[b] = bd_id[i];
+            bd_id[i] = tmp1;
         }
         for(int i=0; i < mn.length; i ++){
             int m =(int)(Math.random()*18);
             String tmp = mn[m];
+            int tmp1 = mn_id[m];
             mn[m] = mn[i];
             mn[i] = tmp;
+            mn_id[m] = mn_id[i];
+            mn_id[i] = tmp1;
         }
         First=true;//判斷是不是第一輪回答用
         questioncount=0;
@@ -237,10 +245,10 @@ public class questionSuggestAct2 extends AppCompatActivity {
             eatype = 1;
         }
         if(zz.getText().toString().equals("點心")){
-            eatype = 2;
+            eatype = 33;
         }
         if(zz.getText().toString().equals("正餐")){
-            eatype = 3;
+            eatype = 2;
         }
         if(zz.getText().toString().equals("宵夜")){
             eatype = 4;
@@ -272,8 +280,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
         }else{//當對於推薦答案點擊OK傳送該資料至答案頁面
             Bundle b = new Bundle();
             Intent i;
-            i = new Intent(this, randomSuggestRul.class);
-            b.putInt("check",2);
+            i = new Intent(this, questionSuggestRul.class);
             b.putString("data1",tmp1[aa][1]);//店名
             b.putString("data2",tmp1[aa][2]);//地址
             b.putString("data5",tmp1[aa][0]);//店號
@@ -316,38 +323,38 @@ public class questionSuggestAct2 extends AppCompatActivity {
                 json_write.put("Eatype",eatype);//主要種類(早餐,點心,主餐,宵夜)
                 First = false;
             }
-            String[] like2 = new String[countlike];
+            int[] like2 = new int[countlike];
             if(countlike!=0){
                 for(int i = 0;i < countlike ; i++){
                     like2[i] = like[i];
                 }
             }else{
-                like2 = new String[1];
-                like2 [0] = "false";
+                like2 = new int[1];
+                like2 [0] = -1;
             }
             JSONArray jlike= new JSONArray(like2);
             json_write.put("Like", jlike);
-            String[] soso2;
+            int[] soso2;
             if(countsoso!=0){
-                soso2 = new String[countsoso];
+                soso2 = new int[countsoso];
                 for(int i = 0;i < countsoso ; i++){
                     soso2[i] = sosolike[i];
                 }
             }else {
-                soso2 = new String[1];
-                soso2 [0] = "false";
+                soso2 = new int[1];
+                soso2 [0] = -1;
             }
             JSONArray jsoso= new JSONArray(soso2);
             json_write.put("Soso", jsoso);
-            String[] dont2;
+            int[] dont2;
             if(countdont!=0) {
-                dont2 = new String[countdont];
+                dont2 = new int[countdont];
                 for (int i = 0; i < countdont; i++) {
                     dont2[i] = dontlike[i];
                 }
             }else {
-                dont2 = new String[1];
-                dont2 [0] = "false";
+                dont2 = new int[1];
+                dont2 [0] = -1;
             }
             JSONArray jdont= new JSONArray(dont2);
             json_write.put("Dont", jdont);
@@ -355,8 +362,8 @@ public class questionSuggestAct2 extends AppCompatActivity {
             globalVariable.c.send(json_write);
             a=2;
             String tmp = globalVariable.c.receive();
-            json_read = new JSONObject(tmp);
             if(tmp!=null) {
+                json_read = new JSONObject(tmp);
                 if (!json_read.getBoolean("check")) {//如果查無資料回到距離限制頁面，重新選擇
                     String reason = json_read.getString("data");
                     Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();

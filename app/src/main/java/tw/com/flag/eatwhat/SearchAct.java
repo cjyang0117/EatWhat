@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -50,6 +51,8 @@ public class SearchAct extends AppCompatActivity
     private android.support.v7.widget.SearchView editText10; //搜尋
     private RadioButton radioButton10,radioButton9,radioButton8;
 
+    private LocationManager status;
+    Gps gps4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +75,15 @@ public class SearchAct extends AppCompatActivity
         }).start();
 
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
+        status = (LocationManager) (this.getSystemService(LOCATION_SERVICE));
 
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         if(dm.widthPixels<=480){
             sp=12;
         }
+
+        gps4 = new Gps(this);
 
         mTabLayout = findViewById(R.id.mTabLayout);
         radioButton10 = findViewById(R.id.radioButton10);
@@ -124,14 +130,27 @@ public class SearchAct extends AppCompatActivity
             public boolean onQueryTextSubmit(String query) {
                 isSort=false;
                 times++;
-                if(times>3){
-                    Toast.makeText(SearchAct.this, "請勿頻繁搜尋", Toast.LENGTH_SHORT).show();
+            if(times>2){
+                AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+                //串聯呼叫法
+                b.setCancelable(false);
+                b.setTitle("提醒")
+                        .setMessage("請勿連續點擊")
+                        .setPositiveButton("OK", null)
+                        .show();
                 }else{
                     if(isStore){
                         try {
                             if(tblayout!=null) tblayout.removeAllViews();
                             json_write=new JSONObject(); //接收店家資料，並動態產生表格顯示
                             json_write.put("action", "show");
+                            if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                                json_write.put("Longitude", gps4.getGPSLongitude());
+                                json_write.put("Latitude", gps4.getGPSLatitude());
+                            }else{
+                                json_write.put("Longitude", 0.0);
+                                json_write.put("Latitude", 0.0);
+                            }
                             json_write.put("data",query);
                             globalVariable.c.send(json_write);
                             String tmp=globalVariable.c.receive();
@@ -250,6 +269,13 @@ public class SearchAct extends AppCompatActivity
                             if(tblayout2!=null) tblayout2.removeAllViews();
                             json_write=new JSONObject();                                //接收店家資料，並動態產生表格顯示
                             json_write.put("action", "show2");
+                            if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                                json_write.put("Longitude", gps4.getGPSLongitude());
+                                json_write.put("Latitude", gps4.getGPSLatitude());
+                            }else{
+                                json_write.put("Longitude", 0.0);
+                                json_write.put("Latitude", 0.0);
+                            }
                             json_write.put("data",query);
                             globalVariable.c.send(json_write);
                             String tmp=globalVariable.c.receive();
@@ -448,6 +474,19 @@ public class SearchAct extends AppCompatActivity
         startActivity(i);
     }
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gps4.delete();
+    }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        gps4.update();
+    }
+
+    @Override
     public void onClick(DialogInterface dialog, int which) {
         try {
             FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
@@ -465,3 +504,4 @@ public class SearchAct extends AppCompatActivity
         }
     }
 }
+

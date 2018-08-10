@@ -58,33 +58,21 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
 
         if (b != null) {//隨機
             try {
-                if(b.getInt("check")!=2) {
-                    JSONObject json_read = new JSONObject(b.getString("data"));
-                    JSONArray j1 = json_read.getJSONArray("data");
-                    JSONArray j2 = new JSONArray();
-                    for (int i = 0; i < j1.length(); i++) {//拆隨機資料
-                        j2 = j1.getJSONArray(i);
-                    }
-                    storename = j2.get(1).toString();//店名
-                    menunum =  j2.get(0).toString().trim();//店號
-                    addr = j2.get(2).toString().trim();//店家地址
-                    cell = j2.get(3).toString();//電話
-                    star = j2.get(4).toString();//星數
-                    num = j2.get(5).toString();//菜號
-                    price = j2.get(7).toString();
-                    textViewmenu.setText(j2.get(6).toString().trim());//菜品
-                    textViewprice.setText( price + "元");//價格
-                }else{//提問
-                    storename = b.getString("data1").toString().trim();//店名
-                    num = b.getString("data8").toString().trim();//菜號
-                    price =b.getString("data4").toString().trim();
-                    menunum =  b.getString("data5").toString().trim();//店號
-                    textViewmenu.setText( b.getString("data3").toString().trim());//菜名
-                    textViewprice.setText(price + "元");//價格
-                    addr =  b.getString("data2").toString().trim();//地址
-                    cell = b.getString("data6").toString().trim();//電話
-                    star =  b.getString("data7").toString().trim();//星數
+                JSONObject json_read = new JSONObject(b.getString("data"));
+                JSONArray j1 = json_read.getJSONArray("data");
+                JSONArray j2 = new JSONArray();
+                for (int i = 0; i < j1.length(); i++) {//拆隨機資料
+                    j2 = j1.getJSONArray(i);
                 }
+                storename = j2.get(1).toString();//店名
+                menunum =  j2.get(0).toString().trim();//店號
+                addr = j2.get(2).toString().trim();//店家地址
+                cell = j2.get(3).toString();//電話
+                star = j2.get(4).toString();//星數
+                num = j2.get(5).toString();//菜號
+                price = j2.get(7).toString();
+                textViewmenu.setText(j2.get(6).toString().trim());//菜品
+                textViewprice.setText("價格" + price + "元");//價格
                 textViewrul.setText(storename);//店名
                 textViewaddr.setText(addr);//地址
                 textViewaddr.setOnClickListener(new View.OnClickListener() {
@@ -203,15 +191,9 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
     public boolean onKeyDown(int keyCode, KeyEvent event)//按返回頁面關閉
     {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(b.getInt("check")!=2){
                 if(!randomSuggestAct.ActivityA.isFinishing()){
                     randomSuggestAct.ActivityA.finish();
                 }
-            }else {
-                if(!questionSuggestAct.Activityqa.isFinishing()){
-                    questionSuggestAct.Activityqa.finish();
-                }
-            }
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
@@ -282,8 +264,4 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
             e.printStackTrace();
         }
     }
-
-
-
-
 }

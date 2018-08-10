@@ -1,10 +1,13 @@
 package tw.com.flag.eatwhat;
 
+import android.app.AlertDialog;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -14,20 +17,11 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-
 import android.view.ViewGroup.LayoutParams;
-import android.widget.RatingBar;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Main2Activity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private GlobalVariable globalVariable;
@@ -38,6 +32,9 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
     String store;
     String[] dish;
 
+    private boolean checkgps=false,random = false,question = false,search = false;
+    private LocationManager status;
+    private String notice;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,42 +61,53 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         para.width = width;
         imageView2.setLayoutParams(para);
 
-        dish = new String[]{"雞腿飯", "魯肉飯", "排骨飯", "水餃", "陽春麵"};
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
-        try {
-            json_write.put("action", "re");
-            globalVariable.c.send(json_write);
-            String tmp = globalVariable.c.receive();
-            json_read = new JSONObject(tmp);
-            if(tmp!=null) {
-                json_read.getString("data");
-                dish = new String[]{"雞腿飯", "魯肉飯", "排骨飯", "水餃", "陽春麵"};
-            }else{
-                Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //commitrate();
+
+        status = (LocationManager) (this.getSystemService(LOCATION_SERVICE));
     }
     public void gotoRandomSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
-        startActivity(it);
+        Checkgps();
+        if(checkgps) {
+            android.content.Intent it = new android.content.Intent(this, randomSuggestAct.class);
+            startActivity(it);
+        }else{
+            notice = "未開啟GPS，隨機推薦功能將無法正常使用，是否開啟？";
+            OpenGps();
+            random=true;
+        }
     }
     public void gotoQuestionSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
-        startActivity(it);
+        Checkgps();
+        if(checkgps) {
+            android.content.Intent it = new android.content.Intent(this, questionSuggestAct.class);
+            startActivity(it);
+        }else{
+            notice = "未開啟GPS，提問推薦功能將無法正常使用，是否開啟？";
+            OpenGps();
+            question = true;
+        }
     }
     public void gotoRecordAct(android.view.View v){
         android.content.Intent it = new android.content.Intent(this,recordAct.class);
         startActivity(it);
     }
     public void gotoSearchAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
-        startActivity(it);
+        Checkgps();
+        if(checkgps) {
+            android.content.Intent it = new android.content.Intent(this, SearchAct.class);
+            startActivity(it);
+        }else{
+            notice = "未開啟GPS，查詢功能將無法提供位置資訊，是否開啟？";
+            OpenGps();
+            search = true;
+        }
     }
     public void gotoUsersuggestAct(View v){
         android.content.Intent it = new android.content.Intent(this,userSuggestAct.class);
+        startActivity(it);
+    }
+    public void gotoContentsuggestAct(View v){
+        android.content.Intent it = new android.content.Intent(this,ContentSuggestAct.class);
         startActivity(it);
     }
     @Override
@@ -117,7 +125,13 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         }
         return super.onOptionsItemSelected(item);
     }
-
+    public void Checkgps(){
+        if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            checkgps = true;
+        } else {
+            checkgps = false;
+        }
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
@@ -147,7 +161,76 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         return false;
 
     }
+    void OpenGps() {
+        if (!checkgps){
+            new AlertDialog.Builder(this,R.style.AlertDialogCustom)
+                    .setMessage(notice)
+                    .setCancelable(true)
+                    .setPositiveButton("開啟", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent it = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivity(it);
+                        }
+                    })
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            checkgps = false;
+                            random = false;
+                            question = false;
+                            if(search){
+                                search = false;
+                                android.content.Intent it = new android.content.Intent(Main2Activity.this, SearchAct.class);
+                                startActivity(it);
+                            }
+                            dialog.dismiss();
+                        }
+                    })
+                    .create()
+                    .show();
+        }
 
+    }
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) ||status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            checkgps = true;
+            if(random) {
+                random = false;
+                Timer timer = new Timer();
+                TimerTask tast = new TimerTask() {
+                    @Override
+                    public void run() {
+                        android.content.Intent it = new android.content.Intent(Main2Activity.this, randomSuggestAct.class);
+                        startActivity(it);
+                    }
+                };
+                timer.schedule(tast, 1000);
+            }else if (question) {
+                question = false;
+                Timer timer = new Timer();
+                TimerTask tast = new TimerTask() {
+                    @Override
+                    public void run() {
+                        android.content.Intent it = new android.content.Intent(Main2Activity.this, questionSuggestAct.class);
+                        startActivity(it);
+                    }
+                };
+                timer.schedule(tast, 1000);
+            }
+        } else{
+            checkgps = false;
+            random = false;
+            question = false;
+            if(search){
+                search = false;
+                android.content.Intent it = new android.content.Intent(Main2Activity.this, SearchAct.class);
+                startActivity(it);
+            }
+        }
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -157,42 +240,4 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
             e.printStackTrace();
         }
     }
-    /*public void commitrate(){
-        final Dialog rankDialog;
-        RatingBar rating ;
-        rankDialog = new Dialog(Main2Activity.this, R.style.FullHeightDialog);
-        rankDialog.setContentView(R.layout.rank_dialog);
-        rankDialog.setCancelable(true);
-        rating = (RatingBar)rankDialog.findViewById(R.id.dialog_ratingbar);
-        rating.setRating(5);
-
-        TextView storename = (TextView)rankDialog.findViewById(R.id.rank_dialog_text1);
-        storename.setText("老八");
-        Spinner myeatlist = (Spinner)rankDialog.findViewById(R.id.myeatlist);
-        ArrayAdapter<String> eatList = new ArrayAdapter<>(Main2Activity.this,android.R.layout.simple_spinner_item,dish);
-        myeatlist.setAdapter(eatList);
-
-        Button skipButton = (Button) rankDialog.findViewById(R.id.rank_dialog_skip);
-        skipButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rankDialog.dismiss();
-            }
-        });
-        Button okButton = (Button) rankDialog.findViewById(R.id.rank_dialog_ok);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        Button recommend = (Button) rankDialog.findViewById(R.id.rank_dialog_recommend);
-        recommend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                rankDialog.dismiss();
-            }
-        });
-        rankDialog.show();
-    }*/
 }
