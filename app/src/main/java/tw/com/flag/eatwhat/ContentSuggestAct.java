@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import java.io.IOException;
 
 public class ContentSuggestAct extends AppCompatActivity
         implements DialogInterface.OnClickListener{
+    static Activity ActivityC;
     private JSONObject json_read, json_write;
     private TableLayout tblayout;
     private TableRow[] row, row2;
@@ -38,7 +40,7 @@ public class ContentSuggestAct extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_suggest);
-
+        ActivityC=this;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸

@@ -1,6 +1,8 @@
 package tw.com.flag.eatwhat;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,7 +17,9 @@ import org.json.JSONObject;
 
 import static android.view.View.VISIBLE;
 
-public class questionSuggestAct2 extends AppCompatActivity {
+public class questionSuggestAct2 extends AppCompatActivity
+        implements DialogInterface.OnClickListener{
+    static Activity ActivityQ2;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
     private String[] eatime =  {"早餐","點心","正餐","宵夜"};
@@ -40,7 +44,7 @@ public class questionSuggestAct2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_suggest_act2);
-
+        ActivityQ2=this;
         b = this.getIntent().getExtras();//接收經緯度
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
@@ -384,7 +388,15 @@ public class questionSuggestAct2 extends AppCompatActivity {
                     showans();
                 }
             }else{
-                Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                AlertDialog.Builder b=new AlertDialog.Builder(this);
+                //串聯呼叫法
+                b.setCancelable(false);
+                b.setTitle("警告")
+                        .setMessage("連線逾時，請重新連線")
+                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                        .setNegativeButton("離開", this)
+                        .show();
             }
         }catch(Exception e) {
             e.printStackTrace();
@@ -423,5 +435,15 @@ public class questionSuggestAct2 extends AppCompatActivity {
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if(which==DialogInterface.BUTTON_POSITIVE) {
+            Intent it = new android.content.Intent(this, MainActivity.class);
+            startActivity(it);
+        }
+        if(!questionSuggestAct.Activityqa.isFinishing()) questionSuggestAct.Activityqa.finish();
+        if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+        this.finish();
     }
 }

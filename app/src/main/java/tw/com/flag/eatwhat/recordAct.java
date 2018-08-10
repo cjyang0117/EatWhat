@@ -1,6 +1,7 @@
 package tw.com.flag.eatwhat;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 
 public class recordAct extends AppCompatActivity
     implements DialogInterface.OnClickListener{
+    static Activity ActivityR;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
     private TableLayout tblayout, tblayout2;
@@ -51,6 +53,7 @@ public class recordAct extends AppCompatActivity
     private int count, count2;
     private boolean change=true, change2=false;
     private boolean isDel=false;
+    private boolean linkout=false;
     private Button ebtn,btn;
     private TabLayout mTabLayout;
     private Toolbar toolbar;
@@ -60,7 +63,7 @@ public class recordAct extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-
+        ActivityR=this;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -288,6 +291,16 @@ public class recordAct extends AppCompatActivity
                                                                                     globalVariable.recmdtime++;
                                                                                 }
                                                                                 Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
+                                                                            }else{
+                                                                                linkout=true;
+                                                                                AlertDialog.Builder b=new AlertDialog.Builder(recordAct.this);
+                                                                                //串聯呼叫法
+                                                                                b.setCancelable(false);
+                                                                                b.setTitle("警告")
+                                                                                        .setMessage("連線逾時，請重新連線")
+                                                                                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                                                                        .setNegativeButton("離開", this)
+                                                                                        .show();
                                                                             }
                                                                         } catch (Exception e) {
                                                                             e.printStackTrace();
@@ -379,6 +392,7 @@ public class recordAct extends AppCompatActivity
         Intent i = new Intent(this, StoreAct.class);
         b.putBoolean("mode", true);
         b.putString("datanum", id);
+        b.putInt("Activity", 6);
         i.putExtras(b);
         startActivity(i);
     }
@@ -411,42 +425,52 @@ public class recordAct extends AppCompatActivity
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        if(isDel) {
-            for (int i = 0; i < row.size(); i++) {
-                if (((CheckBox) row.get(i).getChildAt(0)).isChecked()) {
-                    tblayout.removeView(row.get(i));
-                    row.remove(i);
-                    i -= 1;
-                    change2 = true;
-                }
-            }
-            Button btn = (Button) findViewById(R.id.clearBtn);
-            btn.setVisibility(View.INVISIBLE);
-
-            for (int i = 0; i < row.size(); i++) {
-                row.get(i).removeViewAt(0);
-                row.get(i).addView(new View(this),0);
-            }
-            isDel = false;
-        }else{
-            try {
-                int i;
-                for(i=0;i<row.size();i++){
-                    if(((Button)row.get(i).getChildAt(4)).getId()==ebtn.getId()){
-                        FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-                        String s=row.get(i).getChildAt(1).getTag().toString()+","+row.get(i).getChildAt(2).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
-                        out.write(s.getBytes());
-                        out.close();
-
+        if(!linkout) {
+            if (isDel) {
+                for (int i = 0; i < row.size(); i++) {
+                    if (((CheckBox) row.get(i).getChildAt(0)).isChecked()) {
                         tblayout.removeView(row.get(i));
                         row.remove(i);
-                        change=true; change2=true;
-                        break;
+                        i -= 1;
+                        change2 = true;
                     }
                 }
-            }catch (IOException e){
-                e.printStackTrace();
+                Button btn = (Button) findViewById(R.id.clearBtn);
+                btn.setVisibility(View.INVISIBLE);
+
+                for (int i = 0; i < row.size(); i++) {
+                    row.get(i).removeViewAt(0);
+                    row.get(i).addView(new View(this), 0);
+                }
+                isDel = false;
+            } else {
+                try {
+                    int i;
+                    for (i = 0; i < row.size(); i++) {
+                        if (((Button) row.get(i).getChildAt(4)).getId() == ebtn.getId()) {
+                            FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                            String s = row.get(i).getChildAt(1).getTag().toString() + "," + row.get(i).getChildAt(2).getTag().toString() + "," + ((TextView) row.get(i).getChildAt(1)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(2)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(3)).getText().toString() + ",";
+                            out.write(s.getBytes());
+                            out.close();
+
+                            tblayout.removeView(row.get(i));
+                            row.remove(i);
+                            change = true;
+                            change2 = true;
+                            break;
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+        }else{
+            if(which==DialogInterface.BUTTON_POSITIVE) {
+                Intent it = new android.content.Intent(this, MainActivity.class);
+                startActivity(it);
+            }
+            if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+            this.finish();
         }
     }
 }

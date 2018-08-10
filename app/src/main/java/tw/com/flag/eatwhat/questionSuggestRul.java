@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class questionSuggestRul extends AppCompatActivity implements DialogInterface.OnClickListener{
+        static Activity ActivityQ;
         private GlobalVariable globalVariable;
         TextView textViewrul ,textViewaddr, textViewmenu, textViewprice;
         String addr;
@@ -35,6 +37,7 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            ActivityQ=this;
             setContentView(R.layout.activity_question_suggest_rul);
             textViewrul = (TextView) findViewById(R.id.textViewstore);
             textViewaddr = (TextView)findViewById(R.id.textViewaddr);
@@ -135,6 +138,7 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
             b.putString("datastar", star);
             b.putString("datacell", cell);
             b.putString("dataddr", addr);
+            b.putInt("Activity", 2);
             i.putExtras(b);
             startActivity(i);
         }

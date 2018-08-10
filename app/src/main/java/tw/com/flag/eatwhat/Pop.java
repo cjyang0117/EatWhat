@@ -2,6 +2,7 @@ package tw.com.flag.eatwhat;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.display.DisplayManager;
@@ -25,7 +26,8 @@ import org.json.JSONObject;
 
 import static android.graphics.Color.WHITE;
 
-public class Pop extends Activity{
+public class Pop extends Activity
+        implements DialogInterface.OnClickListener{
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
     private TableLayout storecommit;
@@ -119,12 +121,23 @@ public class Pop extends Activity{
                     json_write.put("Escore", storerate.getRating());
                     globalVariable.c.send(json_write);
                     String tmp = globalVariable.c.receive();
-                    json_read = new JSONObject(tmp);
-                    if (!json_read.getBoolean("check")) {//接收失敗原因
-                        //String reason = json_read.getString("data");
-                        //Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
+                    if(tmp!=null) {
+                        json_read = new JSONObject(tmp);
+                        if (!json_read.getBoolean("check")) {//接收失敗原因
+                            //String reason = json_read.getString("data");
+                            //Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Commented();
+                        }
                     }else{
-                        Commented();
+                        AlertDialog.Builder b=new AlertDialog.Builder(Pop.this);
+                        //串聯呼叫法
+                        b.setCancelable(false);
+                        b.setTitle("警告")
+                                .setMessage("連線逾時，請重新連線")
+                                .setPositiveButton("連線", Pop.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                .setNegativeButton("離開", Pop.this)
+                                .show();
                     }
                 }catch(Exception e) {
                     e.printStackTrace();
@@ -141,26 +154,37 @@ public class Pop extends Activity{
             json_write.put("Id", b.getInt("sid"));
             globalVariable.c.send(json_write);
             String tmp = globalVariable.c.receive();
-            json_read = new JSONObject(tmp);
-            JSONArray j1 = json_read.getJSONArray("Evaluation");
-            JSONArray j2 = new JSONArray();
-            row = new TableRow[j1.length()];
-            for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
-                row[i] = new TableRow(this);
-                row[i].setId(i);
-                storecommit.addView(row[i]);
-            }
-            for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
-                j2 = j1.getJSONArray(i);
-                TextView tw = new TextView(this);
-                tw.setText(j2.get(0).toString());
-                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
-                tw = new TextView(this);
-                tw.setText(j2.get(1).toString());
-                tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
+            if(tmp!=null) {
+                json_read = new JSONObject(tmp);
+                JSONArray j1 = json_read.getJSONArray("Evaluation");
+                JSONArray j2 = new JSONArray();
+                row = new TableRow[j1.length()];
+                for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+                    row[i] = new TableRow(this);
+                    row[i].setId(i);
+                    storecommit.addView(row[i]);
+                }
+                for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                    j2 = j1.getJSONArray(i);
+                    TextView tw = new TextView(this);
+                    tw.setText(j2.get(0).toString());
+                    tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                    tw.setTextColor(Color.BLACK);
+                    row[i].addView(tw);
+                    tw = new TextView(this);
+                    tw.setText(j2.get(1).toString());
+                    tw.setTextColor(Color.BLACK);
+                    row[i].addView(tw);
+                }
+            }else{
+                AlertDialog.Builder b=new AlertDialog.Builder(this);
+                //串聯呼叫法
+                b.setCancelable(false);
+                b.setTitle("警告")
+                        .setMessage("連線逾時，請重新連線")
+                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                        .setNegativeButton("離開", this)
+                        .show();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -188,5 +212,21 @@ public class Pop extends Activity{
             this.finish();
         }
         return super.onKeyDown(keyCode, event);
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if(which==DialogInterface.BUTTON_POSITIVE) {
+            Intent it = new android.content.Intent(this, MainActivity.class);
+            startActivity(it);
+        }
+        if(!randomSuggestRul.ActivityR.isFinishing()) randomSuggestRul.ActivityR.finish();
+        if(!questionSuggestRul.ActivityQ.isFinishing()) questionSuggestRul.ActivityQ.finish();
+        if(!userSuggestAct.ActivityU.isFinishing()) userSuggestAct.ActivityU.finish();
+        if(!SearchAct.ActivityS.isFinishing()) SearchAct.ActivityS.finish();
+        if(!ContentSuggestAct.ActivityC.isFinishing()) ContentSuggestAct.ActivityC.finish();
+        if(!recordAct.ActivityR.isFinishing()) recordAct.ActivityR.finish();
+        if(!StoreAct.ActivityS.isFinishing()) StoreAct.ActivityS.finish();
+        if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+        this.finish();
     }
 }

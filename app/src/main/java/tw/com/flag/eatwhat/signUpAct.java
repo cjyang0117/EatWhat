@@ -1,5 +1,8 @@
 package tw.com.flag.eatwhat;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -95,6 +98,9 @@ public class signUpAct extends AppCompatActivity {
 
     public void gotoSignUpAct2(View v) {//下一步
         try {
+            globalVariable.c = new Client("120.105.161.119", 5050);
+            String tmp = globalVariable.c.receive();
+
             json_write = new JSONObject();
             json_write.put("action", "Signup");//
             String name = editText4.getText().toString();
@@ -118,9 +124,9 @@ public class signUpAct extends AppCompatActivity {
                 Toast.makeText(this, "請檢查密碼", Toast.LENGTH_SHORT).show();
             }else{//無誤則傳資料
                 globalVariable.c.send(json_write);
-                String tmp = globalVariable.c.receive();
-                json_read = new JSONObject(tmp);
+                tmp = globalVariable.c.receive();
                 if(tmp!=null) {
+                    json_read = new JSONObject(tmp);
                     if (!json_read.getBoolean("check")) {//接收失敗原因
                         String reason = json_read.getString("data");
                         Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();

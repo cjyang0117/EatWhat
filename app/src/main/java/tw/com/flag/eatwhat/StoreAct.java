@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -31,7 +32,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-public class StoreAct extends AppCompatActivity {
+public class StoreAct extends AppCompatActivity
+        implements DialogInterface.OnClickListener{
+    static Activity ActivityS;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
     private TextView storename,storeaddr,storecell,mname;
@@ -42,6 +45,7 @@ public class StoreAct extends AppCompatActivity {
     private Gps gps3;
     private Button btn;
     private String tmp;
+    private boolean linkout=false;
     double geoLatitude, geoLongitude;
     private RatingBar rb;
     private LocationManager status;
@@ -51,7 +55,7 @@ public class StoreAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
-
+        ActivityS=this;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
         storename = (TextView)findViewById(R.id.storename);
         storeaddr = (TextView)findViewById(R.id.storeaddr);
@@ -67,145 +71,174 @@ public class StoreAct extends AppCompatActivity {
         }
 
         try {
-        json_write = new JSONObject();
-        b = this.getIntent().getExtras();
-        sid = Integer.parseInt(b.getString("datanum"));//取得店號
-        if(b.getBoolean("mode")){//從搜尋近店家頁面
-            json_write.put("action", "Store2");
-            json_write.put("Id", sid);
-            globalVariable.c.send(json_write);
-            tmp = globalVariable.c.receive();
-            json_read = new JSONObject(tmp);
-            if(tmp!=null) {
-                JSONArray j1 = json_read.getJSONArray("Store");
-                JSONArray j2;
-                for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包
-                    j2 = j1.getJSONArray(i);
-                    storename.setText(j2.get(0).toString());//店名
-                    storeaddr.setText("地址:"+j2.get(1).toString());
-                    storecell.setText("電話:"+j2.get(2).toString());
-                    float starmum = Float.valueOf((j2.get(3).toString()));//星星數
-                    rb.setRating(starmum);//設定星星數
+            json_write = new JSONObject();
+            b = this.getIntent().getExtras();
+            sid = Integer.parseInt(b.getString("datanum"));//取得店號
+            if(b.getBoolean("mode")){//從搜尋近店家頁面
+                json_write.put("action", "Store2");
+                json_write.put("Id", sid);
+                globalVariable.c.send(json_write);
+                tmp = globalVariable.c.receive();
+                if(tmp!=null) {
+                    json_read = new JSONObject(tmp);
+                    JSONArray j1 = json_read.getJSONArray("Store");
+                    JSONArray j2;
+                    for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包
+                        j2 = j1.getJSONArray(i);
+                        storename.setText(j2.get(0).toString());//店名
+                        storeaddr.setText("地址:"+j2.get(1).toString());
+                        storecell.setText("電話:"+j2.get(2).toString());
+                        float starmum = Float.valueOf((j2.get(3).toString()));//星星數
+                        rb.setRating(starmum);//設定星星數
+                    }
+                }else{
+                    linkout=true;
+                    AlertDialog.Builder b=new AlertDialog.Builder(this);
+                    //串聯呼叫法
+                    b.setCancelable(false);
+                    b.setTitle("警告")
+                            .setMessage("連線逾時，請重新連線")
+                            .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                            .setNegativeButton("離開", this)
+                            .show();
                 }
             }
-        }
-        if(!b.getBoolean("mode")){//從隨機、提問進店家頁面
-            storename.setText(b.getString("data"));//店名
-            storeaddr.setText("地址:"+ b.getString("dataddr"));
-            storecell.setText("電話:"+b.getString("datacell"));
-            float starmum = Float.valueOf(b.getString("datastar"));
-            rb.setRating(starmum);
-            json_write.put("action", "Store");
-            json_write.put("Id", sid);
-            globalVariable.c.send(json_write);
-            tmp = globalVariable.c.receive();
-            json_read = new JSONObject(tmp);
-        }
-        if(tmp!=null) {
-            storeaddr.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
-                @Override
-                public void onClick(View v) {
-                    String[] ad = storeaddr.getText().toString().split(":");
-                    openMaptw(ad[1]);
+            if(!linkout) {
+                if (!b.getBoolean("mode")) {//從隨機、提問進店家頁面
+                    storename.setText(b.getString("data"));//店名
+                    storeaddr.setText("地址:" + b.getString("dataddr"));
+                    storecell.setText("電話:" + b.getString("datacell"));
+                    float starmum = Float.valueOf(b.getString("datastar"));
+                    rb.setRating(starmum);
+                    json_write.put("action", "Store");
+                    json_write.put("Id", sid);
+                    globalVariable.c.send(json_write);
+                    tmp = globalVariable.c.receive();
                 }
-            });
-            storecell.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
-                @Override
-                public void onClick(View v) {
-                    String[] ad = storecell.getText().toString().split(":");
-                    Intent it = new Intent(Intent.ACTION_VIEW,Uri.parse("tel:"+ad[1]));
-                    startActivity(it);
-                }
-            });
-            storeLayout = (TableLayout) findViewById(R.id.storeLayout);
-            storeLayout.setColumnShrinkable(0, true);
-            storeLayout.setColumnShrinkable(1, true);
-            storeLayout.setColumnStretchable(0, true);
-            storeLayout.setColumnStretchable(1, true);
-
-            JSONArray j1 = json_read.getJSONArray("Menu");
-            JSONArray j2;
-            mid = new int[j1.length()];
-            row = new TableRow[j1.length()];
-            for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
-                row[i] = new TableRow(this);
-                row[i].setId(i);
-                storeLayout.addView(row[i]);
-            }
-            for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
-                j2 = j1.getJSONArray(i);
-
-                TextView tw = new TextView(this);
-                tw.setText(j2.get(0).toString());//菜名
-                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
-
-                tw = new TextView(this);
-                tw.setText(j2.get(1).toString());//價格
-                tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
-
-                tw = new TextView(this);
-                tw.setText("元");//單位
-                tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
-
-                mid[i]=Integer.parseInt(j2.get(2).toString());
-
-                btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                btn.setText("推薦");
-                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    final int ii = i;
-                    btn.setOnClickListener(new View.OnClickListener() {//推薦按鍵事件
+                if (tmp != null) {
+                    json_read = new JSONObject(tmp);
+                    storeaddr.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
                         @Override
                         public void onClick(View v) {
-                            if( globalVariable.recmdtime <2) {//推薦次數每日2次
-                                AlertDialog.Builder b = new AlertDialog.Builder(StoreAct.this);
-                                b.setTitle("確認")
-                                        .setMessage("確定要推薦這道菜嗎?")
-                                        .setPositiveButton("GO", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                json_write = new JSONObject();
-                                                try {
-                                                    json_write.put("action", "Recommend");
-                                                    json_write.put("Mid", mid[ii]);
-                                                    globalVariable.c.send(json_write);
-                                                    tmp = globalVariable.c.receive();
-                                                    if (tmp != null) {
-                                                        json_read = new JSONObject(tmp);
-                                                        String reason = json_read.getString("data");
-                                                        if (!json_read.getBoolean("check")) {//接收失敗原因
-                                                        } else {
-                                                            btn.setEnabled(false);
-                                                            globalVariable.recmdtime++;
-                                                        }
-                                                        Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
-                                                    }
-                                                } catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        });
-                                b.setNegativeButton("Cancel", null);
-                                b.show();
-                            }else{
-                                Toast.makeText(StoreAct.this, "本日推薦次數已用完", Toast.LENGTH_SHORT).show();
-                            }
+                            String[] ad = storeaddr.getText().toString().split(":");
+                            openMaptw(ad[1]);
                         }
                     });
-                row[i].addView(btn);
-            }
-            Button commit = (Button) findViewById(R.id.commit);
-            commit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    gotoCommit();
+                    storecell.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
+                        @Override
+                        public void onClick(View v) {
+                            String[] ad = storecell.getText().toString().split(":");
+                            Intent it = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + ad[1]));
+                            startActivity(it);
+                        }
+                    });
+                    storeLayout = (TableLayout) findViewById(R.id.storeLayout);
+                    storeLayout.setColumnShrinkable(0, true);
+                    storeLayout.setColumnShrinkable(1, true);
+                    storeLayout.setColumnStretchable(0, true);
+                    storeLayout.setColumnStretchable(1, true);
+
+                    JSONArray j1 = json_read.getJSONArray("Menu");
+                    JSONArray j2;
+                    mid = new int[j1.length()];
+                    row = new TableRow[j1.length()];
+                    for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+                        row[i] = new TableRow(this);
+                        row[i].setId(i);
+                        storeLayout.addView(row[i]);
+                    }
+                    for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                        j2 = j1.getJSONArray(i);
+
+                        TextView tw = new TextView(this);
+                        tw.setText(j2.get(0).toString());//菜名
+                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        tw.setTextColor(Color.BLACK);
+                        row[i].addView(tw);
+
+                        tw = new TextView(this);
+                        tw.setText(j2.get(1).toString());//價格
+                        tw.setTextColor(Color.BLACK);
+                        row[i].addView(tw);
+
+                        tw = new TextView(this);
+                        tw.setText("元");//單位
+                        tw.setTextColor(Color.BLACK);
+                        row[i].addView(tw);
+
+                        mid[i] = Integer.parseInt(j2.get(2).toString());
+
+                        btn = new Button(this, null, android.R.attr.buttonStyleSmall);
+                        btn.setText("推薦");
+                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        final int ii = i;
+                        btn.setOnClickListener(new View.OnClickListener() {//推薦按鍵事件
+                            @Override
+                            public void onClick(View v) {
+                                if (globalVariable.recmdtime < 2) {//推薦次數每日2次
+                                    AlertDialog.Builder b = new AlertDialog.Builder(StoreAct.this);
+                                    b.setTitle("確認")
+                                            .setMessage("確定要推薦這道菜嗎?")
+                                            .setPositiveButton("GO", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int id) {
+                                                    json_write = new JSONObject();
+                                                    try {
+                                                        json_write.put("action", "Recommend");
+                                                        json_write.put("Mid", mid[ii]);
+                                                        globalVariable.c.send(json_write);
+                                                        tmp = globalVariable.c.receive();
+                                                        if (tmp != null) {
+                                                            json_read = new JSONObject(tmp);
+                                                            String reason = json_read.getString("data");
+                                                            if (!json_read.getBoolean("check")) {//接收失敗原因
+                                                            } else {
+                                                                btn.setEnabled(false);
+                                                                globalVariable.recmdtime++;
+                                                            }
+                                                            Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
+                                                        } else {
+                                                            AlertDialog.Builder b = new AlertDialog.Builder(StoreAct.this);
+                                                            //串聯呼叫法
+                                                            b.setCancelable(false);
+                                                            b.setTitle("警告")
+                                                                    .setMessage("連線逾時，請重新連線")
+                                                                    .setPositiveButton("連線", StoreAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                                                    .setNegativeButton("離開", StoreAct.this)
+                                                                    .show();
+                                                        }
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            });
+                                    b.setNegativeButton("Cancel", null);
+                                    b.show();
+                                } else {
+                                    Toast.makeText(StoreAct.this, "本日推薦次數已用完", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        row[i].addView(btn);
+                    }
+                    Button commit = (Button) findViewById(R.id.commit);
+                    commit.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            gotoCommit();
+                        }
+                    });
+                } else {
+                    //Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                    AlertDialog.Builder b = new AlertDialog.Builder(this);
+                    //串聯呼叫法
+                    b.setCancelable(false);
+                    b.setTitle("警告")
+                            .setMessage("連線逾時，請重新連線")
+                            .setPositiveButton("連線", StoreAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                            .setNegativeButton("離開", StoreAct.this)
+                            .show();
                 }
-            });
-        }else{
-            Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
-        }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -258,5 +291,38 @@ public class StoreAct extends AppCompatActivity {
         } else {
             Toast.makeText(this, "未輸入地址", Toast.LENGTH_SHORT).show();
         }
+    }
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if(which==DialogInterface.BUTTON_POSITIVE) {
+            Intent it = new android.content.Intent(this, MainActivity.class);
+            startActivity(it);
+        }
+        if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+
+        switch (b.getInt("Activity")){
+            case 1:
+                if(!randomSuggestRul.ActivityR.isFinishing()) randomSuggestRul.ActivityR.finish();
+                if(!randomSuggestAct.ActivityA.isFinishing()) randomSuggestAct.ActivityA.finish();
+                break;
+            case 2:
+                if(!questionSuggestRul.ActivityQ.isFinishing()) questionSuggestRul.ActivityQ.finish();
+                if(!questionSuggestAct2.ActivityQ2.isFinishing()) questionSuggestAct2.ActivityQ2.finish();
+                if(!questionSuggestAct.Activityqa.isFinishing()) questionSuggestAct.Activityqa.finish();
+                break;
+            case 3:
+                if(!userSuggestAct.ActivityU.isFinishing()) userSuggestAct.ActivityU.finish();
+                break;
+            case 4:
+                if(!SearchAct.ActivityS.isFinishing()) SearchAct.ActivityS.finish();
+                break;
+            case 5:
+                if(!ContentSuggestAct.ActivityC.isFinishing()) ContentSuggestAct.ActivityC.finish();
+                break;
+            case 6:
+                if(!recordAct.ActivityR.isFinishing()) recordAct.ActivityR.finish();
+                break;
+        }
+        this.finish();
     }
 }

@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -35,6 +36,7 @@ import java.io.IOException;
 
 public class userSuggestAct extends AppCompatActivity
         implements DialogInterface.OnClickListener{
+    static Activity ActivityU;
     private JSONObject json_read, json_write;
     private TableLayout tblayout;
     private TableRow[] row, row2;
@@ -42,6 +44,7 @@ public class userSuggestAct extends AppCompatActivity
     private int sp=14;
     private Button ebtn;
     private boolean Switch=true;
+    private boolean linkout=false;
     private TabLayout mTabLayout;
     private Toolbar toolbar;
     private int[] TollBarTitle = {R.string.userSuggest,R.string._followUserSuggest};
@@ -49,7 +52,7 @@ public class userSuggestAct extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_suggest);
-
+        ActivityU=this;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
@@ -59,38 +62,42 @@ public class userSuggestAct extends AppCompatActivity
         }
 
         row=loadUserData(true, R.id.tbLayout, row);
-        row2=loadUserData(false, R.id.tb2Layout, row2);
-        mTabLayout = findViewById(R.id.mTabLayout);
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                switch(tab.getPosition()){
-                    case 0:
-                        toolbar.setTitle(TollBarTitle[0]);
-                        Switch=true;
-                        NestedScrollView sc = findViewById(R.id.sc1);
-                        sc.setVisibility(View.VISIBLE);
-                        sc = findViewById(R.id.sc2);
-                        sc.setVisibility(View.INVISIBLE);
-                        break;
-                    case 1:
-                        toolbar.setTitle(TollBarTitle[1]);
-                        Switch=false;
-                        NestedScrollView sc2 = findViewById(R.id.sc2);
-                        sc2.setVisibility(View.VISIBLE);
-                        sc2 = findViewById(R.id.sc1);
-                        sc2.setVisibility(View.INVISIBLE);
-                        break;
+        if(row!=null) {
+            row2 = loadUserData(false, R.id.tb2Layout, row2);
+            mTabLayout = findViewById(R.id.mTabLayout);
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
+            mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    switch (tab.getPosition()) {
+                        case 0:
+                            toolbar.setTitle(TollBarTitle[0]);
+                            Switch = true;
+                            NestedScrollView sc = findViewById(R.id.sc1);
+                            sc.setVisibility(View.VISIBLE);
+                            sc = findViewById(R.id.sc2);
+                            sc.setVisibility(View.INVISIBLE);
+                            break;
+                        case 1:
+                            toolbar.setTitle(TollBarTitle[1]);
+                            Switch = false;
+                            NestedScrollView sc2 = findViewById(R.id.sc2);
+                            sc2.setVisibility(View.VISIBLE);
+                            sc2 = findViewById(R.id.sc1);
+                            sc2.setVisibility(View.INVISIBLE);
+                            break;
+                    }
                 }
-            }
-        @Override
-        public void onTabUnselected(TabLayout.Tab tab) {
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+                }
+            });
         }
-        @Override
-        public void onTabReselected(TabLayout.Tab tab) {
-        }
-    });
 
 
     }
@@ -212,7 +219,16 @@ public class userSuggestAct extends AppCompatActivity
                 }
                 return r;
             }else{
-                Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                linkout=true;
+                AlertDialog.Builder b=new AlertDialog.Builder(this);
+                //串聯呼叫法
+                b.setCancelable(false);
+                b.setTitle("警告")
+                        .setMessage("連線逾時，請重新連線")
+                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                        .setNegativeButton("離開", this)
+                        .show();
                 return null;
             }
         } catch (Exception e) {
@@ -224,19 +240,28 @@ public class userSuggestAct extends AppCompatActivity
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        try {
-            FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-            String s;
-            if(Switch) {
-                s = ebtn.getTag().toString()+((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
-            }else {
-                s = ebtn.getTag().toString()+((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
+        if(!linkout) {
+            try {
+                FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                String s;
+                if (Switch) {
+                    s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
+                } else {
+                    s = ebtn.getTag().toString() + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
+                }
+                out.write(s.getBytes());
+                out.close();
+                ebtn.setEnabled(false);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            out.write(s.getBytes());
-            out.close();
-            ebtn.setEnabled(false);
-        }catch (IOException e){
-            e.printStackTrace();
+        }else{
+            if(which==DialogInterface.BUTTON_POSITIVE) {
+                Intent it = new android.content.Intent(this, MainActivity.class);
+                startActivity(it);
+            }
+            if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+            this.finish();
         }
     }
     public void commitrate(String name ,int t_uid){
@@ -255,12 +280,25 @@ public class userSuggestAct extends AppCompatActivity
             json_write.put("Id", t_uid);
             globalVariable.c.send(json_write);
             String tmp = globalVariable.c.receive();
-            json_read = new JSONObject(tmp);
-            okButton.setTag(t_uid);
-            if (!json_read.getBoolean("check")) {
-                okButton.setText("追蹤");
+            if(tmp!=null) {
+                json_read = new JSONObject(tmp);
+                okButton.setTag(t_uid);
+                if (!json_read.getBoolean("check")) {
+                    okButton.setText("追蹤");
+                } else {
+                    okButton.setText("取消追蹤");
+                }
+                rankDialog.show();
             }else{
-                okButton.setText("取消追蹤");
+                linkout=true;
+                AlertDialog.Builder b=new AlertDialog.Builder(this);
+                //串聯呼叫法
+                b.setCancelable(false);
+                b.setTitle("警告")
+                        .setMessage("連線逾時，請重新連線")
+                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                        .setNegativeButton("離開", this)
+                        .show();
             }
             okButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -277,16 +315,28 @@ public class userSuggestAct extends AppCompatActivity
                         json_write.put("Id", Integer.parseInt(bt.getTag().toString()));
                         globalVariable.c.send(json_write);
                         String tmp = globalVariable.c.receive();
-                        json_read = new JSONObject(tmp);
-                        if (json_read.getBoolean("check")) {
-                            if(bt.getText().equals("追蹤")){
-                                bt.setText("已追蹤");
-                            }else{
-                                bt.setText("追蹤");
+                        if(tmp!=null) {
+                            json_read = new JSONObject(tmp);
+                            if (json_read.getBoolean("check")) {
+                                if (bt.getText().equals("追蹤")) {
+                                    bt.setText("已追蹤");
+                                } else {
+                                    bt.setText("追蹤");
+                                }
+                                row2 = loadUserData(false, R.id.tb2Layout, row2);
+                            } else {
+                                Toast.makeText(userSuggestAct.this, "操作失敗", Toast.LENGTH_SHORT).show();
                             }
-                            row2=loadUserData(false, R.id.tb2Layout, row2);
                         }else{
-                            Toast.makeText(userSuggestAct.this,"操作失敗",Toast.LENGTH_SHORT).show();
+                            linkout=true;
+                            AlertDialog.Builder b=new AlertDialog.Builder(userSuggestAct.this);
+                            //串聯呼叫法
+                            b.setCancelable(false);
+                            b.setTitle("警告")
+                                    .setMessage("連線逾時，請重新連線")
+                                    .setPositiveButton("連線", userSuggestAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                    .setNegativeButton("離開", userSuggestAct.this)
+                                    .show();
                         }
                     }catch(Exception e) {
                         e.printStackTrace();
@@ -296,13 +346,14 @@ public class userSuggestAct extends AppCompatActivity
         }catch(Exception e) {
             e.printStackTrace();
         }
-        rankDialog.show();
+        //rankDialog.show();
     }
     public void gotostore(String id){
         Bundle b = new Bundle();
         Intent i = new Intent(this, StoreAct.class);
         b.putBoolean("mode", true);
         b.putString("datanum", id);
+        b.putInt("Activity", 3);
         i.putExtras(b);
         startActivity(i);
     }

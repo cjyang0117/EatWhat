@@ -1,6 +1,7 @@
 package tw.com.flag.eatwhat;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -39,12 +40,14 @@ import java.io.IOException;
 
 public class SearchAct extends AppCompatActivity
         implements DialogInterface.OnClickListener{
+    static Activity ActivityS;
     private JSONObject json_read, json_write;
     private GlobalVariable globalVariable;
     private TableRow[] row,row2;
     private int sp=14;
     private TableLayout tblayout, tblayout2;
     private Boolean isStore=true, isSort=false, sort=true;
+    private boolean linkout=false;
     private int times=0;
     private Button ebtn;
     private TabLayout mTabLayout;
@@ -56,6 +59,7 @@ public class SearchAct extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityS=this;
         setContentView(R.layout.activity_search);
 
         new Thread(new Runnable() {
@@ -257,7 +261,16 @@ public class SearchAct extends AppCompatActivity
                                     }
                                 }
                             }else{
-                                Toast.makeText(SearchAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                                linkout=true;
+                                //Toast.makeText(SearchAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                                AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+                                //串聯呼叫法
+                                b.setCancelable(false);
+                                b.setTitle("警告")
+                                        .setMessage("連線逾時，請重新連線")
+                                        .setPositiveButton("連線", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                        .setNegativeButton("離開", SearchAct.this)
+                                        .show();
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -371,7 +384,16 @@ public class SearchAct extends AppCompatActivity
                                     }
                                 }
                             }else{
-                                Toast.makeText(SearchAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(SearchAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                                linkout=true;
+                                AlertDialog.Builder b=new AlertDialog.Builder(SearchAct.this);
+                                //串聯呼叫法
+                                b.setCancelable(false);
+                                b.setTitle("警告")
+                                        .setMessage("連線逾時，請重新連線")
+                                        .setPositiveButton("連線", SearchAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                        .setNegativeButton("離開", SearchAct.this)
+                                        .show();
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -470,6 +492,7 @@ public class SearchAct extends AppCompatActivity
         Intent i = new Intent(this, StoreAct.class);
         b.putBoolean("mode", true);
         b.putString("datanum", id);
+        b.putInt("Activity", 4);
         i.putExtras(b);
         startActivity(i);
     }
@@ -488,19 +511,28 @@ public class SearchAct extends AppCompatActivity
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        try {
-            FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-            String s;
-            if(isStore) {
-                s=ebtn.getTag().toString()+((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + ",-,-,";
-            }else {
-                s=ebtn.getTag().toString()+((TextView) row2[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
+        if(!linkout) {
+            try {
+                FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                String s;
+                if (isStore) {
+                    s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + ",-,-,";
+                } else {
+                    s = ebtn.getTag().toString() + ((TextView) row2[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
+                }
+                out.write(s.getBytes());
+                out.close();
+                ebtn.setEnabled(false);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            out.write(s.getBytes());
-            out.close();
-            ebtn.setEnabled(false);
-        }catch (IOException e){
-            e.printStackTrace();
+        }else{
+            if(which==DialogInterface.BUTTON_POSITIVE) {
+                Intent it = new android.content.Intent(this, MainActivity.class);
+                startActivity(it);
+            }
+            if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+            this.finish();
         }
     }
 }

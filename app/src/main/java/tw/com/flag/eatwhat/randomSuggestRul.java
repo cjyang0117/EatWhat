@@ -1,5 +1,6 @@
 package tw.com.flag.eatwhat;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class randomSuggestRul extends AppCompatActivity implements DialogInterface.OnClickListener{
+    static Activity ActivityR;
     private GlobalVariable globalVariable;
     TextView textViewrul ,textViewaddr, textViewmenu, textViewprice;
     String addr;
@@ -47,6 +49,7 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityR=this;
         setContentView(R.layout.activity_random_suggest_rul);
         textViewrul = (TextView) findViewById(R.id.textViewstore);
         textViewaddr = (TextView)findViewById(R.id.textViewaddr);
@@ -208,6 +211,7 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
         b.putString("datastar", star);
         b.putString("datacell", cell);
         b.putString("dataddr", addr);
+        b.putInt("Activity", 1);
         i.putExtras(b);
         startActivity(i);
     }

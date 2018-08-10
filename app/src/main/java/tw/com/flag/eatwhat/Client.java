@@ -53,7 +53,11 @@ public class Client extends Thread {
             }
         }
         READ_OK=false;
-        return URLDecoder.decode(tmp, "utf-8");
+        if(tmp.contains("timeout")){
+            return null;
+        }else{
+            return URLDecoder.decode(tmp, "utf-8");
+        }
     }
     private Runnable send=new Runnable() { //向Server傳送資料
         @Override
