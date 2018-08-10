@@ -59,6 +59,13 @@
             android:name=".questionSuggestAct2"
             android:label="@string/questionSuggest" />
         <activity
+            android:name=".questionSuggestRul"
+            android:label="@string/questionSuggestRul"
+            android:theme="@style/forgotAccPass"/>
+        <activity
+            android:name=".ContentSuggestAct"
+            android:label="@string/contentSuggest" />
+        <activity
             android:name=".storeInformationAct"
             android:label="@string/storeInformation" />
         <activity
@@ -73,6 +80,7 @@
             android:name=".commentAct"
             android:label="@string/comment"
             android:theme="@style/main2Activity" />
+
         <activity
             android:name=".randomSuggestRul"
             android:label="@string/randomSuggestRul"

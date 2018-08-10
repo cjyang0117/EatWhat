@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -44,6 +45,8 @@ public class SearchAct extends AppCompatActivity
     private Boolean isStore=true, isSort=false, sort=true;
     private int times=0;
     private Button ebtn;
+    private LocationManager status;
+    Gps gps4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +69,15 @@ public class SearchAct extends AppCompatActivity
         }).start();
 
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
+        status = (LocationManager) (this.getSystemService(LOCATION_SERVICE));
 
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         if(dm.widthPixels<=480){
             sp=12;
         }
+
+        gps4 = new Gps(this);
     }
 
     public void storeMenuClick(View v){
@@ -175,6 +181,13 @@ public class SearchAct extends AppCompatActivity
                     if(tblayout!=null) tblayout.removeAllViews();
                     json_write=new JSONObject(); //接收店家資料，並動態產生表格顯示
                     json_write.put("action", "show");
+                    if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                        json_write.put("Longitude", gps4.getGPSLongitude());
+                        json_write.put("Latitude", gps4.getGPSLatitude());
+                    }else{
+                        json_write.put("Longitude", 0.0);
+                        json_write.put("Latitude", 0.0);
+                    }
                     json_write.put("data", ed.getText().toString());
                     globalVariable.c.send(json_write);
                     String tmp=globalVariable.c.receive();
@@ -205,6 +218,7 @@ public class SearchAct extends AppCompatActivity
                                 tw.setText(j2.get(1).toString());
                                 tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                                 tw.setTag(j2.get(0).toString());
+                                String dist = "0.3";
                                 tw.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -224,7 +238,7 @@ public class SearchAct extends AppCompatActivity
                                 TableRow.LayoutParams tlp=(TableRow.LayoutParams) rb.getLayoutParams();
                                 tlp.gravity=Gravity.CENTER_VERTICAL;
                                 tw = new TextView(this);
-                                tw.setText("0.3km");
+                                tw.setText(dist+"km");
                                 tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                                 row[i].addView(tw);
                                 Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
@@ -284,6 +298,13 @@ public class SearchAct extends AppCompatActivity
                     if(tblayout2!=null) tblayout2.removeAllViews();
                     json_write=new JSONObject();                                //接收店家資料，並動態產生表格顯示
                     json_write.put("action", "show2");
+                    if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) || status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                        json_write.put("Longitude", gps4.getGPSLongitude());
+                        json_write.put("Latitude", gps4.getGPSLatitude());
+                    }else{
+                        json_write.put("Longitude", 0.0);
+                        json_write.put("Latitude", 0.0);
+                    }
                     json_write.put("data", ed.getText().toString());
                     globalVariable.c.send(json_write);
                     String tmp=globalVariable.c.receive();
@@ -411,6 +432,19 @@ public class SearchAct extends AppCompatActivity
         i.putExtras(b);
         startActivity(i);
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gps4.delete();
+    }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        gps4.update();
+    }
+
     @Override
     public void onClick(DialogInterface dialog, int which) {
         try {

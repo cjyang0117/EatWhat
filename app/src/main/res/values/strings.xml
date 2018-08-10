@@ -14,7 +14,7 @@
     <string name="email">信箱</string>
     <string name="checkPass">確認密碼</string>
     <string name="nextStep">下一步</string>
-    <string name="inputLikeLevel">請填寫喜好程度</string>
+    <string name="inputLikeLevel">請選擇3個喜歡的口味</string>
     <string name="finish">完成</string>
     <string name="mainAct">主頁</string>
     <string name="userSuggest">用戶推薦</string>
@@ -26,6 +26,7 @@
     <string name="randomSuggest">隨機推薦</string>
     <string name="randomSuggestRul">隨機推薦結果</string>
     <string name="questionSuggest">提問推薦</string>
+    <string name="questionSuggestRul">提問推薦結果</string>
     <string name="record">紀錄</string>
     <string name="followUser">追蹤用戶</string>
     <string name="consider">考慮</string>
