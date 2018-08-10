@@ -14,6 +14,8 @@
     <string name="email">信箱</string>
     <string name="checkPass">確認密碼</string>
     <string name="nextStep">下一步</string>
+    <string name="nextPage">下一頁</string>
+    <string name="prePage">上一頁</string>
     <string name="inputLikeLevel">請選擇3個喜歡的口味</string>
     <string name="finish">完成</string>
     <string name="mainAct">主頁</string>
@@ -55,6 +57,9 @@
     <string name="noodles">麵食</string>
     <string name="rice">米食</string>
     <string name="dumpling">餃子類</string>
+    <string name="burger">漢堡</string>
+    <string name="pot">火鍋</string>
+    <string name="porridge">粥</string>
     <string name="beef">牛肉</string>
     <string name="sweet">甜</string>
     <string name="spicy">辣</string>

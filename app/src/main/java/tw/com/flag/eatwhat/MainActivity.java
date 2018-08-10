@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                     handler.post(wait);
                 } else {//當回傳為true跳轉進入首頁
                     globalVariable.recmdtime = json_read.getInt("recmdTime");
+                    globalVariable.cnum = json_read.getInt("cnum");
                     android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
                     startActivity(it);
 
