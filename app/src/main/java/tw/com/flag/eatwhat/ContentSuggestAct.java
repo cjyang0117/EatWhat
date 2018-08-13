@@ -33,7 +33,7 @@ public class ContentSuggestAct extends AppCompatActivity
     private TableLayout tblayout;
     private TableRow[] row;
     private GlobalVariable globalVariable;
-    private int sp = 14 ,num,idx;
+    private int sp = 14 ,num,idx,tal;
     private Button ebtn;
     private boolean Switch = true;
     private TabLayout mTabLayout;
@@ -74,6 +74,11 @@ public class ContentSuggestAct extends AppCompatActivity
                     Toast.makeText(ContentSuggestAct.this,reason, Toast.LENGTH_SHORT).show();
                 }else{
                     j1 = json_read.getJSONArray("data");
+                    if(tal%5==0){
+                        tal=j1.length()/5;
+                    }else {
+                        tal=(j1.length()/5)+1;
+                    }
                     info(num);
                 }
             } else {
@@ -182,7 +187,7 @@ public class ContentSuggestAct extends AppCompatActivity
         if(num*5<globalVariable.cnum) {
             tblayout.removeAllViews();
             num++;
-            if (num % 10 == 1) {
+            if (num % 10 == 1 && num >tal) {
                 idx++;
                 try {
                     json_write = new JSONObject(); //接收店家資料，並動態產生表格顯示
@@ -202,6 +207,11 @@ public class ContentSuggestAct extends AppCompatActivity
                             for (int i = 0; i < j3.length(); i++) { //合併json封包
                                 j4 = j3.getJSONArray(i);
                                 j1.put(j4);
+                            }
+                            if(tal%5==0){
+                                tal=j1.length()/5;
+                            }else {
+                                tal=(j1.length()/5)+1;
                             }
                             info(num);
                         }
