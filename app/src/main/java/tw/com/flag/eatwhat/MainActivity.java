@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
                 String tmp1 = globalVariable.c.receive();
                 json_read = new JSONObject(tmp1);
                 if (!json_read.getBoolean("Checklogin")) {//當回傳為false
-                    Toast.makeText(MainActivity.this, "請檢查帳密是否錯誤", Toast.LENGTH_SHORT).show();
+                    String reason;
+                    reason = json_read.getString("data");
+                    Toast.makeText(MainActivity.this, reason, Toast.LENGTH_SHORT).show();
                     Button b;
                     for(int i=0;i<btn.length;i++){
                         b=(Button)findViewById(btn[i]);
@@ -116,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
                     editText2.setText("");
                     handler.post(wait);
                 } else {//當回傳為true跳轉進入首頁
+                    String reason;
+                    reason = json_read.getString("data");
+                    Toast.makeText(MainActivity.this, reason, Toast.LENGTH_SHORT).show();
                     globalVariable.recmdtime = json_read.getInt("recmdTime");
                     globalVariable.cnum = json_read.getInt("cnum");
                     android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
