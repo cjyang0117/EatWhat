@@ -137,7 +137,7 @@
         android:layout_marginTop="55dp"
         android:background="@drawable/main2activity_button_activity"
         android:text="重來"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -151,7 +151,7 @@
         android:background="@drawable/sign_up_button_background"
         android:text="考慮"
         android:textColor="#d54c64"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/again"
         app:layout_constraintTop_toBottomOf="@+id/again" />
 
@@ -163,7 +163,7 @@
         android:background="@drawable/forgot_send_button_background"
         android:text="吃"
         android:textColor="#4c8946"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/again"
         app:layout_constraintTop_toBottomOf="@+id/again" />
 

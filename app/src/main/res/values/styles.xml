@@ -40,6 +40,15 @@
         <item name="android:colorControlNormal">#adb59b</item>
     </style>
 
+    <style name="storeInf" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimaryDark">#fae5af</item>
+        <item name="android:textColorPrimary">#b08a4e</item>
+        <item name="colorPrimary">#FFF</item>
+        <item name="colorAccent">#bfada771</item>
+
+    </style>
+
     <style name="search" parent="Widget.AppCompat.Light.SearchView">
         <item name="queryBackground">@color/Transparent</item>
     </style>
@@ -62,7 +71,7 @@
     <style name="FullHeightDialog" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
     </style>
-    <style name="AppTheme.CustomTheme" >
+    <style name="AppTheme.CustomTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowCloseOnTouchOutside">true</item>
     </style>
