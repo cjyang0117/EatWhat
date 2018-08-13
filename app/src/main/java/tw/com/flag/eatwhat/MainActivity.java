@@ -118,9 +118,6 @@ public class MainActivity extends AppCompatActivity {
                     editText2.setText("");
                     handler.post(wait);
                 } else {//當回傳為true跳轉進入首頁
-                    String reason;
-                    reason = json_read.getString("data");
-                    Toast.makeText(MainActivity.this, reason, Toast.LENGTH_SHORT).show();
                     globalVariable.recmdtime = json_read.getInt("recmdTime");
                     globalVariable.cnum = json_read.getInt("cnum");
                     android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
