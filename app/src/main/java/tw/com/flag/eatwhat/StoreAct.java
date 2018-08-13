@@ -196,11 +196,16 @@ public class StoreAct extends AppCompatActivity
                     storeaddr.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
                         @Override
                         public void onClick(View v) {
-                            String[] ad = storeaddr.getText().toString().split(":");
-                            openMaptw(ad[1]);
+                            openMaptw(storeaddr.getText().toString());
                         }
                     });
-
+                    storecell.setOnClickListener(new View.OnClickListener() {//點擊地址導向Google map 事件
+                        @Override
+                        public void onClick(View v) {
+                            Intent it = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:" + storecell.getText().toString()));
+                            startActivity(it);
+                        }
+                    });
                     storeLayout = (TableLayout) findViewById(R.id.storeLayout);
                     storeLayout.setColumnShrinkable(0, true);
                     storeLayout.setColumnShrinkable(1, true);
