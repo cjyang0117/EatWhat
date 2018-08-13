@@ -50,6 +50,7 @@
     <string name="setting">設定</string>
     <string name="newstore">新增店家</string>
     <string name="newmenu">新增菜單</string>
+    <string name="menu">菜單</string>
     <string name="modifystore">修改店家</string>
     <string name="mainEat_button">主餐</string>
     <string name="breakfast">早餐</string>
@@ -72,6 +73,8 @@
     <string name="want2eat">現在想吃</string>
     <string name="logout">登出</string>
     <string name="searchStoreMeal">"搜尋店名、料理"</string>
+    <string name="_comment">"評論"</string>
+    <string name="writeComment">請撰寫簡短的評論</string>
 
     <string-array name="dist">
         <item>請選擇(不限)</item>

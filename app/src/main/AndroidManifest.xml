@@ -52,8 +52,6 @@
             android:name=".recordAct"
             android:label="紀錄"
             android:theme="@style/skinPrimaryDark"/>
-        <activity android:name=".userSuggestAct2" />
-        <activity android:name=".storeResultAct" />
         <activity
             android:name=".questionSuggestAct"
             android:label="@string/questionSuggest" />
@@ -112,7 +110,9 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".StoreAct" />
+        <activity
+            android:name=".StoreAct"
+            android:theme="@style/storeInf"/>
         <activity
             android:name=".Pop"
             android:theme="@style/AppTheme.CustomTheme" />
