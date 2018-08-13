@@ -35,8 +35,10 @@ public class signUpAct2 extends AppCompatActivity implements CompoundButton.OnCh
 
         for(int id : chk_id) {
             ((CheckBox) findViewById(id)).setOnCheckedChangeListener(this);
-            chk = (CheckBox) findViewById(chk_id[id]);
-            chk.setTag(k_id[id]);
+        }
+        for(int i = 0 ;i< chk_id.length ; i++) {
+            chk = (CheckBox) findViewById(chk_id[i]);
+            chk.setTag(k_id[i]);
         }
     }
     int items =0;

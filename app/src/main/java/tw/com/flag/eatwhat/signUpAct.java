@@ -21,7 +21,7 @@ public class signUpAct extends AppCompatActivity {
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
     ImageView img2, img3;
-    EditText editText4, editText5, editText6, editText7, editText8;
+    EditText editText4, editText5, editText6, editText7, editText8, editText9;
     boolean a = false, b = false, c = false;
     TextView tint;
 
@@ -36,6 +36,7 @@ public class signUpAct extends AppCompatActivity {
         editText6 = (EditText) findViewById(R.id.editText6);
         editText7 = (EditText) findViewById(R.id.editText7);
         editText8 = (EditText) findViewById(R.id.editText8);
+        editText9 = (EditText) findViewById(R.id.editText9);
         tint = (TextView) findViewById(R.id.tint);
 
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
@@ -59,6 +60,23 @@ public class signUpAct extends AppCompatActivity {
         });
 
         editText6.addTextChangedListener(new TextWatcher() {  //檢查帳號不得為空值
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (editText6.getText().toString().trim().length() > 0) {
+                    tint.setText("");
+                    b = true;
+                } else{
+                    tint.setText("不得為空");
+                    b=false;
+                }
+            }
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+        editText9.addTextChangedListener(new TextWatcher() {  //檢查帳號不得為空值
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
@@ -111,7 +129,7 @@ public class signUpAct extends AppCompatActivity {
             json_write.put("Saccount", account);
             String password = editText7.getText().toString();
             json_write.put("Spassword", password);
-            String uname = "321";
+            String uname = editText9.getText().toString();
             json_write.put("Uname", uname);
             String uphone = "321";
             json_write.put("Uphone", uphone);

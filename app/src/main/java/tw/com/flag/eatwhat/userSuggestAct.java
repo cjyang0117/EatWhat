@@ -43,7 +43,7 @@ public class userSuggestAct extends AppCompatActivity
     private GlobalVariable globalVariable;
     private int sp=14;
     private Button ebtn;
-    private boolean Switch=true;
+    private boolean Switch=true,track = true;
     private boolean linkout=false;
     private TabLayout mTabLayout;
     private Toolbar toolbar;
@@ -283,10 +283,12 @@ public class userSuggestAct extends AppCompatActivity
             if(tmp!=null) {
                 json_read = new JSONObject(tmp);
                 okButton.setTag(t_uid);
-                if (!json_read.getBoolean("check")) {
-                    okButton.setText("追蹤");
-                } else {
+                if (json_read.getBoolean("check")) {
                     okButton.setText("取消追蹤");
+                    track = false;
+                } else {
+                    okButton.setText("追蹤");
+                    track = true;
                 }
                 rankDialog.show();
             }else{
@@ -307,9 +309,11 @@ public class userSuggestAct extends AppCompatActivity
                         Button bt = (Button)v;
                         json_write = new JSONObject();
                         json_write.put("action", "Track");
-                        if(!json_read.getBoolean("check")){
+                        if(track){
+                            track = false;
                             json_write.put("isTrack", false);
                         }else{
+                            track = true;
                             json_write.put("isTrack", true);
                         }
                         json_write.put("Id", Integer.parseInt(bt.getTag().toString()));
@@ -319,7 +323,7 @@ public class userSuggestAct extends AppCompatActivity
                             json_read = new JSONObject(tmp);
                             if (json_read.getBoolean("check")) {
                                 if (bt.getText().equals("追蹤")) {
-                                    bt.setText("已追蹤");
+                                    bt.setText("取消追蹤");
                                 } else {
                                     bt.setText("追蹤");
                                 }

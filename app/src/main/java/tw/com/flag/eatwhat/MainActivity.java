@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(it);
     }
     public void gotosignUpAct(android.view.View v){//註冊
-        android.content.Intent it = new android.content.Intent(this, signUpAct2.class);
+        android.content.Intent it = new android.content.Intent(this, signUpAct.class);
         //android.content.Intent it = new android.content.Intent(this,signUpAct.class);
         startActivity(it);
     }
