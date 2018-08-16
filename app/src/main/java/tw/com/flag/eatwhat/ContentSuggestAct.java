@@ -2,6 +2,7 @@ package tw.com.flag.eatwhat;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +10,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,6 +19,7 @@ import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,9 +31,9 @@ import org.json.JSONObject;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class ContentSuggestAct extends AppCompatActivity
-        implements DialogInterface.OnClickListener {
+public class ContentSuggestAct extends AppCompatActivity implements DialogInterface.OnClickListener{
     static Activity ActivityC;
+    static Context Acontext;
     private JSONObject json_read, json_write;
     private JSONArray j1;
     private TableLayout tblayout;
@@ -42,22 +46,20 @@ public class ContentSuggestAct extends AppCompatActivity
     private TabLayout mTabLayout;
     private Toolbar toolbar;
     private Button next;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter recyclerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_content_suggest);
+
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        Acontext = this.getApplicationContext();
         ActivityC=this;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
-        next = (Button)findViewById(R.id.buttondown);
         num=1;
         idx=0;
-        DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
-        getWindowManager().getDefaultDisplay().getMetrics(dm);
-        if (dm.widthPixels <= 480) {
-            sp = 12;
-        }
-        mTabLayout = findViewById(R.id.mTabLayout);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         try {
             json_write = new JSONObject(); //接收店家資料，並動態產生表格顯示
             json_write.put("action", "Content");
@@ -66,11 +68,6 @@ public class ContentSuggestAct extends AppCompatActivity
             String tmp = globalVariable.c.receive();
             if (tmp != null) {
                 json_read = new JSONObject(tmp);
-                tblayout = (TableLayout) findViewById(R.id.tbLayout);
-                tblayout.setColumnShrinkable(0, true);
-                tblayout.setColumnShrinkable(1, true);
-                tblayout.setColumnStretchable(0, true);
-                tblayout.setColumnStretchable(1, true);
                 if (!json_read.getBoolean("check")) {//當回傳為false
                     String reason;
                     reason = json_read.getString("data");
@@ -102,88 +99,9 @@ public class ContentSuggestAct extends AppCompatActivity
         }
     }
     public void info(int pagenum){
-        try {
-            JSONArray j2;
-            row = new TableRow[5];
-            for (int i = 0; i < 5; i++) { //動態產生TableRow
-                row[i] = new TableRow(ContentSuggestAct.this);
-                row[i].setBackgroundResource(R.drawable.ripple);
-                row[i].setId(i);
-                tblayout.addView(row[i]);
-            }
-            for (int i = (pagenum-1)*5; i < pagenum*5; i++) { //拆解接收的JSON包並製作表格顯示
-                j2 = j1.getJSONArray(i);
-                row[i%5].setTag(j2.get(0).toString());
-                row[i%5].setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        TableRow t=(TableRow) v;
-                        gotostore(t.getTag().toString());
-                    }
-                });
-                TextView tw = new TextView(ContentSuggestAct.this);
-                tw.setText(j2.get(1).toString());
-                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                row[i%5].addView(tw);
-                tw = new TextView(ContentSuggestAct.this);
-                tw.setText(j2.get(6).toString());
-                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                row[i%5].addView(tw);
-                tw = new TextView(ContentSuggestAct.this);
-                tw.setText(j2.get(7).toString());
-                tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                row[i%5].addView(tw);
-                Button btn = new Button(ContentSuggestAct.this, null, android.R.attr.buttonStyleSmall);
-                btn.setText("考慮");
-                btn.setTypeface(null, Typeface.BOLD);
-                btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
-                btn.setId(i);
-                btn.setTag(j2.get(0).toString() + "," + j2.get(5).toString() + ",");
-                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Button b = (Button) v;
-                        try {
-                            FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
-                            String s = b.getTag().toString() + ((TextView) row[b.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + ",";
-                            out.write(s.getBytes());
-                            out.close();
-
-                            b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
-                            b.setEnabled(false);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                row[i%5].addView(btn);
-                btn = new Button(ContentSuggestAct.this, null, android.R.attr.buttonStyleSmall);
-                btn.setText("吃");
-                btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
-                btn.setTypeface(null, Typeface.BOLD);
-                btn.setId(i);
-                btn.setTag(j2.get(0).toString() + "," + j2.get(5).toString() + ",");
-                btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ebtn = (Button) v;
-                        AlertDialog.Builder b = new AlertDialog.Builder(ContentSuggestAct.this);
-                        //串聯呼叫法
-                        b.setTitle("確認")
-                                .setMessage("確定要吃這個嗎?")
-                                .setPositiveButton("GO", ContentSuggestAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                                .setNegativeButton("Cancel", null)
-                                .show();
-                    }
-                });
-                row[i%5].addView(btn);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("Exception", "ContentError=" + e.toString());
-        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerAdapter = new RecyclerViewAdapter(j1);
+        recyclerView.setAdapter(recyclerAdapter);
     }
 
     public void prepage(View view) {
@@ -251,6 +169,15 @@ public class ContentSuggestAct extends AppCompatActivity
         }
     }
 
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event)//按返回頁面關閉
+    {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            this.finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     public void onClick(DialogInterface dialog, int which) {
         if(!linkout) {
@@ -272,20 +199,5 @@ public class ContentSuggestAct extends AppCompatActivity
             if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
             this.finish();
         }
-    }
-    public void gotostore(String id){
-        Bundle b = new Bundle();
-        Intent i = new Intent(this, StoreAct.class);
-        b.putBoolean("mode", true);
-        b.putString("datanum", id);
-        i.putExtras(b);
-        startActivity(i);
-    }
-    public boolean onKeyDown(int keyCode, KeyEvent event)//按返回頁面關閉
-    {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            this.finish();
-        }
-        return super.onKeyDown(keyCode, event);
     }
 }

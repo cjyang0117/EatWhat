@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/row"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ripple">
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/line"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/c1" />
+
+    <TextView
+        android:id="@+id/m1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="菜名"
+        android:textColor="#1e0e0e"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/p1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="$100"
+        android:textColor="@color/colorGrapeFruitDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/m1" />
+
+    <TextView
+        android:id="@+id/s1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="2dp"
+        android:text="店名"
+        android:textColor="#7f7e7e"
+        app:layout_constraintBottom_toBottomOf="@+id/r1"
+        app:layout_constraintStart_toStartOf="@+id/m1" />
+
+    <RatingBar
+        android:id="@+id/r1"
+        style="?android:attr/ratingBarStyleIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:numStars="5"
+        android:progressBackgroundTint="#E67C4C"
+        android:progressTint="#E67C4C"
+        android:rating="0"
+        android:stepSize="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/p1" />
+
+    <Button
+        android:id="@+id/e1"
+        android:layout_width="56dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/menu_c"
+        android:gravity="left|center"
+        android:paddingLeft="15dp"
+        android:text="@string/eat"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toEndOf="@+id/c1"
+        app:layout_constraintTop_toBottomOf="@+id/r1" />
+
+    <Button
+        android:id="@+id/c1"
+        android:layout_width="56dp"
+        android:layout_height="32dp"
+        android:background="@drawable/menu_c"
+        android:gravity="left|center"
+        android:paddingLeft="10dp"
+        android:text="@string/consider"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.303"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/e1" />
+
+</android.support.constraint.ConstraintLayout>
