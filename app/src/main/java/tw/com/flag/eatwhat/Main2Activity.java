@@ -19,6 +19,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.view.ViewGroup.LayoutParams;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.json.JSONObject;
 import java.util.Timer;
 import java.util.TimerTask;

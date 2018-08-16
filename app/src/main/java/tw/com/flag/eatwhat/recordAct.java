@@ -263,57 +263,57 @@ public class recordAct extends AppCompatActivity
                                         btn.setId(count2);
                                         btn.setTag(mid);
                                         btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                                        btn.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                final Button bt=(Button)v;
+                                                if( globalVariable.recmdtime <2) {
+                                                    final AlertDialog.Builder b = new AlertDialog.Builder(recordAct.this);
+                                                    b.setTitle("確認")
+                                                            .setMessage("確定要推薦這道菜嗎?")
+                                                            .setPositiveButton("GO", new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                    json_write = new JSONObject();
+                                                                    try {
+                                                                        json_write.put("action", "Recommend");
+                                                                        json_write.put("Mid", bt.getTag());
+                                                                        globalVariable.c.send(json_write);
+                                                                        String tmp = globalVariable.c.receive();
+                                                                        bt.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
+                                                                        if (tmp != null) {
+                                                                            json_read = new JSONObject(tmp);
+                                                                            String reason = json_read.getString("data");
+                                                                            if (!json_read.getBoolean("check")) {//接收失敗原因
+                                                                            } else {//成功並關閉
+                                                                                bt.setEnabled(false);
+                                                                                globalVariable.recmdtime++;
+                                                                            }
+                                                                            Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
+                                                                        }else{
+                                                                            linkout=true;
+                                                                            AlertDialog.Builder b=new AlertDialog.Builder(recordAct.this);
+                                                                            //串聯呼叫法
+                                                                            b.setCancelable(false);
+                                                                            b.setTitle("警告")
+                                                                                    .setMessage("連線逾時，請重新連線")
+                                                                                    .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                                                                    .setNegativeButton("離開", this)
+                                                                                    .show();
+                                                                        }
+                                                                    } catch (Exception e) {
+                                                                        e.printStackTrace();
+                                                                    }
+                                                                }
+                                                            });
+                                                    b.setNegativeButton("Cancel", null);
+                                                    b.show();
+                                                }else{
+                                                    Toast.makeText(recordAct.this, "本日推薦次數已用完", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
                                         if(tv[1].getText().toString().equals("-")){
                                             btn.setEnabled(false);
-                                        }else{
-                                            btn.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    if( globalVariable.recmdtime <2) {
-                                                        final AlertDialog.Builder b = new AlertDialog.Builder(recordAct.this);
-                                                        b.setTitle("確認")
-                                                                .setMessage("確定要推薦這道菜嗎?")
-                                                                .setPositiveButton("GO", new DialogInterface.OnClickListener() {
-                                                                    public void onClick(DialogInterface dialog, int id) {
-                                                                        json_write = new JSONObject();
-                                                                        try {
-                                                                            json_write.put("action", "Recommend");
-                                                                            json_write.put("Mid", btn.getTag());
-                                                                            globalVariable.c.send(json_write);
-                                                                            String tmp = globalVariable.c.receive();
-                                                                            btn.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
-                                                                            if (tmp != null) {
-                                                                                json_read = new JSONObject(tmp);
-                                                                                String reason = json_read.getString("data");
-                                                                                if (!json_read.getBoolean("check")) {//接收失敗原因
-                                                                                } else {//成功並關閉
-                                                                                    btn.setEnabled(false);
-                                                                                    globalVariable.recmdtime++;
-                                                                                }
-                                                                                Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
-                                                                            }else{
-                                                                                linkout=true;
-                                                                                AlertDialog.Builder b=new AlertDialog.Builder(recordAct.this);
-                                                                                //串聯呼叫法
-                                                                                b.setCancelable(false);
-                                                                                b.setTitle("警告")
-                                                                                        .setMessage("連線逾時，請重新連線")
-                                                                                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                                                                                        .setNegativeButton("離開", this)
-                                                                                        .show();
-                                                                            }
-                                                                        } catch (Exception e) {
-                                                                            e.printStackTrace();
-                                                                        }
-                                                                    }
-                                                                });
-                                                        b.setNegativeButton("Cancel", null);
-                                                        b.show();
-                                                    }else{
-                                                        Toast.makeText(recordAct.this, "本日推薦次數已用完", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                }
-                                            });
                                         }
                                         row2.get(count2).addView(btn);
                                         row2.get(count2).setOnClickListener(new View.OnClickListener() {
@@ -452,7 +452,29 @@ public class recordAct extends AppCompatActivity
                             String s = row.get(i).getChildAt(1).getTag().toString() + "," + row.get(i).getChildAt(2).getTag().toString() + "," + ((TextView) row.get(i).getChildAt(1)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(2)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(3)).getText().toString() + ",";
                             out.write(s.getBytes());
                             out.close();
-
+                            json_write = new JSONObject();
+                            json_write.put("action", "eat");
+                            json_write.put("mid", Integer.parseInt(row.get(i).getChildAt(2).getTag().toString()));
+                            globalVariable.c.send(json_write);
+                            String tmp = globalVariable.c.receive();
+                            if(tmp != null) {
+                                json_read = new JSONObject(tmp);
+                                if (!json_read.getBoolean("check")) {
+                                    String reason;
+                                    reason = json_read.getString("data");
+                                    Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+                                linkout=true;
+                                AlertDialog.Builder b=new AlertDialog.Builder(recordAct.this);
+                                //串聯呼叫法
+                                b.setCancelable(false);
+                                b.setTitle("警告")
+                                        .setMessage("連線逾時，請重新連線")
+                                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                        .setNegativeButton("離開", this)
+                                        .show();
+                            }
                             tblayout.removeView(row.get(i));
                             row.remove(i);
                             change = true;
@@ -460,7 +482,7 @@ public class recordAct extends AppCompatActivity
                             break;
                         }
                     }
-                } catch (IOException e) {
+                }catch (Exception e){
                     e.printStackTrace();
                 }
             }

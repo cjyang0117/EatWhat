@@ -7,8 +7,6 @@
     android:background="@drawable/forgot_background"
     tools:context=".forgotAccPassAct">
 
-
-
     <EditText
         android:id="@+id/editText3"
         android:layout_width="0dp"

@@ -70,9 +70,6 @@
             android:theme="@style/skinPrimaryDark"
             />
         <activity
-            android:name=".storeInformationAct"
-            android:label="@string/storeInformation" />
-        <activity
             android:name=".randomSuggestAct"
             android:label="@string/randomSuggest"
             android:theme="@style/skinPrimaryDark" />

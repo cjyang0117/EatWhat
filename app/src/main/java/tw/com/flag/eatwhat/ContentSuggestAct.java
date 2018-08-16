@@ -259,9 +259,34 @@ public class ContentSuggestAct extends AppCompatActivity
                 String s;
                 s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
                 out.write(s.getBytes());
+                String[] ad = ebtn.getTag().toString().split(",");
+                json_write = new JSONObject();
+                json_write.put("action", "eat");
+                json_write.put("mid", Integer.parseInt(ad[1]));
+                globalVariable.c.send(json_write);
+                String tmp = globalVariable.c.receive();
+                if(tmp != null) {
+                    json_read = new JSONObject(tmp);
+                    if (!json_read.getBoolean("check")) {
+                        String reason;
+                        reason = json_read.getString("data");
+                        Toast.makeText(ContentSuggestAct.this, reason, Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    linkout=true;
+                    AlertDialog.Builder b=new AlertDialog.Builder(ContentSuggestAct.this);
+                    //串聯呼叫法
+                    b.setCancelable(false);
+                    b.setTitle("警告")
+                            .setMessage("連線逾時，請重新連線")
+                            .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                            .setNegativeButton("離開", this)
+                            .show();
+                }
                 out.close();
+
                 ebtn.setEnabled(false);
-            } catch (IOException e) {
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }else{

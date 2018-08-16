@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -18,6 +19,9 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 import android.Manifest;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserInfo;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -35,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private GlobalVariable globalVariable;
     private HandlerThread handlerThread;
     private Handler handler;
+    private FirebaseAuth auth;
     String tmp;
 
     @Override
@@ -61,24 +66,13 @@ public class MainActivity extends AppCompatActivity {
             editText2.setText(pass_str);
             login();
         }
-
-        /*checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {//監聽是否有選擇記錄帳密
-                if (checkBox.isChecked()) {
-                    sp.edit().putBoolean("ISCHECK", true).commit();
-                }else {
-                    sp.edit().putBoolean("ISCHECK", false).commit();
-                }
-            }
-        });*/
-
     }
     public void gotoforgotAccPass(android.view.View v){//忘記帳密
         android.content.Intent it = new android.content.Intent(this,forgotAccPassAct.class);
         startActivity(it);
     }
     public void gotosignUpAct(android.view.View v){//註冊
-        android.content.Intent it = new android.content.Intent(this, signUpAct2.class);
+        android.content.Intent it = new android.content.Intent(this, signUpAct.class);
         //android.content.Intent it = new android.content.Intent(this,signUpAct.class);
         startActivity(it);
     }
@@ -120,16 +114,42 @@ public class MainActivity extends AppCompatActivity {
                 } else {//當回傳為true跳轉進入首頁
                     globalVariable.recmdtime = json_read.getInt("recmdTime");
                     globalVariable.cnum = json_read.getInt("cnum");
-                    android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
-                    startActivity(it);
+                    String Email = json_read.getString("mail");
+                    auth = FirebaseAuth.getInstance();
+                    auth.signInWithEmailAndPassword(Email, password);
+                    /*String emailverified = null;
+                    if (auth.getCurrentUser() != null) {
+                        for (UserInfo profile : auth.getCurrentUser().getProviderData()) {
+                            emailverified = profile.getEmail();
+                        };
+                    }*/
+                    if(FirebaseAuth.getInstance().getCurrentUser()!= null){
+                        if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
+                            Toast.makeText(MainActivity.this,"請前往信箱開通帳號",Toast.LENGTH_LONG).show();
+                            try {
+                                globalVariable.c.close();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
+                            startActivity(it);
+                            sp.edit().putBoolean("ISCHECK", true).commit();
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("USER_NAME", account);
+                            editor.putString("PASSWORD", password);
+                            editor.commit();
 
-                    sp.edit().putBoolean("ISCHECK", true).commit();
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("USER_NAME", account);
-                    editor.putString("PASSWORD", password);
-                    editor.commit();
-
-                    finish();
+                            finish();
+                        }
+                    }else{
+                        try {
+                            Toast.makeText(MainActivity.this,"請重新登入",Toast.LENGTH_LONG).show();
+                            globalVariable.c.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             } else {
                 Toast.makeText(MainActivity.this, "連線逾時", Toast.LENGTH_LONG).show();

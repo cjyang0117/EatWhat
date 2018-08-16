@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,6 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class signUpAct extends AppCompatActivity {
@@ -24,6 +32,9 @@ public class signUpAct extends AppCompatActivity {
     EditText editText4, editText5, editText6, editText7, editText8, editText9;
     boolean a = false, b = false, c = false;
     TextView tint;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+    String tmp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +50,7 @@ public class signUpAct extends AppCompatActivity {
         editText9 = (EditText) findViewById(R.id.editText9);
         tint = (TextView) findViewById(R.id.tint);
 
+        auth = FirebaseAuth.getInstance();
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         editText5.addTextChangedListener(new TextWatcher() {  //檢查信箱格式
@@ -117,23 +129,24 @@ public class signUpAct extends AppCompatActivity {
     public void gotoSignUpAct2(View v) {//下一步
         try {
             globalVariable.c = new Client("120.105.161.119", 5050);
-            String tmp = globalVariable.c.receive();
+            tmp = globalVariable.c.receive();
 
             json_write = new JSONObject();
             json_write.put("action", "Signup");//
             String name = editText4.getText().toString();
-            json_write.put("Name", name);
             String email = editText5.getText().toString();
-            json_write.put("Email", email);
             String account = editText6.getText().toString();
-            json_write.put("Saccount", account);
             String password = editText7.getText().toString();
-            json_write.put("Spassword", password);
             String uname = editText9.getText().toString();
-            json_write.put("Uname", uname);
             String uphone = "321";
-            json_write.put("Uphone", uphone);
-
+            JSONArray j2  = new JSONArray();
+            j2.put(account);
+            j2.put(name);
+            j2.put(password);
+            j2.put(email);
+            j2.put(uname);
+            j2.put(uphone);
+            json_write.put("signData",j2);
             if (!a) {//當上面資料有誤時提示
                 Toast.makeText(this, "請檢查信箱", Toast.LENGTH_SHORT).show();
             }else if (!b) {
@@ -141,22 +154,40 @@ public class signUpAct extends AppCompatActivity {
             }else if (!c) {
                 Toast.makeText(this, "請檢查密碼", Toast.LENGTH_SHORT).show();
             }else{//無誤則傳資料
-                globalVariable.c.send(json_write);
-                tmp = globalVariable.c.receive();
-                if(tmp!=null) {
-                    json_read = new JSONObject(tmp);
-                    if (!json_read.getBoolean("check")) {//接收失敗原因
-                        String reason = json_read.getString("data");
-                        Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
-                    }else{//成功並關閉
-                        Toast.makeText(this, name + "註冊成功", Toast.LENGTH_SHORT).show();
-                        android.content.Intent it = new android.content.Intent(this, signUpAct2.class);
-                        startActivity(it);
-                        this.finish();
-                    }
-                }else{
-                    Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
-                }
+                auth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(signUpAct.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(signUpAct.this, "success", Toast.LENGTH_SHORT).show();
+                                    try {
+                                        globalVariable.c.send(json_write);
+                                        tmp = globalVariable.c.receive();
+                                        if(tmp!=null) {
+                                            json_read = new JSONObject(tmp);
+                                            if (!json_read.getBoolean("check")) {//接收失敗原因
+                                                String reason = json_read.getString("data");
+                                                Toast.makeText(signUpAct.this, reason, Toast.LENGTH_SHORT).show();
+                                                user = FirebaseAuth.getInstance().getCurrentUser();
+                                                user.delete();
+                                            }else{//成功並關閉
+                                                user = FirebaseAuth.getInstance().getCurrentUser();
+                                                android.content.Intent it = new android.content.Intent(signUpAct.this, signUpAct2.class);
+                                                startActivity(it);
+                                                signUpAct.this.finish();
+                                            }
+                                        }else{
+                                            Toast.makeText(signUpAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    Toast.makeText(signUpAct.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
             }
         } catch (Exception e) {
             e.printStackTrace();
