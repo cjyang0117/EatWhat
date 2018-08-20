@@ -185,6 +185,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         b.putBoolean("mode", true);
         b.putString("datanum", id);
         i.putExtras(b);
-        ContentSuggestAct.Acontext.startActivity(i);
+        ContentSuggestAct.ActivityC.startActivity(i);
     }
 }
