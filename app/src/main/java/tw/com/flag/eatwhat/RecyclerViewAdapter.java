@@ -175,7 +175,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return j1.length();
     }
-    void addItem(JSONArray j2, int index) {
+    public void addItem(JSONArray j2, int index) {
         j1.put(j2);
         notifyItemInserted(index);
     }

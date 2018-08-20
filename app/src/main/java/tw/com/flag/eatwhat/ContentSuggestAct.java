@@ -47,7 +47,11 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
     private Toolbar toolbar;
     private Button next;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter recyclerAdapter;
+    private RecyclerViewAdapter recyclerAdapter;
+    private LinearLayoutManager mLayoutManager;
+    private int dataTimes = 1;
+
+    private static final String TAG="LogDemo";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +63,8 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
         num=1;
         idx=0;
+
+        mLayoutManager = new LinearLayoutManager(this);
 
         try {
             json_write = new JSONObject(); //接收店家資料，並動態產生表格顯示
@@ -79,7 +85,7 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
                     }else {
                         tal=(j1.length()/5)+1;
                     }
-                    info(num);
+                    info();
                 }
             } else {
                 //Toast.makeText(ContentSuggestAct.this, "連線逾時", Toast.LENGTH_LONG).show();
@@ -97,27 +103,31 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
             e.printStackTrace();
             Log.e("Exception", "ContentError=" + e.toString());
         }
+
+
+
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                int visibleItemCount = mLayoutManager.findLastVisibleItemPosition();
+                if( visibleItemCount == 50*dataTimes-1 ){
+                    addData();
+                    dataTimes++;
+                }
+            }
+        });
+
     }
-    public void info(int pagenum){
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    public void info(){
+        recyclerView.setLayoutManager(mLayoutManager);
         recyclerAdapter = new RecyclerViewAdapter(j1);
         recyclerView.setAdapter(recyclerAdapter);
     }
 
-    public void prepage(View view) {
-        if(num!=1) {
-            tblayout.removeAllViews();
-            num--;
-            info(num);
-        }else{
-            Toast.makeText(ContentSuggestAct.this, "第一頁了", Toast.LENGTH_LONG).show();
-        }
-    }
-    public void nextpage(View view) {
-        if(num*5<globalVariable.cnum) {
-            tblayout.removeAllViews();
-            num++;
-            if (num % 10 == 1 && num >tal) {
+    public void addData() {
+        if(50*dataTimes<globalVariable.cnum) {
                 idx++;
                 try {
                     json_write = new JSONObject(); //接收店家資料，並動態產生表格顯示
@@ -136,14 +146,14 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
                             JSONArray j4;
                             for (int i = 0; i < j3.length(); i++) { //合併json封包
                                 j4 = j3.getJSONArray(i);
-                                j1.put(j4);
+                                int index = dataTimes*50+i;
+                                recyclerAdapter.addItem(j4,index);
                             }
                             if(tal%5==0){
                                 tal=j1.length()/5;
                             }else {
                                 tal=(j1.length()/5)+1;
                             }
-                            info(num);
                         }
                     } else {
                         //Toast.makeText(ContentSuggestAct.this, "連線逾時", Toast.LENGTH_LONG).show();
@@ -161,9 +171,6 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
                     e.printStackTrace();
                     Log.e("Exception", "ContentError=" + e.toString());
                 }
-            } else {
-                info(num);
-            }
         }else{
             Toast.makeText(ContentSuggestAct.this, "已無資料", Toast.LENGTH_LONG).show();
         }
