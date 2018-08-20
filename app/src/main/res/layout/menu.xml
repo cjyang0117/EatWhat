@@ -75,13 +75,14 @@
         android:id="@+id/e1"
         android:layout_width="56dp"
         android:layout_height="32dp"
-        android:layout_marginStart="56dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/menu_c"
         android:gravity="left|center"
         android:paddingLeft="15dp"
         android:text="@string/eat"
         android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/c1"
         app:layout_constraintTop_toBottomOf="@+id/r1" />
 
@@ -89,13 +90,13 @@
         android:id="@+id/c1"
         android:layout_width="56dp"
         android:layout_height="32dp"
+        android:layout_marginStart="16dp"
         android:background="@drawable/menu_c"
         android:gravity="left|center"
         android:paddingLeft="10dp"
         android:text="@string/consider"
         android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.303"
+        app:layout_constraintEnd_toStartOf="@+id/e1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/e1" />
 
