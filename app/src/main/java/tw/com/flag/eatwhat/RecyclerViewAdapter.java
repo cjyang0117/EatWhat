@@ -1,0 +1,190 @@
+package tw.com.flag.eatwhat;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Typeface;
+import android.nfc.Tag;
+import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import org.json.JSONArray;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import static android.content.Context.MODE_APPEND;
+
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
+//    private String[] Dataset;
+    private JSONArray j1;
+    private Button ebtn;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView m1;
+        public TextView p1;
+        public TextView s1;
+        public RatingBar r1;
+        public Button e1;
+        public Button c1;
+        public ConstraintLayout row;
+
+
+        public ViewHolder(View v) {
+            super(v);
+            m1 =(TextView) v.findViewById(R.id.m1);
+            p1 =(TextView) v.findViewById(R.id.p1);
+            s1 =(TextView) v.findViewById(R.id.s1);
+            r1 =(RatingBar) v.findViewById(R.id.r1);
+            e1 =(Button) v.findViewById(R.id.e1);
+            c1 =(Button) v.findViewById(R.id.c1);
+            row = v.findViewById(R.id.row);
+        }
+    }
+    public RecyclerViewAdapter(JSONArray j2) {
+        j1 = j2;
+
+    }
+    @Override
+    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                             int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.menu, parent, false);
+        ViewHolder vh = new ViewHolder(v);
+        return vh;
+    }
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, int i) {
+//        holder.mTextView.setText(Dataset[position]);
+        try {
+            JSONArray j2;
+//            row = new TableRow[6];
+//            for (int i = 0; i < 6; i++) { //動態產生TableRow
+//                row[i] = new TableRow(ContentSuggestAct.this);
+//                row[i].setBackgroundResource(R.drawable.ripple);
+//                row[i].setId(i);
+//                tblayout.addView(row[i]);
+//            }
+             //拆解接收的JSON包並製作表格顯示
+                j2 = j1.getJSONArray(i);
+                holder.row.setTag(j2.get(0).toString());
+                holder.row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ConstraintLayout t=(ConstraintLayout) v;
+                        gotostore(t.getTag().toString());
+                    }
+                });
+                holder.s1.setText(j2.get(1).toString());//店名
+                holder.m1.setText(j2.get(6).toString());//菜名
+                holder.r1.setRating(Float.parseFloat(j2.get(4).toString()));//星星
+                holder.p1.setText(j2.get(7).toString());//價格
+                holder.c1.setId(i);
+                holder.c1.setTag(j2.get(0).toString() + "," + j2.get(5).toString() + ",");
+                holder.c1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Button b = (Button) v;
+                        try {
+                            FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput("think.txt", MODE_APPEND);
+//                            String s = b.getTag().toString() + ((TextView) row[b.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + ",";
+                            String s = b.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getText().toString() + ",";
+                            out.write(s.getBytes());
+                            out.close();
+
+//                            b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
+                            b.setEnabled(false);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                holder.e1.setId(i);
+                holder.e1.setTag(j2.get(0).toString() + "," + j2.get(5).toString() + ",");
+                holder.e1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ebtn = (Button) v;
+                        AlertDialog.Builder b = new AlertDialog.Builder(ContentSuggestAct.ActivityC);
+                        //串聯呼叫法
+                        b.setTitle("確認")
+                                .setMessage("確定要吃這個嗎?")
+                                .setPositiveButton("GO", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput("eat.txt", MODE_APPEND);
+                                            String s;
+                                            s = ebtn.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getText().toString() + ",";
+                                            out.write(s.getBytes());
+                                            out.close();
+                                            ebtn.setEnabled(false);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                })       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                .setNegativeButton("Cancel", null)
+                                .show();
+                    }
+                });
+
+            }
+         catch (Exception e) {
+            e.printStackTrace();
+            Log.e("Exception", "ContentError=" + e.toString());
+        }
+    }
+    @Override
+    public int getItemCount() {
+        return j1.length();
+    }
+    public void addItem(JSONArray j2, int index) {
+        j1.put(j2);
+        notifyItemInserted(index);
+    }
+    public void gotostore(String id){
+        Bundle b = new Bundle();
+        Intent i = new Intent(ContentSuggestAct.Acontext, StoreAct.class);
+        b.putBoolean("mode", true);
+        b.putString("datanum", id);
+        i.putExtras(b);
+        ContentSuggestAct.Acontext.startActivity(i);
+    }
+}
