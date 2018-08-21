@@ -152,6 +152,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
                 it = new android.content.Intent(this, MainActivity.class);
                 SharedPreferences sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);//取得帳號資料用
                 sp.edit().putBoolean("ISCHECK", false).commit();
+                sp.edit().putBoolean("checkemail", false).commit();
                 startActivity(it);
                 try {
                     globalVariable.c.close();

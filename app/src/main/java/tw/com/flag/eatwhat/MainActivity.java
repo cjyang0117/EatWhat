@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -12,16 +11,17 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import org.json.JSONObject;
 import android.Manifest;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.FirebaseUser;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     private HandlerThread handlerThread;
     private Handler handler;
     private FirebaseAuth auth;
+    private String account, password;
+    FirebaseAuth.AuthStateListener authListener;
+    private FirebaseUser user ;
+    private boolean checkmail;
     String tmp;
 
     @Override
@@ -53,6 +57,16 @@ public class MainActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.editText);//帳號
         editText2 = (EditText) findViewById(R.id.editText2);//密碼
 
+        checkmail = false;
+        auth = FirebaseAuth.getInstance();
+        authListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(
+                    @NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+            }
+        };
+
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         handlerThread=new HandlerThread("name"); //宣告常駐工人(執行緒)，等待執行工作
@@ -62,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         if (sp.getBoolean("ISCHECK", false)) {//判斷記住帳密狀態
             String name_str = sp.getString("USER_NAME", "");
             String pass_str = sp.getString("PASSWORD", "");
+
             editText.setText(name_str);
             editText2.setText(pass_str);
             login();
@@ -84,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
             globalVariable.c = new Client("120.105.161.119", 5050);
             tmp = globalVariable.c.receive();
 
-            String account = editText.getText().toString().trim();
-            String password = editText2.getText().toString().trim();
+            account = editText.getText().toString().trim();
+            password = editText2.getText().toString().trim();
             if (account.equals("twt") && password.equals("twt")){
                 android.content.Intent it = new android.content.Intent(MainActivity.this, dbsetUpAct.class);
                 startActivity(it);
@@ -114,42 +129,54 @@ public class MainActivity extends AppCompatActivity {
                 } else {//當回傳為true跳轉進入首頁
                     globalVariable.recmdtime = json_read.getInt("recmdTime");
                     globalVariable.cnum = json_read.getInt("cnum");
-                    String Email = json_read.getString("mail");
-                    auth = FirebaseAuth.getInstance();
-                    auth.signInWithEmailAndPassword(Email, password);
-                    /*String emailverified = null;
-                    if (auth.getCurrentUser() != null) {
-                        for (UserInfo profile : auth.getCurrentUser().getProviderData()) {
-                            emailverified = profile.getEmail();
-                        };
-                    }*/
-                    if(FirebaseAuth.getInstance().getCurrentUser()!= null){
-                        if(!FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()){
-                            Toast.makeText(MainActivity.this,"請前往信箱開通帳號",Toast.LENGTH_LONG).show();
-                            try {
-                                globalVariable.c.close();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }else{
-                            android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
-                            startActivity(it);
-                            sp.edit().putBoolean("ISCHECK", true).commit();
-                            SharedPreferences.Editor editor = sp.edit();
-                            editor.putString("USER_NAME", account);
-                            editor.putString("PASSWORD", password);
-                            editor.commit();
+                    checkmail = sp.getBoolean("checkemail",false);
+                    if(!checkmail){
+                        String Email = json_read.getString("mail");
+                        auth.signInWithEmailAndPassword(Email, password)
+                                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Log.d("TAG", "signInWithEmail:success");
+                                            user = auth.getCurrentUser();
+                                            if(!user.isEmailVerified()){
+                                                Toast.makeText(MainActivity.this,"請前往信箱開通帳號",Toast.LENGTH_LONG).show();
+                                                try {
+                                                    globalVariable.c.close();
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }else{
+                                                android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
+                                                startActivity(it);
+                                                sp.edit().putBoolean("ISCHECK", true).commit();
+                                                SharedPreferences.Editor editor = sp.edit();
+                                                editor.putString("USER_NAME", account);
+                                                editor.putString("PASSWORD", password);
+                                                editor.putBoolean("checkemail", true);
+                                                editor.commit();
 
-                            finish();
-                        }
+                                                finish();
+                                            }
+                                        } else {
+                                            Log.w("TAG", "signInWithEmail:failure", task.getException());
+                                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                                    Toast.LENGTH_SHORT).show();
+                                            try {
+                                                Toast.makeText(MainActivity.this,"請重新登入",Toast.LENGTH_LONG).show();
+                                                globalVariable.c.close();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    }
+                                });
                     }else{
-                        try {
-                            Toast.makeText(MainActivity.this,"請重新登入",Toast.LENGTH_LONG).show();
-                            globalVariable.c.close();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
+                        startActivity(it);
+                        finish();
                     }
+
                 }
             } else {
                 Toast.makeText(MainActivity.this, "連線逾時", Toast.LENGTH_LONG).show();
@@ -218,5 +245,15 @@ public class MainActivity extends AppCompatActivity {
 
     @OnNeverAskAgain({Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     void OnNeverAskAgain() {
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        auth.removeAuthStateListener(authListener);//程式停止就移除
     }
 }
