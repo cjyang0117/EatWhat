@@ -33,13 +33,13 @@
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/button55"
         android:layout_marginEnd="12dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/main2activity_button_activity"
         android:text="OK"
         android:textColor="@color/darkgray"
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/button55"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toTopOf="@+id/button57" />
 
     <Button
         android:id="@+id/button55"
