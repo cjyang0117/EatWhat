@@ -15,7 +15,9 @@
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true">
         <activity
             android:name=".MainActivity"
             android:label="@string/signIn"
@@ -84,7 +86,9 @@
         <activity
             android:name=".randomSuggestRul"
             android:label="@string/randomSuggestRul"
-            android:theme="@style/skinPrimaryDark" />
+            android:theme="@style/skinPrimaryDark"
+            android:hardwareAccelerated="true"
+            android:largeHeap="false"/>
         <activity
             android:name=".dbsetUpAct"
             android:label="@string/dbsetUp" />
