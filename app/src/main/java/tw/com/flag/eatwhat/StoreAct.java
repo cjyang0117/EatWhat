@@ -266,6 +266,7 @@ public class StoreAct extends AppCompatActivity
                                                             if (!json_read.getBoolean("check")) {//接收失敗原因
                                                             } else {
                                                                 btn.setEnabled(false);
+                                                                btn.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                                                 globalVariable.recmdtime++;
                                                             }
                                                             Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();

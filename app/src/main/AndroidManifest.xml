@@ -54,14 +54,16 @@
             android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".questionSuggestAct"
-            android:label="@string/questionSuggest" />
+            android:label="@string/questionSuggest"
+            android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".questionSuggestAct2"
-            android:label="@string/questionSuggest" />
+            android:label="@string/questionSuggest"
+            android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".questionSuggestRul"
             android:label="@string/questionSuggestRul"
-            android:theme="@style/forgotAccPass"/>
+            android:theme="@style/skinPrimaryDark"/>
         <activity
             android:name=".ContentSuggestAct"
             android:label="@string/contentSuggest"

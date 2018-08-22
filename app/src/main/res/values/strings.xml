@@ -41,7 +41,6 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="meal">料理</string>
-    <string name="setDistance">設定距離</string>
     <string name="storeInformation">店家資訊</string>
     <string name="remember">記住我</string>
     <string name="open">Open</string>
@@ -98,5 +97,6 @@
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="default_notification_channel_name" translatable="true">News</string>
     <string name="msg_subscribe_failed">Failed to subscribe to news topic</string>
+    <string name="setDistance">請選擇狩獵範圍</string>
 
 </resources>
