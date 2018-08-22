@@ -4,11 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +45,9 @@ public class questionSuggestAct2 extends AppCompatActivity
     int questioncount , score ,countlike , countsoso , countdont,a,aa,eatype;
     Bundle b;
 
+    ImageView imageView;
+    private int[] image =  {R.drawable.cloud_01,R.drawable.cloud_02,R.drawable.cloud_03,R.drawable.cloud_04};
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_question_suggest_act2);
@@ -56,6 +63,8 @@ public class questionSuggestAct2 extends AppCompatActivity
         im = (Button)findViewById(R.id.button59);
         ne = (Button)findViewById(R.id.button60);//按鍵設置
         question = (TextView)findViewById(R.id.question);
+
+        imageView = findViewById(R.id.imageView);
 
         score = 0;a=0;//問題記分初始為0
         countlike =0;countsoso =0; countdont=0;
@@ -197,6 +206,10 @@ public class questionSuggestAct2 extends AppCompatActivity
         int s =(int)(Math.random()*questiontype.length);
         return questiontype[s];
     }
+    public int setimage(){//image
+        int s =(int)(Math.random()*image.length);
+        return image[s];
+    }
     public void checkbdroute(){//早餐.點心問題線
         if(questioncount == 13){//問題問完的話向server取答案
             send();
@@ -204,6 +217,7 @@ public class questionSuggestAct2 extends AppCompatActivity
         else{
             if (score < 3 | questioncount < 4) {//如果問題數不為5的話繼續問，如問題數超過5分數不達3分繼續問
                 question.setText(setquestiontype(bd[questioncount]));
+                imageView.setImageDrawable(getResources().getDrawable(setimage()));
             } else {
                 send();
             }
@@ -215,6 +229,7 @@ public class questionSuggestAct2 extends AppCompatActivity
         }else{
             if (score < 3 | questioncount < 4) {
                 question.setText(setquestiontype(mn[questioncount]));
+                imageView.setImageDrawable(getResources().getDrawable(setimage()));
             } else {
                 send();
             }
@@ -266,9 +281,11 @@ public class questionSuggestAct2 extends AppCompatActivity
             }else {
                 return0();
                 soso.setVisibility(View.VISIBLE);//還好鍵顯示
+                soso.setTextColor(getResources().getColorStateList(R.color.darkgray));
                 if (bdroute) {//判斷問題是否問完
                     if(questioncount == 13){
                         question.setText("你去吃土吧");
+                        imageView.setImageResource(R.drawable.cloud_05);
                     }else{
                         question.setText("要吃" + bd[questioncount] + "嗎?");
                     }
@@ -276,6 +293,7 @@ public class questionSuggestAct2 extends AppCompatActivity
                 if(mnroute) {
                     if (questioncount == 19) {
                         question.setText("你去吃土吧");
+                        imageView.setImageResource(R.drawable.cloud_05);
                     } else {
                         question.setText("要吃" + mn[questioncount] + "嗎?");
                     }
@@ -403,31 +421,7 @@ public class questionSuggestAct2 extends AppCompatActivity
         }
     }
 
-    public void gotoRandomSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoQuestionSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoRecordAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,recordAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoSearchAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoMain2Activity(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
-        startActivity(it);
-        this.finish();
-    }
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)//按返回頁面關閉
     {

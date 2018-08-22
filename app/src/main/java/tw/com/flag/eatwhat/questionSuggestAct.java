@@ -40,17 +40,6 @@ public class questionSuggestAct extends AppCompatActivity {
         super.onResume();
         gps2.update();
     }
-
-    public void gotoRandomSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoQuestionSuggestAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
-        startActivity(it);
-        this.finish();
-    }
     public void gotoQuestionSuggestAct2(android.view.View v){
         int index2 = dist2.getSelectedItemPosition();
         double distlimit = limit[index2];
@@ -62,21 +51,6 @@ public class questionSuggestAct extends AppCompatActivity {
         i.putExtras(b);
         startActivity(i);
         //this.finish();
-    }
-    public void gotoRecordAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,recordAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoSearchAct(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
-        startActivity(it);
-        this.finish();
-    }
-    public void gotoMain2Activity(android.view.View v){
-        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
-        startActivity(it);
-        this.finish();
     }
 }
 
