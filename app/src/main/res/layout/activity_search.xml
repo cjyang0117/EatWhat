@@ -87,6 +87,7 @@
                     android:background="@drawable/sort_button_background_selector"
                     android:button="@null"
                     android:drawableRight="@drawable/sort_icon_selector"
+                    android:onClick="onRadioButtonClicked"
                     android:paddingBottom="5dp"
                     android:paddingLeft="8dp"
                     android:paddingRight="8dp"

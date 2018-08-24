@@ -295,7 +295,6 @@ public class StoreAct extends AppCompatActivity
                         row[i].addView(btn);
                     }
                 } else {
-                    //Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
                     AlertDialog.Builder b = new AlertDialog.Builder(this);
                     //串聯呼叫法
                     b.setCancelable(false);
@@ -451,12 +450,23 @@ public class StoreAct extends AppCompatActivity
                         json_write.put("Escore", storerate.getRating());
                         globalVariable.c.send(json_write);
                         String tmp = globalVariable.c.receive();
-                        json_read = new JSONObject(tmp);
-                        if (!json_read.getBoolean("check")) {//接收失敗原因
-                            //String reason = json_read.getString("data");
-                            //Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Commented();
+                        if(tmp!=null){
+                            json_read = new JSONObject(tmp);
+                            if (!json_read.getBoolean("check")) {//接收失敗原因
+                                String reason = json_read.getString("data");
+                                Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
+                            } else {
+                                Commented();
+                            }
+                        }else{
+                            AlertDialog.Builder b = new AlertDialog.Builder(StoreAct.this);
+                            //串聯呼叫法
+                            b.setCancelable(false);
+                            b.setTitle("警告")
+                                    .setMessage("連線逾時，請重新連線")
+                                    .setPositiveButton("連線", StoreAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                    .setNegativeButton("離開", StoreAct.this)
+                                    .show();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
