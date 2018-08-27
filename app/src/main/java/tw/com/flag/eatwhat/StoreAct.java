@@ -40,8 +40,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 import android.util.Log;
 
 public class StoreAct extends AppCompatActivity
@@ -49,9 +53,9 @@ public class StoreAct extends AppCompatActivity
     static Activity ActivityS;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
-    private TextView storeaddr,storecell;
-    private TableLayout storeLayout;
-    private TableRow[] row;
+    private TextView storeaddr,storecell,storetime,textView12;
+    private TableLayout storeLayout,storeLayout2;
+    private TableRow[] row,row2;
     private int sp=14,sid;
     private int[] mid;
     private Gps gps3;
@@ -88,6 +92,7 @@ public class StoreAct extends AppCompatActivity
         showMenu=findViewById(R.id.showMenu);
         sc = findViewById(R.id.sc);
         ed1 = findViewById(R.id.ed1);
+        textView12 = findViewById(R.id.textView12);
         submit = findViewById(R.id.submit);
         ed1.setOnTouchListener(new View.OnTouchListener() {
 
@@ -167,6 +172,7 @@ public class StoreAct extends AppCompatActivity
                         float starmum = Float.valueOf((j2.get(3).toString()));//星星數
                         rb.setRating(starmum);//設定星星數
                     }
+                    daytime();
                 }else{
                     linkout=true;
                     AlertDialog.Builder b=new AlertDialog.Builder(this);
@@ -206,6 +212,7 @@ public class StoreAct extends AppCompatActivity
                             startActivity(it);
                         }
                     });
+                    daytime();
                     storeLayout = (TableLayout) findViewById(R.id.storeLayout);
                     storeLayout.setColumnShrinkable(0, true);
                     storeLayout.setColumnShrinkable(1, true);
@@ -248,6 +255,7 @@ public class StoreAct extends AppCompatActivity
                         btn.setOnClickListener(new View.OnClickListener() {//推薦按鍵事件
                             @Override
                             public void onClick(View v) {
+                                final Button bt=(Button)v;
                                 if (globalVariable.recmdtime < 2) {//推薦次數每日2次
                                     AlertDialog.Builder b = new AlertDialog.Builder(StoreAct.this);
                                     b.setTitle("確認")
@@ -265,8 +273,8 @@ public class StoreAct extends AppCompatActivity
                                                             String reason = json_read.getString("data");
                                                             if (!json_read.getBoolean("check")) {//接收失敗原因
                                                             } else {
-                                                                btn.setEnabled(false);
-                                                                btn.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
+                                                                bt.setEnabled(false);
+                                                                bt.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                                                 globalVariable.recmdtime++;
                                                             }
                                                             Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
@@ -341,6 +349,10 @@ public class StoreAct extends AppCompatActivity
                 tw.setText(j2.get(1).toString());
                 tw.setTextColor(Color.BLACK);
                 row[i].addView(tw);
+                tw = new TextView(this);
+                tw.setText(j2.get(2).toString());
+                tw.setTextColor(Color.BLACK);
+                row[i].addView(tw);
             }
             submit = (Button)findViewById(R.id.submit);
             ed1 = (EditText)findViewById(R.id.ed1);
@@ -354,6 +366,7 @@ public class StoreAct extends AppCompatActivity
                 }
                 ed1.setText(j4.get(0).toString());
                 storerate.setRating(Float.valueOf(j4.get(1).toString()));
+                textView12.setText(j4.get(2).toString());
                 Commented();
             }else{
                 sub();
@@ -456,6 +469,8 @@ public class StoreAct extends AppCompatActivity
                                 String reason = json_read.getString("data");
                                 Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
                             } else {
+                                String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date());
+                                textView12.setText(date);
                                 Commented();
                             }
                         }else{
@@ -473,14 +488,12 @@ public class StoreAct extends AppCompatActivity
                     }
                 }
                 else Toast.makeText(StoreAct.this, "星星評分不得為空", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
     public void info(){
         try {
             json_write = new JSONObject();
-
             if(storecommit!=null) storecommit.removeAllViews();
             json_write.put("action", "Store");
             json_write.put("Id", sid);
@@ -504,6 +517,10 @@ public class StoreAct extends AppCompatActivity
                 row[i].addView(tw);
                 tw = new TextView(this);
                 tw.setText(j2.get(1).toString());
+                tw.setTextColor(Color.BLACK);
+                row[i].addView(tw);
+                tw = new TextView(this);
+                tw.setText(j2.get(2).toString());
                 tw.setTextColor(Color.BLACK);
                 row[i].addView(tw);
             }
@@ -558,5 +575,65 @@ public class StoreAct extends AppCompatActivity
                 break;
         }
         this.finish();
+    }
+    public void daytime(){
+        try {
+            storeLayout2 = (TableLayout) findViewById(R.id.tbLayout2);
+            if(storeLayout2!=null)storeLayout2.removeAllViews();
+            JSONArray j3 = json_read.getJSONArray("Time");
+            if(j3 == null){
+                row2 = new TableRow[1];
+                row2[0] = new TableRow(this);
+                storeLayout2.addView(row2[0]);
+                TextView tw1 = new TextView(this);
+                tw1.setText("暫無營業時間");
+            }else {
+                row2 = new TableRow[j3.length()];
+                for (int i = 0; i < j3.length(); i++) { //動態產生TableRow
+                    row2[i] = new TableRow(this);
+                    storeLayout2.addView(row2[i]);
+                }
+                JSONArray j4;
+                int a=0,b=0,c=0,d=0,e=0,f=0,g=0;
+                for (int i = 0; i < j3.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                    j4 = j3.getJSONArray(i);
+                    TextView tw = new TextView(this);
+                    if(j4.get(0).toString().equals("星期一")){
+                        a++;
+                    }else if(j4.get(0).toString().equals("星期二")){
+                        b++;
+                    }else if(j4.get(0).toString().equals("星期三")){
+                        c++;
+                    }else if(j4.get(0).toString().equals("星期四")){
+                        d++;
+                    }else if(j4.get(0).toString().equals("星期五")){
+                        e++;
+                    }else if(j4.get(0).toString().equals("星期六")){
+                        f++;
+                    }else if(j4.get(0).toString().equals("星期日")){
+                        g++;
+                    }
+                    if(a==1||b==1||c==1||d==1||e==1||f==1||g==1){
+                        tw.setText(j4.get(0).toString());
+                    }
+                    tw.setTextColor(Color.rgb(110, 110, 110));
+                    row2[i].addView(tw);
+                    tw = new TextView(this);
+                    tw.setText(j4.get(1).toString().substring(0,5));
+                    tw.setTextColor(Color.rgb(110, 110, 110));
+                    row2[i].addView(tw);
+                    tw = new TextView(this);
+                    tw.setText("~");
+                    tw.setTextColor(Color.rgb(110, 110, 110));
+                    row2[i].addView(tw);
+                    tw = new TextView(this);
+                    tw.setText(j4.get(2).toString().substring(0,5));
+                    tw.setTextColor(Color.rgb(110, 110, 110));
+                    row2[i].addView(tw);
+                }
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

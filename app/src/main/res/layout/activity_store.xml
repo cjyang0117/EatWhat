@@ -246,21 +246,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.3" />
-
-        <TextView
-            android:id="@+id/storetime"
+        <ImageView
+            android:id="@+id/storetimeimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginStart="24dp"
             android:layout_marginTop="50dp"
-            android:drawableLeft="@drawable/ic_access_time_white_48dp"
-            android:gravity="center"
-            android:textColor="#6e6e6e"
-            android:textSize="14sp"
+            android:src="@drawable/ic_access_time_white_48dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/storecell" />
+            app:layout_constraintTop_toBottomOf="@+id/storecell"/>
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/sc1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="1dp"
+            android:background="@color/white"
+            android:visibility="visible"
+            app:layout_constraintStart_toEndOf="@+id/storetimeimg"
+            app:layout_constraintTop_toTopOf="@+id/storetimeimg"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <TableLayout
+                android:id="@+id/tbLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"/>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.constraint.ConstraintLayout>
-
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/showMenu"

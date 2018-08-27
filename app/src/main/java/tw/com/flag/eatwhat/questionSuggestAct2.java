@@ -341,6 +341,7 @@ public class questionSuggestAct2 extends AppCompatActivity
                     json_write.put("Longitude", Double.valueOf(lng));//經度
                     json_write.put("Latitude", Double.valueOf(lat));//緯度
                     json_write.put("Distlimit", Double.valueOf(b.getString("Distlimit")));//距離限制
+                    json_write.put("isTime",b.getBoolean("isTime"));
                 }
                 json_write.put("Eatype",eatype);//主要種類(早餐,點心,主餐,宵夜)
                 First = false;
