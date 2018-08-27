@@ -68,7 +68,7 @@ public class recordAct extends AppCompatActivity
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         if(dm.widthPixels<=480){
-            sp=12;
+            sp=10;
         }
         tblayout2 = (TableLayout) findViewById(R.id.tb2Layout);
 
