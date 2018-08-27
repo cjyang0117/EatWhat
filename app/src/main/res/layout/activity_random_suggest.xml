@@ -52,6 +52,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+    <CheckBox
+        android:id="@+id/sw1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:checked="true"
+        android:text="營業中店家"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/chk4" />
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
@@ -62,9 +72,9 @@
         android:text="現在不想吃"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
-
     <Button
         android:id="@+id/button68"
+        style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -74,8 +84,10 @@
         android:layout_marginStart="8dp"
         android:background="@drawable/main2activity_button_activity"
         android:onClick="gotoResult"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:text="@string/nextStep"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

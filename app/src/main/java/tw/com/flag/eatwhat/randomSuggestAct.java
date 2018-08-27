@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
@@ -27,6 +28,7 @@ public class randomSuggestAct extends AppCompatActivity
     //private String[] eatime;int123
     private int[] eatime={2,1,33};//主食、早餐、點心
     private double[] limit = {100000, 300, 1000, 3000};
+    private CheckBox sw1;
     TextView tv;
     Gps gps1;
     RadioGroup radioGroup1;
@@ -42,6 +44,7 @@ public class randomSuggestAct extends AppCompatActivity
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
         gps1 = new Gps(this);
         tv = (TextView) findViewById(R.id.textView);
+        sw1=(CheckBox)findViewById(R.id.sw1);
 
         radioGroup1 = findViewById(R.id.radioGroup1);
         radioGroup2 = findViewById(R.id.radioGroup2);
@@ -96,6 +99,7 @@ public class randomSuggestAct extends AppCompatActivity
                 json_write.put("Longitude", gps1.getGPSLongitude());//經度
                 json_write.put("Latitude", gps1.getGPSLatitude());//緯度
                 json_write.put("Eatype", time);//主餐1早餐2點心3
+                json_write.put("isTime", sw1.isChecked());
                 int[] dont1 = new int[10];
                 int count =0;
                 for (int id : chk_id) {

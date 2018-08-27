@@ -16,6 +16,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -292,6 +293,10 @@ public class userSuggestAct extends AppCompatActivity
         final Dialog rankDialog;
         rankDialog = new Dialog(userSuggestAct.this, R.style.FullHeightDialog);
         rankDialog.setContentView(R.layout.rank_dialog);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(rankDialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        rankDialog.getWindow().setAttributes(lp);
         rankDialog.setCancelable(true);
 
         TextView pic = (TextView)rankDialog.findViewById(R.id.rank_dialog_text1);
