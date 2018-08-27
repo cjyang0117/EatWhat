@@ -230,7 +230,6 @@ public class recordAct extends AppCompatActivity
                                     tblayout2.setColumnShrinkable(1,true);
                                     tblayout2.setColumnStretchable(0, true);
                                     tblayout2.setColumnStretchable(1, true);
-                                    tblayout2.setColumnStretchable(3, true);
 
                                     ArrayList<TableRow> row2=new ArrayList<>();
                                     count2=0;

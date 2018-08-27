@@ -84,7 +84,7 @@ public class SearchAct extends AppCompatActivity
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         if(dm.widthPixels<=480){
-            sp=12;
+            sp=10;
         }
 
         gps4 = new Gps(this);
@@ -163,8 +163,6 @@ public class SearchAct extends AppCompatActivity
                                 tblayout = (TableLayout) findViewById(R.id.tbLayout);
                                 tblayout.setColumnShrinkable(0,true);
                                 tblayout.setColumnStretchable(0, true);
-                                tblayout.setColumnStretchable(3, true);
-                                tblayout.setColumnStretchable(4, true);
 
                                 if (!json_read.getBoolean("check")) {//當回傳為false
                                     String reason;
@@ -299,8 +297,6 @@ public class SearchAct extends AppCompatActivity
                                 tblayout2.setColumnShrinkable(1,true);
                                 tblayout2.setColumnStretchable(0, true);
                                 tblayout2.setColumnStretchable(1, true);
-                                tblayout2.setColumnStretchable(3, true);
-                                tblayout2.setColumnStretchable(4, true);
 
                                 if (!json_read.getBoolean("check")) {//當回傳為false
                                     String reason;
