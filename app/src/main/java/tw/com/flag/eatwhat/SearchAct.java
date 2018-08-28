@@ -49,7 +49,7 @@ public class SearchAct extends AppCompatActivity
     private Boolean isStore=true, isSort=false, sort=true;
     private boolean linkout=false;
     private int times=0;
-    private Button ebtn;
+    private TextView ebtn;
     private TabLayout mTabLayout;
     private android.support.v7.widget.SearchView editText10; //搜尋
     private RadioButton radioButton10,radioButton9,radioButton8;
@@ -163,8 +163,8 @@ public class SearchAct extends AppCompatActivity
                                 tblayout = (TableLayout) findViewById(R.id.tbLayout);
                                 tblayout.setColumnShrinkable(0,true);
                                 tblayout.setColumnStretchable(0, true);
-                                tblayout.setColumnStretchable(3, true);
-                                tblayout.setColumnStretchable(4, true);
+                                //tblayout.setColumnStretchable(3, true);
+                                //tblayout.setColumnStretchable(4, true);
 
                                 if (!json_read.getBoolean("check")) {//當回傳為false
                                     String reason;
@@ -179,6 +179,8 @@ public class SearchAct extends AppCompatActivity
                                         row[i].setBackgroundResource(R.drawable.ripple);
                                         row[i].setId(i);
                                         tblayout.addView(row[i]);
+                                        TableLayout.LayoutParams params=(TableLayout.LayoutParams)row[i].getLayoutParams();
+                                        params.setMargins(0,12,0,12);
                                     }
                                     for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                                         j2 = j1.getJSONArray(i);
@@ -207,6 +209,7 @@ public class SearchAct extends AppCompatActivity
                                         tlp.gravity=Gravity.CENTER_VERTICAL;
                                         tw = new TextView(SearchAct.this);
                                         tw.setText("0.3km");
+                                        tw.setPadding(16,0,0,0);
                                         tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                                         row[i].addView(tw);
                                         Button btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
@@ -295,12 +298,12 @@ public class SearchAct extends AppCompatActivity
                             if(tmp!=null) {
                                 json_read = new JSONObject(tmp);
                                 tblayout2 = (TableLayout) findViewById(R.id.tb2Layout);
-                                tblayout2.setColumnShrinkable(0,true);
+                                //tblayout2.setColumnShrinkable(0,true);
                                 tblayout2.setColumnShrinkable(1,true);
-                                tblayout2.setColumnStretchable(0, true);
+                                //tblayout2.setColumnStretchable(0, true);
                                 tblayout2.setColumnStretchable(1, true);
-                                tblayout2.setColumnStretchable(3, true);
-                                tblayout2.setColumnStretchable(4, true);
+                                //tblayout2.setColumnStretchable(3, true);
+                                //tblayout2.setColumnStretchable(4, true);
 
                                 if (!json_read.getBoolean("check")) {//當回傳為false
                                     String reason;
@@ -315,6 +318,8 @@ public class SearchAct extends AppCompatActivity
                                         row2[i].setBackgroundResource(R.drawable.ripple);
                                         row2[i].setId(i);
                                         tblayout2.addView(row2[i]);
+                                        TableLayout.LayoutParams params=(TableLayout.LayoutParams)row2[i].getLayoutParams();
+                                        params.setMargins(0,12,0,12);
                                     }
                                     for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                                         j2 = j1.getJSONArray(i);
@@ -329,9 +334,18 @@ public class SearchAct extends AppCompatActivity
                                         TextView[] tw = new TextView[j2.length()];
                                         for(int j=0;j<j2.length()-2;j++){
                                             tw[j] = new TextView(SearchAct.this);
-                                            tw[j].setText(j2.get(j+2).toString());
+                                            tw[j].setText(j2.get(j + 2).toString());
                                             tw[j].setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                                            row2[i].addView(tw[j]);
+                                            if(j==1){
+                                                ScrollView sc=new ScrollView(SearchAct.this);
+                                                sc.addView(tw[j]);
+                                                sc.setPadding(8,0,8,0);
+                                                row2[i].addView(sc);
+                                                TableRow.LayoutParams params=(TableRow.LayoutParams)sc.getLayoutParams();
+                                                params.gravity=Gravity.CENTER;
+                                            }else {
+                                                row2[i].addView(tw[j]);
+                                            }
                                         }
                                         Button btn=new Button(SearchAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("考慮");
@@ -344,7 +358,7 @@ public class SearchAct extends AppCompatActivity
                                         btn.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
-                                                Button b=(Button)v;
+                                                Button b=(Button) v;
                                                 try {
                                                     FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
                                                     String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(1)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
@@ -546,6 +560,7 @@ public class SearchAct extends AppCompatActivity
                 }
                 out.write(s.getBytes());
                 out.close();
+                ebtn.setBackgroundTintList(getResources().getColorStateList(R.color.lightBlue));
                 ebtn.setEnabled(false);
             }catch (Exception e){
                 e.printStackTrace();
