@@ -60,10 +60,10 @@ public class signUpAct extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (Linkify.addLinks(editText5.getText(), Linkify.EMAIL_ADDRESSES)) {
-                    img2.setImageResource(android.R.drawable.button_onoff_indicator_on);
+                    img2.setImageResource(R.drawable.ic_iconmonstr_check_mark_circle_thin);
                     a = true;//判斷是否正確
                 } else {
-                    img2.setImageResource(android.R.drawable.checkbox_off_background);
+                    img2.setImageResource(R.drawable.ic_iconmonstr_x_mark_circle_thin);
                     a = false;
                 }
             }
@@ -114,10 +114,10 @@ public class signUpAct extends AppCompatActivity {
                 String password = editText7.getText().toString();
                 String passwordAgain = editText8.getText().toString();
                 if (password.equals(passwordAgain)) {
-                    img3.setImageResource(android.R.drawable.button_onoff_indicator_on);
+                    img3.setImageResource(R.drawable.ic_iconmonstr_check_mark_circle_thin);
                     c = true;
                 } else {
-                    img3.setImageResource(android.R.drawable.checkbox_off_background);
+                    img3.setImageResource(R.drawable.ic_iconmonstr_x_mark_circle_thin);
                     c = false;
                 }
             }

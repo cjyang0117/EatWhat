@@ -36,6 +36,7 @@
         <item name="android:textColorPrimary">#9b855f</item>
         <item name="android:textColorHint">#c79b855f</item>
         <item name="android:colorControlNormal">#adb59b</item>
+
     </style>
 
     <style name="storeInf" parent="Theme.AppCompat.Light">
@@ -51,12 +52,13 @@
         <item name="queryBackground">@color/Transparent</item>
     </style>
 
-    <style name="signUp" parent="Theme.AppCompat.DayNight">
+    <style name="signUp" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#A8BA82</item>
-        <item name="colorPrimaryDark">#727e57</item>
+        <item name="colorPrimaryDark">#fae5af</item>
         <item name="colorAccent">#C7815D</item>
         <item name="android:textColorPrimary">#ffffff</item>
+        <item name="colorControlNormal">#deaa50</item>
+        <item name="colorControlActivated">#deaa50</item>
     </style>
 
     <style name="main2Activity" parent="Theme.AppCompat.DayNight">

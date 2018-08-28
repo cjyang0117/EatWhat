@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,8 @@ import org.json.JSONObject;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import static android.view.Gravity.CENTER;
 
 public class userSuggestAct extends AppCompatActivity
         implements DialogInterface.OnClickListener{
@@ -59,7 +62,7 @@ public class userSuggestAct extends AppCompatActivity
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         if(dm.widthPixels<=480){
-            sp=10;
+            sp=12;
         }
 
         row=loadUserData(true, R.id.tbLayout, row);
@@ -112,9 +115,7 @@ public class userSuggestAct extends AppCompatActivity
             if(tmp!=null) {
                 json_read = new JSONObject(tmp);
                 tblayout = (TableLayout) findViewById(tbId);
-                tblayout.setColumnShrinkable(1,true);
                 tblayout.setColumnShrinkable(2,true);
-                tblayout.setColumnStretchable(1, true);
                 tblayout.setColumnStretchable(2, true);
 
                 if(tblayout!=null) tblayout.removeAllViews();
@@ -126,6 +127,8 @@ public class userSuggestAct extends AppCompatActivity
                     r[i].setBackgroundResource(R.drawable.ripple);
                     r[i].setId(i);
                     tblayout.addView(r[i]);
+                    TableLayout.LayoutParams params=(TableLayout.LayoutParams)r[i].getLayoutParams();
+                    params.setMargins(0,12,0,12);
                 }
 
                 for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
@@ -149,15 +152,27 @@ public class userSuggestAct extends AppCompatActivity
                             commitrate(t.getText().toString(),Integer.parseInt(t.getTag().toString()));
                         }
                     });
+                    tw.setBackgroundColor( getResources().getColor(R.color.user));
+                    tw.setPadding(0,8,0,8);
+                    tw.setGravity(Gravity.CENTER);
                     r[i].addView(tw);
+
                     tw = new TextView(this);
                     tw.setText(j2.get(3).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                    tw.setPadding(8,0,8,0);
                     r[i].addView(tw);
+
                     tw = new TextView(this);
                     tw.setText(j2.get(8).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    r[i].addView(tw);
+                    ScrollView sc=new ScrollView(this);
+                    sc.addView(tw);
+                    sc.setPadding(0,0,8,0);
+                    r[i].addView(sc);
+                    TableRow.LayoutParams params=(TableRow.LayoutParams)sc.getLayoutParams();
+                    params.gravity=Gravity.CENTER;
+
                     tw = new TextView(this);
                     String s = "  "+j2.get(9).toString()+"  ";
                     tw.setText(s);
@@ -180,9 +195,9 @@ public class userSuggestAct extends AppCompatActivity
                                 FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
                                 String s;
                                 if(Switch) {
-                                    s = b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    s = b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
                                 }else{
-                                    s = b.getTag().toString()+((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    s = b.getTag().toString()+((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row2[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
                                 }
                                 out.write(s.getBytes());
                                 out.close();
@@ -195,6 +210,7 @@ public class userSuggestAct extends AppCompatActivity
                         }
                     });
                     r[i].addView(btn);
+
                     btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
                     btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
@@ -246,9 +262,9 @@ public class userSuggestAct extends AppCompatActivity
                 FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
                 String s;
                 if (Switch) {
-                    s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
+                    s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[ebtn.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
                 } else {
-                    s = ebtn.getTag().toString() + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
+                    s = ebtn.getTag().toString() + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row2[ebtn.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
                 }
                 String[] ad = ebtn.getTag().toString().split(",");
                 json_write = new JSONObject();

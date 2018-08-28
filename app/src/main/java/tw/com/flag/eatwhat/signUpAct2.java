@@ -46,6 +46,9 @@ public class signUpAct2 extends AppCompatActivity implements CompoundButton.OnCh
     float allW[] = {50f,50f,50f};
     String Nmae[] = {"價格","口味","店家評價"};
     FirebaseUser user;
+    public static final int[] colorselector = {
+            Color.rgb(238,197,145), Color.rgb(246, 171, 148), Color.rgb(197,213,216)
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,7 +193,7 @@ public class signUpAct2 extends AppCompatActivity implements CompoundButton.OnCh
         }
 
         PieDataSet dataSet = new PieDataSet(pieEntries,"(單位:%)");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setColors(ColorTemplate.createColors(colorselector));
         PieData data = new PieData(dataSet);
         data.setValueTextSize(12f);
         data.setValueTextColor(Color.WHITE);

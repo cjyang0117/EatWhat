@@ -112,6 +112,7 @@ public class recordAct extends AppCompatActivity
                         idx=s.indexOf(",");
                         tv[i]=new TextView(this);
                         tv[i].setText(s.substring(0, idx));
+                        tv[i].setPadding(0,0,16,0);
                         if(i==0){
                             tv[i].setTag(sid);
                         }

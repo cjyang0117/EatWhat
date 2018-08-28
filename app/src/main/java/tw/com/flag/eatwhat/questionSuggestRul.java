@@ -91,6 +91,7 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
                             out.write(s.getBytes());
                             out.close();
                             b.setEnabled(false);
+                            b.setBackgroundResource(R.drawable.question_rul_button_false_2);
                         }catch (IOException e){
                             e.printStackTrace();
                         }
@@ -216,6 +217,7 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
                             .show();
                 }
                 ebtn.setEnabled(false);
+                ebtn.setBackgroundResource(R.drawable.question_rul_button_false);
             }catch (Exception e){
                 e.printStackTrace();
             }

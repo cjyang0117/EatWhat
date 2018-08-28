@@ -52,8 +52,8 @@
             android:layout_marginBottom="24dp"
             android:layout_marginEnd="50dp"
             android:background="@drawable/main2activity_button_activity"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
+            android:paddingLeft="19dp"
+            android:paddingRight="19dp"
             android:text="考慮"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/again" />

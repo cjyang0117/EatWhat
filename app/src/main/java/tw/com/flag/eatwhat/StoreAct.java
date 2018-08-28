@@ -215,9 +215,7 @@ public class StoreAct extends AppCompatActivity
                     daytime();
                     storeLayout = (TableLayout) findViewById(R.id.storeLayout);
                     storeLayout.setColumnShrinkable(0, true);
-                    storeLayout.setColumnShrinkable(1, true);
                     storeLayout.setColumnStretchable(0, true);
-                    storeLayout.setColumnStretchable(1, true);
 
                     JSONArray j1 = json_read.getJSONArray("Menu");
                     JSONArray j2;
