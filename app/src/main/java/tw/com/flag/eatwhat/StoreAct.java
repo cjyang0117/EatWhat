@@ -73,8 +73,7 @@ public class StoreAct extends AppCompatActivity
     ScrollView sc2;
     Bundle b;
 
-    private ConstraintLayout showInf;
-    private NestedScrollView showComment,showMenu;
+    private NestedScrollView showComment,showMenu,showInf;
 
     private TabLayout mTabLayout;
     private static final String TAG="LogDemo";
@@ -109,7 +108,7 @@ public class StoreAct extends AppCompatActivity
             }
         });
         mTabLayout = findViewById(R.id.mTabLayout);
-        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 switch(tab.getPosition()){

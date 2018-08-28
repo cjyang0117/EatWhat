@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/main2activity_button_activity"
     android:orientation="vertical"
     android:padding="5dip">
 
@@ -32,15 +33,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
 
-        <Button android:id="@+id/rank_dialog_ok"
+        <Button
+            android:id="@+id/rank_dialog_ok"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:text="追蹤"
-            android:focusable="false"
             android:layout_margin="5dip"
+            android:focusable="false"
+            android:text="追蹤"
             android:textColor="#FFF8C6"
             android:textSize="12dp" />
 

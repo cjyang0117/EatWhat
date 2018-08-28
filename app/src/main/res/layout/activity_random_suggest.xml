@@ -6,17 +6,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@android:color/white"
     tools:context=".randomSuggestAct">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
+        android:layout_gravity="center"
         android:background="@drawable/toolbar"
-        app:titleTextColor="#9d7f62"
         app:layout_scrollFlags="scroll|enterAlways"
         app:title="@string/randomSuggest"
-        android:layout_gravity="center"/>
+        app:titleTextColor="#9d7f62" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -54,14 +55,16 @@
 
     <CheckBox
         android:id="@+id/sw1"
+        style="@style/MyCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:buttonTint="@color/colorGrassDark"
         android:checked="true"
         android:text="營業中店家"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="@+id/chk4" />
+        app:layout_constraintEnd_toEndOf="@+id/chk4"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
     <TextView
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
@@ -72,9 +75,9 @@
         android:text="現在不想吃"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
+
     <Button
         android:id="@+id/button68"
-        style="@style/Widget.AppCompat.Button.Small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
