@@ -330,7 +330,7 @@ public class SearchAct extends AppCompatActivity
                                             Button b=(Button)v;
                                             try {
                                                 FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
-                                                String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(1)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
+                                                String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView) ((ScrollView) row2[b.getId()].getChildAt(1)).getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
                                                 out.write(s.getBytes());
                                                 out.close();
 
@@ -446,27 +446,6 @@ public class SearchAct extends AppCompatActivity
             }
         }
     }
-
-    public void gotoRandomSuggestAct(View v){
-        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
-        startActivity(it);
-    }
-    public void gotoQuestionSuggestAct(View v){
-        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
-        startActivity(it);
-    }
-    public void gotoRecordAct(View v){
-        android.content.Intent it = new android.content.Intent(this,recordAct.class);
-        startActivity(it);
-    }
-    public void gotoSearchAct(View v){
-        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
-        startActivity(it);
-    }
-    public void gotoMain2Activity(View v){
-        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
-        startActivity(it);
-    }
     public void gotostore(String id){
         Bundle b = new Bundle();
         Intent i = new Intent(this, StoreAct.class);
@@ -498,7 +477,7 @@ public class SearchAct extends AppCompatActivity
                 if (isStore) {
                     s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + ",-,-,";
                 } else {
-                    s = ebtn.getTag().toString() + ((TextView) row2[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
+                    s = ebtn.getTag().toString() + ((TextView) row2[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) ((ScrollView) row2[ebtn.getId()].getChildAt(1)).getChildAt(0)).getText().toString() + "," + ((TextView) row2[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
                     String[] ad = ebtn.getTag().toString().split(",");
                     json_write = new JSONObject();
                     json_write.put("action", "eat");

@@ -36,16 +36,8 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
     static Context Acontext;
     private JSONObject json_read, json_write;
     private JSONArray j1;
-    private TableLayout tblayout;
-    private TableRow[] row;
     private GlobalVariable globalVariable;
     private int sp = 14 ,num,idx,tal;
-    private Button ebtn;
-    private boolean linkout=false;
-    private boolean Switch = true;
-    private TabLayout mTabLayout;
-    private Toolbar toolbar;
-    private Button next;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter recyclerAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -88,8 +80,6 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
                     info();
                 }
             } else {
-                //Toast.makeText(ContentSuggestAct.this, "連線逾時", Toast.LENGTH_LONG).show();
-                linkout=true;
                 AlertDialog.Builder b=new AlertDialog.Builder(this);
                 //串聯呼叫法
                 b.setCancelable(false);
@@ -110,7 +100,6 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-
                 int visibleItemCount = mLayoutManager.findLastVisibleItemPosition();
                 if( visibleItemCount == 50*dataTimes-1 ){
                     addData();
@@ -156,8 +145,6 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
                             }
                         }
                     } else {
-                        //Toast.makeText(ContentSuggestAct.this, "連線逾時", Toast.LENGTH_LONG).show();
-                        linkout=true;
                         AlertDialog.Builder b=new AlertDialog.Builder(this);
                         //串聯呼叫法
                         b.setCancelable(false);
@@ -187,49 +174,11 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
     }
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        if(!linkout) {
-            try {
-                FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-                String s;
-                s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(2)).getText().toString() + ",";
-                out.write(s.getBytes());
-                String[] ad = ebtn.getTag().toString().split(",");
-                json_write = new JSONObject();
-                json_write.put("action", "eat");
-                json_write.put("mid", Integer.parseInt(ad[1]));
-                globalVariable.c.send(json_write);
-                String tmp = globalVariable.c.receive();
-                if(tmp != null) {
-                    json_read = new JSONObject(tmp);
-                    if (!json_read.getBoolean("check")) {
-                        String reason;
-                        reason = json_read.getString("data");
-                        Toast.makeText(ContentSuggestAct.this, reason, Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    linkout=true;
-                    AlertDialog.Builder b=new AlertDialog.Builder(ContentSuggestAct.this);
-                    //串聯呼叫法
-                    b.setCancelable(false);
-                    b.setTitle("警告")
-                            .setMessage("連線逾時，請重新連線")
-                            .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                            .setNegativeButton("離開", this)
-                            .show();
-                }
-                out.close();
-
-                ebtn.setEnabled(false);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }else{
-            if(which==DialogInterface.BUTTON_POSITIVE) {
-                Intent it = new android.content.Intent(this, MainActivity.class);
-                startActivity(it);
-            }
-            if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
-            this.finish();
+        if(which==DialogInterface.BUTTON_POSITIVE) {
+            Intent it = new android.content.Intent(this, MainActivity.class);
+            startActivity(it);
         }
+        if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+        this.finish();
     }
 }

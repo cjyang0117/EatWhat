@@ -259,39 +259,49 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
     }
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        try {
-            FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-            String s=menunum.toString().trim()+","+num.toString().trim()+","+storename.toString().trim()+","+textViewmenu.getText().toString()+","+price.toString()+",";
-            out.write(s.getBytes());
-            out.close();
+        if(!linkout) {
+            try {
+                FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                String s = menunum.toString().trim() + "," + num.toString().trim() + "," + storename.toString().trim() + "," + textViewmenu.getText().toString() + "," + price.toString() + ",";
+                out.write(s.getBytes());
+                out.close();
 
-            json_write = new JSONObject();
-            json_write.put("action", "eat");
-            json_write.put("mid", Integer.parseInt(num.toString().trim()));
-            globalVariable.c.send(json_write);
-            String tmp = globalVariable.c.receive();
-            if(tmp != null) {
-                json_read = new JSONObject(tmp);
-                if (!json_read.getBoolean("check")) {
-                    String reason;
-                    reason = json_read.getString("data");
-                    Toast.makeText(randomSuggestRul.this, reason, Toast.LENGTH_SHORT).show();
+                json_write = new JSONObject();
+                json_write.put("action", "eat");
+                json_write.put("mid", Integer.parseInt(num.toString().trim()));
+                globalVariable.c.send(json_write);
+                String tmp = globalVariable.c.receive();
+                if (tmp != null) {
+                    json_read = new JSONObject(tmp);
+                    if (!json_read.getBoolean("check")) {
+                        String reason;
+                        reason = json_read.getString("data");
+                        Toast.makeText(randomSuggestRul.this, reason, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    linkout = true;
+                    AlertDialog.Builder b = new AlertDialog.Builder(randomSuggestRul.this);
+                    //串聯呼叫法
+                    b.setCancelable(false);
+                    b.setTitle("警告")
+                            .setMessage("連線逾時，請重新連線")
+                            .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                            .setNegativeButton("離開", this)
+                            .show();
                 }
-            }else{
-                linkout=true;
-                AlertDialog.Builder b=new AlertDialog.Builder(randomSuggestRul.this);
-                //串聯呼叫法
-                b.setCancelable(false);
-                b.setTitle("警告")
-                        .setMessage("連線逾時，請重新連線")
-                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                        .setNegativeButton("離開", this)
-                        .show();
-            }
 
-            ebtn.setEnabled(false);
-        }catch (Exception e){
-            e.printStackTrace();
+                ebtn.setEnabled(false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            if(which==DialogInterface.BUTTON_POSITIVE) {
+                Intent it = new android.content.Intent(this, MainActivity.class);
+                startActivity(it);
+            }
+            if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
+            if(!randomSuggestAct.ActivityA.isFinishing()) randomSuggestAct.ActivityA.finish();
+            this.finish();
         }
     }
 }

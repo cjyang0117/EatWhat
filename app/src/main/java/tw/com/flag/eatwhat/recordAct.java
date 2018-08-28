@@ -296,8 +296,8 @@ public class recordAct extends AppCompatActivity
                                                                             b.setCancelable(false);
                                                                             b.setTitle("警告")
                                                                                     .setMessage("連線逾時，請重新連線")
-                                                                                    .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                                                                                    .setNegativeButton("離開", this)
+                                                                                    .setPositiveButton("連線", recordAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                                                                    .setNegativeButton("離開", recordAct.this)
                                                                                     .show();
                                                                         }
                                                                     } catch (Exception e) {
@@ -396,32 +396,6 @@ public class recordAct extends AppCompatActivity
         i.putExtras(b);
         startActivity(i);
     }
-    public boolean onCreateOptionMenu(Menu menu){
-        super.onCreateOptionsMenu(menu);
-        menu.add(0,0,menu.NONE,"刪除");
-
-        return true;
-    }
-    public void gotoRandomSuggestAct(View v){
-        android.content.Intent it = new android.content.Intent(this,randomSuggestAct.class);
-        startActivity(it);
-    }
-    public void gotoQuestionSuggestAct(View v){
-        android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
-        startActivity(it);
-    }
-    public void gotoRecordAct(View v){
-        android.content.Intent it = new android.content.Intent(this,recordAct.class);
-        startActivity(it);
-    }
-    public void gotoSearchAct(View v){
-        android.content.Intent it = new android.content.Intent(this,SearchAct.class);
-        startActivity(it);
-    }
-    public void gotoMain2Activity(View v){
-        android.content.Intent it = new android.content.Intent(this,Main2Activity.class);
-        startActivity(it);
-    }
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
@@ -452,29 +426,33 @@ public class recordAct extends AppCompatActivity
                             String s = row.get(i).getChildAt(1).getTag().toString() + "," + row.get(i).getChildAt(2).getTag().toString() + "," + ((TextView) row.get(i).getChildAt(1)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(2)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(3)).getText().toString() + ",";
                             out.write(s.getBytes());
                             out.close();
-                            json_write = new JSONObject();
-                            json_write.put("action", "eat");
-                            json_write.put("mid", Integer.parseInt(row.get(i).getChildAt(2).getTag().toString()));
-                            globalVariable.c.send(json_write);
-                            String tmp = globalVariable.c.receive();
-                            if(tmp != null) {
-                                json_read = new JSONObject(tmp);
-                                if (!json_read.getBoolean("check")) {
-                                    String reason;
-                                    reason = json_read.getString("data");
-                                    Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
+
+                            if(!((TextView) row.get(i).getChildAt(2)).getText().toString().equals("-")) {
+                                json_write = new JSONObject();
+                                json_write.put("action", "eat");
+                                json_write.put("mid", Integer.parseInt(row.get(i).getChildAt(2).getTag().toString()));
+                                globalVariable.c.send(json_write);
+                                String tmp = globalVariable.c.receive();
+                                if (tmp != null) {
+                                    json_read = new JSONObject(tmp);
+                                    if (!json_read.getBoolean("check")) {
+                                        String reason;
+                                        reason = json_read.getString("data");
+                                        Toast.makeText(recordAct.this, reason, Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    linkout = true;
+                                    AlertDialog.Builder b = new AlertDialog.Builder(recordAct.this);
+                                    //串聯呼叫法
+                                    b.setCancelable(false);
+                                    b.setTitle("警告")
+                                            .setMessage("連線逾時，請重新連線")
+                                            .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                            .setNegativeButton("離開", this)
+                                            .show();
                                 }
-                            }else{
-                                linkout=true;
-                                AlertDialog.Builder b=new AlertDialog.Builder(recordAct.this);
-                                //串聯呼叫法
-                                b.setCancelable(false);
-                                b.setTitle("警告")
-                                        .setMessage("連線逾時，請重新連線")
-                                        .setPositiveButton("連線", this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                                        .setNegativeButton("離開", this)
-                                        .show();
                             }
+
                             tblayout.removeView(row.get(i));
                             row.remove(i);
                             change = true;

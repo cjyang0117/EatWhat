@@ -53,7 +53,9 @@
         <activity
             android:name=".recordAct"
             android:label="紀錄"
-            android:theme="@style/skinPrimaryDark"/>
+            android:theme="@style/skinPrimaryDark"
+            android:hardwareAccelerated="true"
+            android:largeHeap="false"/>
         <activity
             android:name=".questionSuggestAct"
             android:label="@string/questionSuggest"
