@@ -135,6 +135,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:ems="10"
+                    android:maxLength="100"
                     android:hint="@string/writeComment"
                     android:inputType="textMultiLine"
                     android:overScrollMode="always"
@@ -147,15 +148,12 @@
                 android:id="@+id/storecommit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
-                android:paddingRight="5dp"
+                android:padding="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view"></TableLayout>
 
 
@@ -177,9 +175,15 @@
                 android:stepSize="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            　
-
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="16dp"
+                android:text="剩餘字數"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintStart_toStartOf="@+id/store_rate" />
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
