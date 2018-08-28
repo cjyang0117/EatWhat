@@ -116,9 +116,6 @@
         <activity
             android:name=".StoreAct"
             android:theme="@style/storeInf"/>
-        <activity
-            android:name=".Pop"
-            android:theme="@style/AppTheme.CustomTheme" />
 
     </application>
 
