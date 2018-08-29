@@ -46,45 +46,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@drawable/think" />
 
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/setDistance"
-            android:textColor="#d1800d"
-            app:layout_constraintBottom_toTopOf="@+id/dist2"
-            app:layout_constraintStart_toStartOf="@+id/dist2" />
-
         <Spinner
             android:id="@+id/dist2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="110dp"
+            android:layout_marginBottom="140dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:backgroundTint="#857062"
             android:entries="@array/dist2"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/imageView11"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.502"
+            app:layout_constraintHorizontal_bias="0.57"
             app:layout_constraintStart_toStartOf="parent" />
+
         <CheckBox
             android:id="@+id/sw1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:buttonTint="@color/colorGrassDark"
+            android:checked="true"
             android:text="營業中店家"
-            app:layout_constraintTop_toBottomOf="@+id/dist2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="@+id/dist2"
+            app:layout_constraintTop_toBottomOf="@+id/dist2" />
         <ImageView
             android:id="@+id/imageView11"
             android:layout_width="304dp"

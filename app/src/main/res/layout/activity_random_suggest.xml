@@ -90,6 +90,7 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         android:text="@string/nextStep"
+        android:textColor="#9b855f"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

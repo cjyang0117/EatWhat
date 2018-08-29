@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -168,14 +169,13 @@ public class userSuggestAct extends AppCompatActivity
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     ScrollView sc=new ScrollView(this);
                     sc.addView(tw);
-                    sc.setPadding(0,0,8,0);
                     r[i].addView(sc);
                     TableRow.LayoutParams params=(TableRow.LayoutParams)sc.getLayoutParams();
                     params.gravity=Gravity.CENTER;
 
                     tw = new TextView(this);
-                    String s = "  "+j2.get(9).toString()+"  ";
-                    tw.setText(s);
+                    tw.setText(" "+j2.get(9).toString());
+                    tw.setGravity(Gravity.CENTER);
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                     r[i].addView(tw);
 
@@ -311,11 +311,11 @@ public class userSuggestAct extends AppCompatActivity
         rankDialog.setContentView(R.layout.rank_dialog);
         WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
         lp.copyFrom(rankDialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
         rankDialog.getWindow().setAttributes(lp);
+        rankDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         rankDialog.setCancelable(true);
 
-        TextView pic = (TextView)rankDialog.findViewById(R.id.rank_dialog_text1);
         TextView username = (TextView)rankDialog.findViewById(R.id.rank_dialog_text2);
         username.setText(name);
         final Button okButton = (Button) rankDialog.findViewById(R.id.rank_dialog_ok);

@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -116,9 +117,10 @@ public class recordAct extends AppCompatActivity
                         if(i==0){
                             tv[i].setTag(sid);
                         }
-                        if(i==1){
+                        else if(i==1){
                             tv[i].setTag(mid);
                         }
+                        else tv[i].setGravity(Gravity.CENTER);
                         s=s.substring(idx+1);
                         row.get(count).addView(tv[i]);
                     }
@@ -252,6 +254,7 @@ public class recordAct extends AppCompatActivity
                                             if(i==0){
                                                 tv[i].setTag(sid);
                                             }
+                                            else if(i==2) tv[i].setGravity(Gravity.CENTER);
                                             s=s.substring(idx+1);
                                             row2.get(count2).addView(tv[i]);
                                         }

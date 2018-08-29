@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#fbe0d1">
+    android:color="#faeee8">
     <!--ripple中的color為點擊時的顏色-->
 
-    <!--基本顏色-->
-    <item>
-        <color android:color="#FFF"/>
-    </item>
+    <item android:drawable="@drawable/sign_in_button_background"></item>
 
 </ripple>

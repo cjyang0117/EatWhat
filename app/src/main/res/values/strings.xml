@@ -75,14 +75,8 @@
     <string name="_comment">"評論"</string>
     <string name="writeComment">請撰寫簡短的評論</string>
 
-    <string-array name="dist">
-        <item>請選擇(不限)</item>
-        <item>不想走太遠</item>
-        <item>沒事多走路</item>
-        <item>騎車去買飯</item>
-    </string-array>
     <string-array name="dist2">
-        <item>請選擇(不限)</item>
+        <item>請選擇範圍(不限)</item>
         <item>沒事多走路</item>
         <item>騎車去買飯</item>
     </string-array>
