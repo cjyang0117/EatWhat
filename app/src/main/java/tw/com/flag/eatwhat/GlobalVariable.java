@@ -6,4 +6,5 @@ public class GlobalVariable extends Application {
     public Client c;
     public int recmdtime;
     public int cnum;
+    public String account;
 }

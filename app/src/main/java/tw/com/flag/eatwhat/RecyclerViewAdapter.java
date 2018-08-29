@@ -87,6 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.menu, parent, false);
         ViewHolder vh = new ViewHolder(v);
+        globalVariable = (GlobalVariable) ContentSuggestAct.ActivityC.getApplicationContext().getApplicationContext();
         return vh;
     }
     @Override
@@ -122,7 +123,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     public void onClick(View v) {
                         Button b = (Button) v;
                         try {
-                            FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput("think.txt", MODE_APPEND);
+                            FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
 //                            String s = b.getTag().toString() + ((TextView) row[b.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + ",";
                             String s = b.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getText().toString() + ",";
                             out.write(s.getBytes());
@@ -149,14 +150,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput("eat.txt", MODE_APPEND);
+                                            FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput(globalVariable.account+"eat.txt", MODE_APPEND);
                                             String s;
                                             s = ebtn.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getText().toString() + ",";
                                             out.write(s.getBytes());
                                             out.close();
                                             ebtn.setEnabled(false);
 
-                                            globalVariable = (GlobalVariable) ContentSuggestAct.ActivityC.getApplicationContext().getApplicationContext();
                                             s=ebtn.getTag().toString().substring(ebtn.getTag().toString().indexOf(",")+1);
                                             s=s.substring(0,s.indexOf(","));
                                             json_write = new JSONObject();

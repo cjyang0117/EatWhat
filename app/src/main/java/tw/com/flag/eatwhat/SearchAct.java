@@ -209,7 +209,7 @@ public class SearchAct extends AppCompatActivity
                                         public void onClick(View v) {
                                             Button b=(Button)v;
                                             try {
-                                                FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
+                                                FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
                                                 String s=b.getTag().toString()+((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
                                                 out.write(s.getBytes());
                                                 out.close();
@@ -343,7 +343,7 @@ public class SearchAct extends AppCompatActivity
                                         public void onClick(View v) {
                                             Button b=(Button)v;
                                             try {
-                                                FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
+                                                FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
                                                 String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView) ((ScrollView) row2[b.getId()].getChildAt(1)).getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
                                                 out.write(s.getBytes());
                                                 out.close();
@@ -531,7 +531,7 @@ public class SearchAct extends AppCompatActivity
     public void onClick(DialogInterface dialog, int which) {
         if(!linkout) {
             try {
-                FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                FileOutputStream out = openFileOutput(globalVariable.account+"eat.txt", MODE_APPEND);
                 String s;
                 if (isStore) {
                     s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(0)).getText().toString() + ",-,-,";

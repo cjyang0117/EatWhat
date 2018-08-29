@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {//當回傳為true跳轉進入首頁
                     globalVariable.recmdtime = json_read.getInt("recmdTime");
                     globalVariable.cnum = json_read.getInt("cnum");
+                    globalVariable.account=account;
                     checkmail = sp.getBoolean("checkemail",false);
                     if(!checkmail){
                         String Email = json_read.getString("mail");

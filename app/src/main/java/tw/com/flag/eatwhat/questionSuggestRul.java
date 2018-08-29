@@ -86,7 +86,7 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
                     public void onClick(View v) {
                         Button b=(Button)v;
                         try {
-                            FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
+                            FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
                             String s=menunum.toString().trim()+","+num.toString().trim()+","+storename.toString().trim()+","+textViewmenu.getText().toString()+","+price.toString()+",";
                             out.write(s.getBytes());
                             out.close();
@@ -189,7 +189,7 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
         public void onClick(DialogInterface dialog, int which) {
             if(!linkout) {
                 try {
-                    FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                    FileOutputStream out = openFileOutput(globalVariable.account+"eat.txt", MODE_APPEND);
                     String s = menunum.toString().trim() + "," + num.toString().trim() + "," + storename.toString().trim() + "," + textViewmenu.getText().toString() + "," + price.toString() + ",";
                     out.write(s.getBytes());
                     out.close();

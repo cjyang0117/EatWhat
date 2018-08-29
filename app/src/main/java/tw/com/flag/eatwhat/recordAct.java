@@ -74,7 +74,7 @@ public class recordAct extends AppCompatActivity
         tblayout2 = (TableLayout) findViewById(R.id.tb2Layout);
 
         try {
-            FileInputStream in=openFileInput("think.txt");
+            FileInputStream in=openFileInput(globalVariable.account+"think.txt");
             int idx;
             byte[] buffer = new byte[1024];
             String s="";
@@ -87,9 +87,7 @@ public class recordAct extends AppCompatActivity
 
             if(s!="") {
                 tblayout = (TableLayout) findViewById(R.id.tbLayout);
-                tblayout.setColumnShrinkable(1,true);
                 tblayout.setColumnShrinkable(2,true);
-                tblayout.setColumnStretchable(1, true);
                 tblayout.setColumnStretchable(2, true);
 
                 count=0;
@@ -116,13 +114,21 @@ public class recordAct extends AppCompatActivity
                         tv[i].setPadding(0,0,16,0);
                         if(i==0){
                             tv[i].setTag(sid);
-                        }
-                        else if(i==1){
+                            row.get(count).addView(tv[i]);
+                        }else if(i==1){
                             tv[i].setTag(mid);
+
+                            ScrollView sc=new ScrollView(this);
+                            sc.addView(tv[i]);
+                            sc.setPadding(8,0,8,0);
+                            row.get(count).addView(sc);
+                            TableRow.LayoutParams params=(TableRow.LayoutParams)sc.getLayoutParams();
+                            params.gravity=Gravity.CENTER;
+                        }else{
+                            tv[i].setGravity(Gravity.CENTER);
+                            row.get(count).addView(tv[i]);
                         }
-                        else tv[i].setGravity(Gravity.CENTER);
                         s=s.substring(idx+1);
-                        row.get(count).addView(tv[i]);
                     }
                     Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
                     btn.setText("吃");
@@ -187,10 +193,13 @@ public class recordAct extends AppCompatActivity
                             }
                         }
                     });
-                    tblayout.addView(row.get(count));
                     count++;
                 }
-
+                for(int i=row.size()-1;i>-1;i--){
+                    tblayout.addView(row.get(i));
+                    TableLayout.LayoutParams params=(TableLayout.LayoutParams)row.get(i).getLayoutParams();
+                    params.setMargins(0,12,0,12);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -218,7 +227,7 @@ public class recordAct extends AppCompatActivity
                             change=false;
                             if(tblayout2!=null) tblayout2.removeAllViews();
                             try {
-                                FileInputStream in = openFileInput("eat.txt");
+                                FileInputStream in = openFileInput(globalVariable.account+"eat.txt");
                                 byte[] buffer = new byte[1024];
                                 String s = "";
                                 int idx = in.read(buffer);
@@ -229,9 +238,7 @@ public class recordAct extends AppCompatActivity
                                 in.close();
 
                                 if(s!="") {
-                                    tblayout2.setColumnShrinkable(0,true);
                                     tblayout2.setColumnShrinkable(1,true);
-                                    tblayout2.setColumnStretchable(0, true);
                                     tblayout2.setColumnStretchable(1, true);
 
                                     ArrayList<TableRow> row2=new ArrayList<>();
@@ -253,10 +260,19 @@ public class recordAct extends AppCompatActivity
                                             tv[i].setText(s.substring(0, idx));
                                             if(i==0){
                                                 tv[i].setTag(sid);
+                                                row2.get(count2).addView(tv[i]);
+                                            }else if(i==1){
+                                                ScrollView sc3=new ScrollView(recordAct.this);
+                                                sc3.addView(tv[i]);
+                                                sc3.setPadding(8,0,8,0);
+                                                row2.get(count2).addView(sc3);
+                                                TableRow.LayoutParams params=(TableRow.LayoutParams)sc3.getLayoutParams();
+                                                params.gravity=Gravity.CENTER;
+                                            }else if(i==2){
+                                                tv[i].setGravity(Gravity.CENTER);
+                                                row2.get(count2).addView(tv[i]);
                                             }
-                                            else if(i==2) tv[i].setGravity(Gravity.CENTER);
                                             s=s.substring(idx+1);
-                                            row2.get(count2).addView(tv[i]);
                                         }
                                         btn=new Button(recordAct.this, null, android.R.attr.buttonStyleSmall);
                                         btn.setText("推薦");
@@ -326,8 +342,12 @@ public class recordAct extends AppCompatActivity
                                                 gotostore(tr.getChildAt(0).getTag().toString());
                                             }
                                         });
-                                        tblayout2.addView(row2.get(count2));
                                         count2++;
+                                    }
+                                    for(int i=row2.size()-1;i>-1;i--){
+                                        tblayout2.addView(row2.get(i));
+                                        TableLayout.LayoutParams params=(TableLayout.LayoutParams)row2.get(i).getLayoutParams();
+                                        params.setMargins(0,12,0,12);
                                     }
                                 }
                             }catch (Exception e){
@@ -360,10 +380,10 @@ public class recordAct extends AppCompatActivity
         super.onDestroy();
         try {
             if(change2){
-                FileOutputStream out = openFileOutput("think.txt", MODE_PRIVATE);
+                FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_PRIVATE);
                 String s="";
                 for(int i=0;i<row.size();i++){
-                    s+=row.get(i).getChildAt(1).getTag().toString()+","+row.get(i).getChildAt(2).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView)row.get(i).getChildAt(2)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
+                    s+=row.get(i).getChildAt(1).getTag().toString()+","+ ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView) ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
                 }
                 out.write(s.getBytes());
                 out.close();
@@ -425,15 +445,15 @@ public class recordAct extends AppCompatActivity
                     int i;
                     for (i = 0; i < row.size(); i++) {
                         if (((Button) row.get(i).getChildAt(4)).getId() == ebtn.getId()) {
-                            FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
-                            String s = row.get(i).getChildAt(1).getTag().toString() + "," + row.get(i).getChildAt(2).getTag().toString() + "," + ((TextView) row.get(i).getChildAt(1)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(2)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(3)).getText().toString() + ",";
+                            FileOutputStream out = openFileOutput(globalVariable.account+"eat.txt", MODE_APPEND);
+                            String s = row.get(i).getChildAt(1).getTag().toString() + "," + ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0).getTag().toString() + "," + ((TextView) row.get(i).getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row.get(i).getChildAt(3)).getText().toString() + ",";
                             out.write(s.getBytes());
                             out.close();
 
-                            if(!((TextView) row.get(i).getChildAt(2)).getText().toString().equals("-")) {
+                            if(!((TextView) row.get(i).getChildAt(3)).getText().toString().equals("-")) {
                                 json_write = new JSONObject();
                                 json_write.put("action", "eat");
-                                json_write.put("mid", Integer.parseInt(row.get(i).getChildAt(2).getTag().toString()));
+                                json_write.put("mid", Integer.parseInt(((ScrollView) row.get(i).getChildAt(2)).getChildAt(0).getTag().toString()));
                                 globalVariable.c.send(json_write);
                                 String tmp = globalVariable.c.receive();
                                 if (tmp != null) {

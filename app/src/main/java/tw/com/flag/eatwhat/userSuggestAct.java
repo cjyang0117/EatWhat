@@ -268,7 +268,7 @@ public class userSuggestAct extends AppCompatActivity
                         public void onClick(View v) {
                             Button b=(Button)v;
                             try {
-                                FileOutputStream out = openFileOutput("think.txt", MODE_APPEND);
+                                FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
                                 String s;
                                 if(Switch) {
                                     s = b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
@@ -335,7 +335,7 @@ public class userSuggestAct extends AppCompatActivity
     public void onClick(DialogInterface dialog, int which) {
         if(!linkout) {
             try {
-                FileOutputStream out = openFileOutput("eat.txt", MODE_APPEND);
+                FileOutputStream out = openFileOutput(globalVariable.account+"eat.txt", MODE_APPEND);
                 String s;
                 if (Switch) {
                     s = ebtn.getTag().toString() + ((TextView) row[ebtn.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[ebtn.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[ebtn.getId()].getChildAt(3)).getText().toString() + ",";
