@@ -30,7 +30,7 @@ public class signUpAct extends AppCompatActivity {
     private JSONObject json_read, json_write;
     ImageView img2, img3;
     EditText editText4, editText5, editText6, editText7, editText8, editText9;
-    boolean a = false, b = false, c = false;
+    boolean a = false, b = false, c = false, d = false;
     TextView tint;
     private FirebaseAuth auth;
     private FirebaseUser user;
@@ -94,12 +94,12 @@ public class signUpAct extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (editText6.getText().toString().trim().length() > 0) {
+                if (editText9.getText().toString().trim().length() > 0) {
                     tint.setText("");
-                    b = true;
+                    d = true;
                 } else{
                     tint.setText("不得為空");
-                    b=false;
+                    d=false;
                 }
             }
             @Override
@@ -153,6 +153,8 @@ public class signUpAct extends AppCompatActivity {
                 Toast.makeText(this, "帳號不得為空", Toast.LENGTH_SHORT).show();
             }else if (!c) {
                 Toast.makeText(this, "請檢查密碼", Toast.LENGTH_SHORT).show();
+            }else if (!d) {
+                Toast.makeText(this, "請輸入暱稱", Toast.LENGTH_SHORT).show();
             }else{//無誤則傳資料
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(signUpAct.this, new OnCompleteListener<AuthResult>() {

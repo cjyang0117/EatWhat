@@ -149,7 +149,7 @@ public class signUpAct2 extends AppCompatActivity implements CompoundButton.OnCh
                 json_write.put("score", j2);
                 float price = (float)seekBar3.getProgress()/(seekBar3.getProgress()+seekBar4.getProgress()+seekBar5.getProgress());
                 float flavor = (float)seekBar4.getProgress()/(seekBar3.getProgress()+seekBar4.getProgress()+seekBar5.getProgress());
-                float store = (float)seekBar4.getProgress()/(seekBar3.getProgress()+seekBar4.getProgress()+seekBar5.getProgress());
+                float store = (float)seekBar5.getProgress()/(seekBar3.getProgress()+seekBar4.getProgress()+seekBar5.getProgress());
                 float [] weight =new float[3];
                 weight[0]=price; weight[1]=flavor;weight[2]=store;
                 JSONArray j3 = new JSONArray(weight);
