@@ -26,6 +26,7 @@
 
         <android.support.design.widget.TabLayout
             android:id="@+id/mTabLayout"
+            style="@style/SelectableItemBackground"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFF"
@@ -137,7 +138,6 @@
         android:id="@+id/sc2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="1dp"
         android:background="@color/white"
         android:visibility="invisible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -147,8 +147,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" />
+            android:paddingLeft="8dp"
+            android:paddingRight="4dp" />
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -156,7 +156,6 @@
         android:id="@+id/sc1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="1dp"
         android:background="@color/white"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -166,8 +165,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp" />
+            android:paddingLeft="8dp"
+            android:paddingRight="4dp" />
 
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

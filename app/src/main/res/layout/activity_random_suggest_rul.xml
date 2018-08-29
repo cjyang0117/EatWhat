@@ -137,6 +137,7 @@
         android:layout_marginTop="55dp"
         android:background="@drawable/main2activity_button_activity"
         android:text="重來"
+        android:textColor="#9b855f"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

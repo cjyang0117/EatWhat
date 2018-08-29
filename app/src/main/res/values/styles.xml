@@ -33,7 +33,7 @@
     <style name="skinPrimaryDark" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">#fae5af</item>
-        <item name="android:textColorPrimary">#9b855f</item>
+        <item name="android:textColorPrimary">#bd740c</item>
         <item name="android:textColorHint">#c79b855f</item>
         <item name="android:colorControlNormal">#adb59b</item>
 
@@ -76,5 +76,12 @@
     </style>
     <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="android:textColor">#795548</item>
+    </style>
+    <style name="SelectableItemTheme">
+        <item name="colorControlHighlight">#fef9ec</item>
+    </style>
+    <style name="SelectableItemBackground">
+        <item name="android:theme">@style/SelectableItemTheme</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
     </style>
 </resources>

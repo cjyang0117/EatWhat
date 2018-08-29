@@ -40,6 +40,7 @@
             android:paddingLeft="24dp"
             android:paddingRight="24dp"
             android:text="吃"
+            android:textColor="#9b855f"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/again" />
@@ -55,6 +56,7 @@
             android:paddingLeft="19dp"
             android:paddingRight="19dp"
             android:text="考慮"
+            android:textColor="#9b855f"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/again" />
 
@@ -69,6 +71,7 @@
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="重來"
+            android:textColor="#9b855f"
             app:layout_constraintBottom_toTopOf="@+id/consider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -66,7 +66,8 @@
             app:tabIndicatorHeight="4dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="#9d7f62"
-            app:tabTextColor="#bfada771">
+            app:tabTextColor="#bfada771"
+            style="@style/SelectableItemBackground">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/storeInformation"
@@ -191,9 +192,8 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginEnd="16dp"
-                android:text="(評分日期)"
+                android:layout_marginBottom="13dp"
+                android:layout_marginEnd="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
                 app:layout_constraintEnd_toStartOf="@+id/submit" />
 
@@ -227,6 +227,8 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:paddingBottom="16dp"
             android:visibility="visible"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -237,12 +239,14 @@
                 android:layout_gravity="center"
                 android:layout_marginBottom="50dp"
                 android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
                 android:drawableLeft="@drawable/ic_place_white_48dp"
                 android:gravity="center"
                 android:textColor="#6e6e6e"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toTopOf="@+id/storecell"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/storecell"
@@ -256,10 +260,9 @@
                 android:gravity="center"
                 android:textColor="#6e6e6e"
                 android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/storetimeimg"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.3" />
+                app:layout_constraintTop_toBottomOf="@+id/storeaddr" />
 
             <ImageView
                 android:id="@+id/storetimeimg"
@@ -276,12 +279,12 @@
                 android:id="@+id/sc1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="1dp"
+                android:layout_marginTop="43dp"
                 android:background="@color/white"
                 android:visibility="visible"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintStart_toEndOf="@+id/storetimeimg"
-                app:layout_constraintTop_toTopOf="@+id/storetimeimg">
+                app:layout_constraintTop_toBottomOf="@+id/storecell">
 
                 <TableLayout
                     android:id="@+id/tbLayout2"

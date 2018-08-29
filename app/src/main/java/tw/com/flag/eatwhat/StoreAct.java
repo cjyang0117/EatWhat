@@ -266,7 +266,8 @@ public class StoreAct extends AppCompatActivity
 
                         tw = new TextView(this);
                         String s = j2.get(1).toString();
-                        tw.setText(s + " 元");//價格
+                        tw.setText("  "+s + " 元");//價格
+                        tw.setGravity(Gravity.CENTER);
                         tw.setTextColor(Color.rgb(110, 110, 110));
                         row[i].addView(tw);
 
@@ -628,6 +629,7 @@ public class StoreAct extends AppCompatActivity
                 row2 = new TableRow[j3.length()];
                 for (int i = 0; i < j3.length(); i++) { //動態產生TableRow
                     row2[i] = new TableRow(this);
+                    row2[i].setPadding(4,4,4,4);
                     storeLayout2.addView(row2[i]);
                 }
                 JSONArray j4;
@@ -652,20 +654,27 @@ public class StoreAct extends AppCompatActivity
                     }
                     if(a==1||b==1||c==1||d==1||e==1||f==1||g==1){
                         tw.setText(j4.get(0).toString());
+                        tw.setPadding(0,24,24,0);
                     }
+                    else tw.setPadding(0,0,24,0);
+                    tw.setTextSize(16);
                     tw.setTextColor(Color.rgb(110, 110, 110));
+                    tw.setTextSize(16);
                     row2[i].addView(tw);
                     tw = new TextView(this);
                     tw.setText(j4.get(1).toString().substring(0,5));
                     tw.setTextColor(Color.rgb(110, 110, 110));
+                    tw.setTextSize(16);
                     row2[i].addView(tw);
                     tw = new TextView(this);
                     tw.setText("~");
                     tw.setTextColor(Color.rgb(110, 110, 110));
+                    tw.setTextSize(16);
                     row2[i].addView(tw);
                     tw = new TextView(this);
                     tw.setText(j4.get(2).toString().substring(0,5));
                     tw.setTextColor(Color.rgb(110, 110, 110));
+                    tw.setTextSize(16);
                     row2[i].addView(tw);
                 }
             }

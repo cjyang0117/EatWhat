@@ -33,7 +33,8 @@
             app:tabIndicatorHeight="4dp"
             app:tabMode="fixed"
             app:tabSelectedTextColor="#9d7f62"
-            app:tabTextColor="#bfada771">
+            app:tabTextColor="#bfada771"
+            style="@style/SelectableItemBackground">
 
             <android.support.design.widget.TabItem
                 android:id="@+id/userSuggest"
