@@ -298,14 +298,16 @@ public class StoreAct extends AppCompatActivity
                                                         tmp = globalVariable.c.receive();
                                                         if (tmp != null) {
                                                             json_read = new JSONObject(tmp);
-                                                            String reason = json_read.getString("data");
                                                             if (!json_read.getBoolean("check")) {//接收失敗原因
+                                                                String reason = json_read.getString("data");
+                                                                Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
                                                             } else {
                                                                 bt.setEnabled(false);
                                                                 bt.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                                                                 globalVariable.recmdtime++;
+                                                                String reason = json_read.getString("data");
+                                                                Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
                                                             }
-                                                            Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
                                                         } else {
                                                             AlertDialog.Builder b = new AlertDialog.Builder(StoreAct.this);
                                                             //串聯呼叫法
