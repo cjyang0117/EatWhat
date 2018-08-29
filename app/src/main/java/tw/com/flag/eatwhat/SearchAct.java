@@ -46,7 +46,7 @@ public class SearchAct extends AppCompatActivity
     private TableRow[] row,row2;
     private int sp=14;
     private TableLayout tblayout, tblayout2;
-    private Boolean isStore=true, isSort=false, sort=true;
+    private Boolean isStore=true,isSort=false, sort=true,isSort2=false, sort2=true,isSort3=false, sort3=true;
     private boolean linkout=false;
     private int times=0;
     private Button ebtn;
@@ -77,6 +77,9 @@ public class SearchAct extends AppCompatActivity
         radioButton10 = findViewById(R.id.radioButton10);
         radioButton9 = findViewById(R.id.radioButton9);
         radioButton8 = findViewById(R.id.radioButton8);
+        radioButton10.setEnabled(false);
+        radioButton9.setEnabled(false);
+        radioButton8.setEnabled(false);
 
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -89,8 +92,12 @@ public class SearchAct extends AppCompatActivity
                         sc = findViewById(R.id.sc2);
                         sc.setVisibility(View.INVISIBLE);
                         radioButton10.setEnabled(false);
-                        radioButton9.setEnabled(true);
-                        radioButton8.setEnabled(true);
+                        radioButton9.setEnabled(false);
+                        radioButton8.setEnabled(false);
+                        if(row != null){
+                            radioButton9.setEnabled(true);
+                            radioButton8.setEnabled(true);
+                        }
                         break;
                     case 1:
                         isStore=false;
@@ -98,9 +105,12 @@ public class SearchAct extends AppCompatActivity
                         sc2.setVisibility(View.VISIBLE);
                         sc2 = findViewById(R.id.sc1);
                         sc2.setVisibility(View.INVISIBLE);
-                        radioButton10.setEnabled(true);
+                        radioButton10.setEnabled(false);
                         radioButton9.setEnabled(false);
                         radioButton8.setEnabled(false);
+                        if(row2 != null){
+                            radioButton10.setEnabled(true);
+                        }
                         break;
                 }
             }
@@ -116,7 +126,7 @@ public class SearchAct extends AppCompatActivity
         editText10.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                isSort=false;
+                isSort=false;isSort2=false;isSort3=false;
                 times++;
                 if(isStore){
                     try {
@@ -169,19 +179,19 @@ public class SearchAct extends AppCompatActivity
                                     tw.setText(j2.get(1).toString());
                                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                                     float ratecount;
-                                    //ratecount = Float.valueOf(j2.get(2).toString());
+                                    ratecount = Float.valueOf(j2.get(2).toString());
                                     row[i].addView(tw);
                                     RatingBar rb=new RatingBar(SearchAct.this, null, android.R.attr.ratingBarStyleSmall);
                                     rb.setProgressTintList(getResources().getColorStateList(R.color.searchRatingbar));
                                     rb.setNumStars(5);
-                                    //rb.setRating(ratecount);
-                                    rb.setRating(2);
+                                    rb.setRating(ratecount);
                                     //rb.setIsIndicator(true);
                                     row[i].addView(rb);
                                     TableRow.LayoutParams tlp=(TableRow.LayoutParams) rb.getLayoutParams();
                                     tlp.gravity=Gravity.CENTER_VERTICAL;
                                     tw = new TextView(SearchAct.this);
-                                    tw.setText("0.3km");
+                                    float dist = Float.parseFloat(j2.get(3).toString())/1000;
+                                    tw.setText(dist+"km");
                                     tw.setPadding(16,0,0,0);
                                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                                     row[i].addView(tw);
@@ -252,7 +262,11 @@ public class SearchAct extends AppCompatActivity
                         e.printStackTrace();
                         Log.e("Exception","StoreError="+e.toString());
                     }
-
+                    if(row != null){
+                        radioButton10.setEnabled(false);
+                        radioButton9.setEnabled(true);
+                        radioButton8.setEnabled(true);
+                    }
                 }else{
                     try {
                         if(tblayout2!=null) tblayout2.removeAllViews();
@@ -382,6 +396,11 @@ public class SearchAct extends AppCompatActivity
                         e.printStackTrace();
                         Log.e("Exception","MenuError="+e.toString());
                     }
+                    if(row2 != null){
+                        radioButton10.setEnabled(true);
+                        radioButton9.setEnabled(false);
+                        radioButton8.setEnabled(false);
+                    }
                 }
                 return false;
             }
@@ -399,7 +418,7 @@ public class SearchAct extends AppCompatActivity
                 tblayout2.removeAllViews();
                 if(!isSort) {
                     isSort = true; sort=true;
-                    Sort(row2, 2);
+                    Sort(row2, 2,1);
                 }
                 if (sort) {
                     sort = false;
@@ -413,20 +432,60 @@ public class SearchAct extends AppCompatActivity
                     }
                 }
                 break;
-            case R.id.radioButton9:
-
-                break;
             case R.id.radioButton8:
-
+                isSort3=false; sort3=false;
+                tblayout.removeAllViews();
+                if(!isSort2) {
+                    isSort2 = true; sort2=true;
+                    Sort(row, 1,2);
+                }
+                if (sort2) {
+                    sort2 = false;
+                    for (int i = 0; i < row.length; i++) {
+                        tblayout.addView(row[i]);
+                    }
+                } else {
+                    sort2 = true;
+                    for (int i = row.length - 1; i > -1; i--) {
+                        tblayout.addView(row[i]);
+                    }
+                }
+                break;
+            case R.id.radioButton9:
+                isSort2=false; sort2=false;
+                tblayout.removeAllViews();
+                if(!isSort3) {
+                    isSort3 = true; sort3=true;
+                    Sort(row, 2,3);
+                }
+                if (sort3) {
+                    sort3 = false;
+                    for (int i = 0; i < row.length; i++) {
+                        tblayout.addView(row[i]);
+                    }
+                } else {
+                    sort3 = true;
+                    for (int i = row.length - 1; i > -1; i--) {
+                        tblayout.addView(row[i]);
+                    }
+                }
                 break;
         }
     }
-    public void Sort(TableRow[] tr, int in) {
-        int p1, p2;
+    public void Sort(TableRow[] tr, int in,int s) {
+        float p1 = 0, p2 = 0;
         for (int i = tr.length-1; i > 0; --i){
             for (int j = 0; j < i; ++j) {
-                p1 = Integer.parseInt(((TextView) tr[j].getChildAt(in)).getText().toString());
-                p2 = Integer.parseInt(((TextView) tr[j+1].getChildAt(in)).getText().toString());
+                if(s == 1){
+                    p1 = Float.parseFloat(((TextView) tr[j].getChildAt(in)).getText().toString());
+                    p2 = Float.parseFloat(((TextView) tr[j+1].getChildAt(in)).getText().toString());
+                }else if(s == 2){
+                    p1 = (float) ((RatingBar) tr[j].getChildAt(in)).getRating();
+                    p2 = (float) ((RatingBar)  tr[j+1].getChildAt(in)).getRating();
+                }else{
+                    p1 = Float.parseFloat(((TextView) tr[j].getChildAt(in)).getText().toString().substring(0,((TextView) tr[j].getChildAt(in)).getText().toString().indexOf("km")));
+                    p2 = Float.parseFloat(((TextView) tr[j+1].getChildAt(in)).getText().toString().substring(0,((TextView) tr[j+1].getChildAt(in)).getText().toString().indexOf("km")));
+                }
                 if (p1 > p2) {
                     Button t1=((Button) tr[j].getChildAt(3));
                     Button t2=((Button) tr[j+1].getChildAt(3));

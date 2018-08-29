@@ -48,6 +48,7 @@ public class userSuggestAct extends AppCompatActivity
     private int sp=14;
     private Button ebtn;
     private boolean Switch=true,track = true;
+    private Boolean isSort=false, sort=false;
     private boolean linkout=false;
     private TabLayout mTabLayout;
     private Toolbar toolbar;
@@ -75,6 +76,7 @@ public class userSuggestAct extends AppCompatActivity
                 public void onTabSelected(TabLayout.Tab tab) {
                     switch (tab.getPosition()) {
                         case 0:
+                            isSort = false; sort=false;
                             toolbar.setTitle(TollBarTitle[0]);
                             Switch = true;
                             NestedScrollView sc = findViewById(R.id.sc1);
@@ -83,6 +85,7 @@ public class userSuggestAct extends AppCompatActivity
                             sc.setVisibility(View.INVISIBLE);
                             break;
                         case 1:
+                            isSort = false; sort=false;
                             toolbar.setTitle(TollBarTitle[1]);
                             Switch = false;
                             NestedScrollView sc2 = findViewById(R.id.sc2);
@@ -104,6 +107,79 @@ public class userSuggestAct extends AppCompatActivity
         }
 
 
+    }
+    public void onRadioButtonClicked(View v){
+        int id= v.getId();
+        switch (id){
+            case R.id.radioButton10:
+                if(Switch){
+                    tblayout = (TableLayout) findViewById(R.id.tbLayout);
+                    tblayout.removeAllViews();
+                    if(!isSort) {
+                        isSort = true; sort=true;
+                        Sort(row, 3);
+                    }
+                    if (sort) {
+                        sort = false;
+                        for (int i = 0; i < row.length; i++) {
+                            tblayout.addView(row[i]);
+                        }
+                    } else {
+                        sort = true;
+                        for (int i = row.length - 1; i > -1; i--) {
+                            tblayout.addView(row[i]);
+                        }
+                    }
+                }else{
+                    tblayout = (TableLayout) findViewById(R.id.tb2Layout);
+                    tblayout.removeAllViews();
+                    if(!isSort) {
+                        isSort = true; sort=true;
+                        Sort(row2, 3);
+                    }
+                    if (sort) {
+                        sort = false;
+                        for (int i = 0; i < row2.length; i++) {
+                            tblayout.addView(row2[i]);
+                        }
+                    } else {
+                        sort = true;
+                        for (int i = row2.length - 1; i > -1; i--) {
+                            tblayout.addView(row2[i]);
+                        }
+                    }
+                }
+                break;
+            case R.id.radioButton8:
+                break;
+            case R.id.radioButton9:
+                break;
+        }
+    }
+    public void Sort(TableRow[] tr, int in) {
+        int p1 , p2 ;
+        for (int i = tr.length-1; i > 0; --i){
+            for (int j = 0; j < i; ++j) {
+                p1 = Integer.parseInt(((TextView) tr[j].getChildAt(in)).getText().toString().trim());
+                p2 = Integer.parseInt(((TextView) tr[j+1].getChildAt(in)).getText().toString().trim());
+                if (p1 > p2) {
+                    Button t1=((Button) tr[j].getChildAt(4));
+                    Button t2=((Button) tr[j+1].getChildAt(4));
+                    int t=t1.getId();
+                    t1.setId(t2.getId());
+                    t2.setId(t);
+                    t1=((Button) tr[j].getChildAt(5));
+                    t2=((Button) tr[j+1].getChildAt(5));
+                    t=t1.getId();
+                    t1.setId(t2.getId());
+                    t2.setId(t);
+
+                    TableRow tmp = tr[j];
+                    tr[j] = tr[j + 1];
+                    tr[j + 1] = tmp;
+                }
+            }
+        }
     }
     private TableRow[] loadUserData(boolean isUser, int tbId, TableRow[] r){
         try {

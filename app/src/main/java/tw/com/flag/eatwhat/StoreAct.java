@@ -17,6 +17,8 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatTextView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -53,10 +55,10 @@ public class StoreAct extends AppCompatActivity
     static Activity ActivityS;
     private GlobalVariable globalVariable;
     private JSONObject json_read, json_write;
-    private TextView storeaddr,storecell,storetime,textView12;
+    private TextView storeaddr,storecell,storetime,textView12,textView13;
     private TableLayout storeLayout,storeLayout2;
     private TableRow[] row,row2;
-    private int sp=14,sid;
+    private int sp=14,sid,limittext = 100;
     private int[] mid;
     private Gps gps3;
     private Button btn;
@@ -67,7 +69,7 @@ public class StoreAct extends AppCompatActivity
     private LocationManager status;
     private ScrollView sc;
     private TableLayout storecommit;
-
+    TableRow.LayoutParams textViewParam = new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT,1.0f);
     private Button submit;
     RatingBar storerate;
     ScrollView sc2;
@@ -92,6 +94,9 @@ public class StoreAct extends AppCompatActivity
         sc = findViewById(R.id.sc);
         ed1 = findViewById(R.id.ed1);
         textView12 = findViewById(R.id.textView12);
+        String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date());
+        textView12.setText(date);
+        textView13 = findViewById(R.id.textView13);
         submit = findViewById(R.id.submit);
         ed1.setOnTouchListener(new View.OnTouchListener() {
 
@@ -105,6 +110,31 @@ public class StoreAct extends AppCompatActivity
                     }
                 }
                 return false;
+            }
+        });
+        ed1.addTextChangedListener(new TextWatcher() {
+            private CharSequence temp;
+            private int selectionStart;
+            private int selectionEnd;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                temp = s;
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                int text = limittext - s.length();
+                textView13.setText(text+"/100");
+                selectionStart = ed1.getSelectionStart();
+                selectionEnd = ed1.getSelectionEnd();
+                if (temp.length() > limittext) {
+                    s.delete(selectionStart - 1, selectionEnd);
+                    int tempSelection = selectionEnd;
+                    ed1.setText(s);
+                    ed1.setSelection(tempSelection);
+                }
             }
         });
         mTabLayout = findViewById(R.id.mTabLayout);
@@ -321,35 +351,39 @@ public class StoreAct extends AppCompatActivity
 
 
         storecommit = (TableLayout) findViewById(R.id.storecommit);
-        storecommit.setColumnShrinkable(0, false);
-        storecommit.setColumnShrinkable(1, true);
-        storecommit.setColumnStretchable(0, false);
-        storecommit.setColumnStretchable(1, true);
+
         try {
             //json_read = new JSONObject(b.getString("data"));
             JSONArray j1 = json_read.getJSONArray("Evaluation");
             JSONArray j2 = new JSONArray();
-            row = new TableRow[j1.length()];
-            for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+            row = new TableRow[(j1.length()+1)*3];
+            for (int i = 0; i < (j1.length()+1)*3; i++) { //動態產生TableRow
                 row[i] = new TableRow(this);
                 row[i].setId(i);
                 storecommit.addView(row[i]);
             }
             for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                 j2 = j1.getJSONArray(i);
+                int z= i*3;
                 TextView tw = new TextView(this);
                 tw.setText(j2.get(0).toString());
                 tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                 tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
+                tw.setLayoutParams(textViewParam);
+                tw.setPaddingRelative(10,0,10,10);
+                row[z].addView(tw);
+                tw = new TextView(getApplicationContext());
+                tw.setText(j2.get(2).toString());
+                tw.setTextColor(Color.BLACK);
+                tw.setLayoutParams(textViewParam);
+                tw.setPaddingRelative(10,0,10,10);
+                row[z+1].addView(tw);
                 tw = new TextView(this);
                 tw.setText(j2.get(1).toString());
                 tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
-                tw = new TextView(this);
-                tw.setText(j2.get(2).toString());
-                tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
+                tw.setLayoutParams(textViewParam);
+                tw.setPaddingRelative(10,0,10,50);
+                row[z+2].addView(tw);
             }
             submit = (Button)findViewById(R.id.submit);
             ed1 = (EditText)findViewById(R.id.ed1);
@@ -466,8 +500,6 @@ public class StoreAct extends AppCompatActivity
                                 String reason = json_read.getString("data");
                                 Toast.makeText(StoreAct.this, reason, Toast.LENGTH_SHORT).show();
                             } else {
-                                String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(new Date());
-                                textView12.setText(date);
                                 Commented();
                             }
                         }else{
@@ -499,27 +531,35 @@ public class StoreAct extends AppCompatActivity
             json_read = new JSONObject(tmp);
             JSONArray j1 = json_read.getJSONArray("Evaluation");
             JSONArray j2 = new JSONArray();
-            row = new TableRow[j1.length()];
-            for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+            row = new TableRow[(j1.length()+1)*3];
+            for (int i = 0; i < (j1.length()+1)*3; i++) { //動態產生TableRow
                 row[i] = new TableRow(this);
                 row[i].setId(i);
                 storecommit.addView(row[i]);
             }
             for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
                 j2 = j1.getJSONArray(i);
+                int z= i*3;
                 TextView tw = new TextView(this);
                 tw.setText(j2.get(0).toString());
                 tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
                 tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
+                tw.setLayoutParams(textViewParam);
+                tw.setPaddingRelative(10,0,10,10);
+                row[z].addView(tw);
+                tw = new TextView(getApplicationContext());
+                tw.setText(j2.get(2).toString());
+                tw.setTextColor(Color.BLACK);
+                tw.setLayoutParams(textViewParam);
+                tw.setPaddingRelative(10,0,10,10);
+                row[z+1].addView(tw);
                 tw = new TextView(this);
                 tw.setText(j2.get(1).toString());
                 tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
-                tw = new TextView(this);
-                tw.setText(j2.get(2).toString());
-                tw.setTextColor(Color.BLACK);
-                row[i].addView(tw);
+                tw.setLayoutParams(textViewParam);
+                tw.setPaddingRelative(10,0,10,50);
+                tw.setMaxLines(3);
+                row[z+2].addView(tw);
             }
         } catch (Exception e) {
             e.printStackTrace();
