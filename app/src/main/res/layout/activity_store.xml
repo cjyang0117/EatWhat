@@ -145,9 +145,8 @@
 
             <TableLayout
                 android:id="@+id/storecommit"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginStart="10dp"
@@ -179,7 +178,15 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             　
-
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="16dp"
+                android:text="(剩餘字數)"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintStart_toStartOf="@+id/store_rate" />
             <TextView
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
