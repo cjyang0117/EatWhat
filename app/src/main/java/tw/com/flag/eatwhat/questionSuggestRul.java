@@ -223,6 +223,11 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
                     e.printStackTrace();
                 }
             }else{
+                try {
+                    globalVariable.c.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if(which==DialogInterface.BUTTON_POSITIVE) {
                     Intent it = new android.content.Intent(this, MainActivity.class);
                     startActivity(it);

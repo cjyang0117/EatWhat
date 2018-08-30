@@ -180,6 +180,11 @@ public class signUpAct extends AppCompatActivity {
                                             }
                                         }else{
                                             Toast.makeText(signUpAct.this, "連線逾時", Toast.LENGTH_LONG).show();
+                                            try {
+                                                globalVariable.c.close();
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace();

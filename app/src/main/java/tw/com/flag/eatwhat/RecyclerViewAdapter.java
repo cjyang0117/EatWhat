@@ -180,6 +180,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                                         .setPositiveButton("連線", new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) {
+                                                                try {
+                                                                    globalVariable.c.close();
+                                                                } catch (Exception e) {
+                                                                    e.printStackTrace();
+                                                                }
                                                                 Intent it = new android.content.Intent(ContentSuggestAct.ActivityC, MainActivity.class);
                                                                 ContentSuggestAct.ActivityC.startActivity(it);
                                                                 if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
@@ -189,6 +194,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                                         .setNegativeButton("離開", new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) {
+                                                                try {
+                                                                    globalVariable.c.close();
+                                                                } catch (Exception e) {
+                                                                    e.printStackTrace();
+                                                                }
                                                                 if(!Main2Activity.ActivityM.isFinishing()) Main2Activity.ActivityM.finish();
                                                                 ContentSuggestAct.ActivityC.finish();
                                                             }

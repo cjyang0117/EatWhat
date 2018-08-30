@@ -179,6 +179,11 @@ public class signUpAct2 extends AppCompatActivity implements CompoundButton.OnCh
                 } else {
                     user.delete();
                     Toast.makeText(this, "連線逾時", Toast.LENGTH_LONG).show();
+                    try {
+                        globalVariable.c.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     this.finish();
                 }
             }

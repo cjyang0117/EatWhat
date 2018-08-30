@@ -295,6 +295,11 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
                 e.printStackTrace();
             }
         }else{
+            try {
+                globalVariable.c.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if(which==DialogInterface.BUTTON_POSITIVE) {
                 Intent it = new android.content.Intent(this, MainActivity.class);
                 startActivity(it);

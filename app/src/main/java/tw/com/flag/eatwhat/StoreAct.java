@@ -585,6 +585,11 @@ public class StoreAct extends AppCompatActivity
     }
     @Override
     public void onClick(DialogInterface dialog, int which) {
+        try {
+            globalVariable.c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if(which==DialogInterface.BUTTON_POSITIVE) {
             Intent it = new android.content.Intent(this, MainActivity.class);
             startActivity(it);
