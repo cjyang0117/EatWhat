@@ -3,25 +3,37 @@ package tw.com.flag.eatwhat;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.apache.commons.io.IOUtils;
 import org.json.JSONObject;
 import android.Manifest;
 
+import com.felipecsl.gifimageview.library.GifImageView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -44,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth.AuthStateListener authListener;
     private FirebaseUser user ;
     private boolean checkmail;
+    ConstraintLayout page1,page2;
     String tmp;
 
     @Override
@@ -52,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         MainActivityPermissionsDispatcher.NeedsPermissionWithPermissionCheck(this);
+
+        page1 = (ConstraintLayout) findViewById(R.id.page1);
+        page2 = (ConstraintLayout) findViewById(R.id.page2);
 
         sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);//取得帳號資料用
         editText = (EditText) findViewById(R.id.editText);//帳號
@@ -96,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
     }
     public void login() {
         try {
+            page2.setVisibility(View.VISIBLE);
+            page1.setAlpha((float) 0.3);
             globalVariable.c = new Client("120.105.161.119", 5050);
             tmp = globalVariable.c.receive();
 
@@ -113,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
                 String tmp1 = globalVariable.c.receive();
                 json_read = new JSONObject(tmp1);
                 if (!json_read.getBoolean("Checklogin")) {//當回傳為false
+                    page2.setVisibility(View.GONE);
+                    page1.setAlpha((float) 1);
                     String reason;
                     reason = json_read.getString("data");
                     Toast.makeText(MainActivity.this, reason, Toast.LENGTH_SHORT).show();
@@ -141,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
                                             Log.d("TAG", "signInWithEmail:success");
                                             user = auth.getCurrentUser();
                                             if(!user.isEmailVerified()){
+                                                page2.setVisibility(View.GONE);
                                                 Toast.makeText(MainActivity.this,"請前往信箱開通帳號",Toast.LENGTH_LONG).show();
                                                 try {
                                                     globalVariable.c.close();
@@ -156,10 +177,12 @@ public class MainActivity extends AppCompatActivity {
                                                 editor.putString("PASSWORD", password);
                                                 editor.putBoolean("checkemail", true);
                                                 editor.commit();
-
+                                                page2.setVisibility(View.GONE);
                                                 finish();
                                             }
                                         } else {
+                                            page2.setVisibility(View.GONE);
+                                            page1.setAlpha((float) 1);
                                             Log.w("TAG", "signInWithEmail:failure", task.getException());
                                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                                     Toast.LENGTH_SHORT).show();
@@ -173,6 +196,8 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                 });
                     }else{
+                        page2.setVisibility(View.GONE);
+                        page1.setAlpha((float) 1);
                         android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
                         startActivity(it);
                         finish();
@@ -181,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 Toast.makeText(MainActivity.this, "連線逾時", Toast.LENGTH_LONG).show();
+                page2.setVisibility(View.GONE);
+                page1.setAlpha((float) 1);
             }
         } catch (Exception e) {
             e.printStackTrace();
