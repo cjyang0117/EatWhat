@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 import android.Manifest;
 
@@ -150,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
                     globalVariable.recmdtime = json_read.getInt("recmdTime");
                     globalVariable.cnum = json_read.getInt("cnum");
                     globalVariable.account=account;
+                    globalVariable.name = json_read.getString("name");
+                    globalVariable.email = json_read.getString("mail");
                     checkmail = sp.getBoolean("checkemail",false);
                     if(!checkmail){
                         String Email = json_read.getString("mail");
@@ -169,6 +172,13 @@ public class MainActivity extends AppCompatActivity {
                                                     e.printStackTrace();
                                                 }
                                             }else{
+                                                Bundle b = new Bundle();
+                                                try {
+                                                    b.putString("Name",json_read.getString("name"));
+                                                    b.putString("Email",json_read.getString("mail"));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
                                                 android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
                                                 startActivity(it);
                                                 sp.edit().putBoolean("ISCHECK", true).commit();

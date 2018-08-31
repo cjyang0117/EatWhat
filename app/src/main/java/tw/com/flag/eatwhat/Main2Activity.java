@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -44,6 +45,7 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         ActivityM=this;
 
         setContentView(R.layout.activity_main2);
+        globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
         mDrawerlayout = (DrawerLayout)findViewById(R.id.drawer);
         mToggle = new ActionBarDrawerToggle(this, mDrawerlayout, R.string.open, R.string.close);
         mDrawerlayout.addDrawerListener(mToggle);
@@ -51,6 +53,11 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView=(NavigationView)findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.inflateHeaderView(R.layout.header);
+        TextView name = (TextView) header.findViewById(R.id.name);
+        TextView email = (TextView) header.findViewById(R.id.email);
+        name.setText("名稱:"+globalVariable.name);
+        email.setText("信箱:"+globalVariable.email);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;
@@ -64,7 +71,6 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         para.width = width;
         imageView2.setLayoutParams(para);
 
-        globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
 
         status = (LocationManager) (this.getSystemService(LOCATION_SERVICE));
     }
