@@ -1,5 +1,5 @@
 <resources>
-
+    <string name="app_name">苗栗大小吃</string>
     <string name="signIn">登入</string>
     <string name="signUp">註冊</string>
     <string name="dbsetUp">資料庫</string>
@@ -74,7 +74,7 @@
     <string name="searchStoreMeal">"搜尋店名、料理"</string>
     <string name="_comment">"評論"</string>
     <string name="writeComment">請撰寫簡短的評論</string>
-    <string name="app_name">苗栗大小吃</string>
+
 
     <string-array name="dist2">
         <item>請選擇範圍(不限)</item>
