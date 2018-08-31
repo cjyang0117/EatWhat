@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,6 +35,7 @@ public class signUpAct extends AppCompatActivity {
     TextView tint;
     private FirebaseAuth auth;
     private FirebaseUser user;
+    ConstraintLayout page1,page2;
     String tmp;
 
     @Override
@@ -48,7 +50,9 @@ public class signUpAct extends AppCompatActivity {
         editText7 = (EditText) findViewById(R.id.editText7);
         editText8 = (EditText) findViewById(R.id.editText8);
         editText9 = (EditText) findViewById(R.id.editText9);
-        tint = (TextView) findViewById(R.id.tint);
+        page1 = (ConstraintLayout) findViewById(R.id.page1);
+        page2 = (ConstraintLayout) findViewById(R.id.page2);
+        //tint = (TextView) findViewById(R.id.tint);
 
         auth = FirebaseAuth.getInstance();
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
@@ -78,10 +82,10 @@ public class signUpAct extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (editText6.getText().toString().trim().length() > 0) {
-                    tint.setText("");
+                    //tint.setText("");
                     b = true;
                 } else{
-                    tint.setText("不得為空");
+                    //tint.setText("不得為空");
                     b=false;
                 }
             }
@@ -95,10 +99,10 @@ public class signUpAct extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (editText9.getText().toString().trim().length() > 0) {
-                    tint.setText("");
+                    //tint.setText("");
                     d = true;
                 } else{
-                    tint.setText("不得為空");
+                    //tint.setText("不得為空");
                     d=false;
                 }
             }
@@ -128,6 +132,8 @@ public class signUpAct extends AppCompatActivity {
 
     public void gotoSignUpAct2(View v) {//下一步
         try {
+            page2.setVisibility(View.VISIBLE);
+            page1.setAlpha((float) 0.3);
             globalVariable.c = new Client("120.105.161.119", 5050);
             tmp = globalVariable.c.receive();
 
@@ -149,36 +155,50 @@ public class signUpAct extends AppCompatActivity {
             json_write.put("signData",j2);
             if (!a) {//當上面資料有誤時提示
                 Toast.makeText(this, "請檢查信箱", Toast.LENGTH_SHORT).show();
+                page2.setVisibility(View.GONE);
+                page1.setAlpha((float) 1);
             }else if (!b) {
                 Toast.makeText(this, "帳號不得為空", Toast.LENGTH_SHORT).show();
+                page2.setVisibility(View.GONE);
+                page1.setAlpha((float) 1);
             }else if (!c) {
                 Toast.makeText(this, "請檢查密碼", Toast.LENGTH_SHORT).show();
+                page2.setVisibility(View.GONE);
+                page1.setAlpha((float) 1);
             }else if (!d) {
                 Toast.makeText(this, "請輸入暱稱", Toast.LENGTH_SHORT).show();
+                page2.setVisibility(View.GONE);
+                page1.setAlpha((float) 1);
             }else{//無誤則傳資料
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(signUpAct.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(signUpAct.this, "success", Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(signUpAct.this, "success", Toast.LENGTH_SHORT).show();
                                     try {
                                         globalVariable.c.send(json_write);
                                         tmp = globalVariable.c.receive();
                                         if(tmp!=null) {
                                             json_read = new JSONObject(tmp);
                                             if (!json_read.getBoolean("check")) {//接收失敗原因
+                                                page2.setVisibility(View.GONE);
+                                                page1.setAlpha((float) 1);
                                                 String reason = json_read.getString("data");
                                                 Toast.makeText(signUpAct.this, reason, Toast.LENGTH_SHORT).show();
                                                 user = FirebaseAuth.getInstance().getCurrentUser();
                                                 user.delete();
                                             }else{//成功並關閉
+                                                page2.setVisibility(View.GONE);
+                                                page1.setAlpha((float) 1);
                                                 user = FirebaseAuth.getInstance().getCurrentUser();
                                                 android.content.Intent it = new android.content.Intent(signUpAct.this, signUpAct2.class);
                                                 startActivity(it);
                                                 signUpAct.this.finish();
                                             }
                                         }else{
+                                            page2.setVisibility(View.GONE);
+                                            page1.setAlpha((float) 1);
                                             Toast.makeText(signUpAct.this, "連線逾時", Toast.LENGTH_LONG).show();
                                             try {
                                                 globalVariable.c.close();
@@ -190,13 +210,16 @@ public class signUpAct extends AppCompatActivity {
                                         e.printStackTrace();
                                     }
                                 } else {
+                                    page2.setVisibility(View.GONE);
+                                    page1.setAlpha((float) 1);
                                     Toast.makeText(signUpAct.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-
             }
         } catch (Exception e) {
+            page2.setVisibility(View.GONE);
+            page1.setAlpha((float) 1);
             e.printStackTrace();
         }
     }

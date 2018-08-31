@@ -1,8 +1,11 @@
 package tw.com.flag.eatwhat;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -12,9 +15,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -172,9 +179,19 @@ public class signUpAct2 extends AppCompatActivity implements CompoundButton.OnCh
                                         }
                                     }
                                 });
-                        Intent i = new Intent(this, MainActivity.class);
-                        startActivity(i);
-                        this.finish();
+                        AlertDialog.Builder b=new AlertDialog.Builder(signUpAct2.this,R.style.AlertDialogCustom);
+                        b.setCancelable(false);
+                        b.setTitle("提示")
+                                .setMessage("請前往信箱開通您的帳號")
+                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent i = new Intent(signUpAct2.this, MainActivity.class);
+                                        startActivity(i);
+                                        signUpAct2.this.finish();
+                                    }
+                                })
+                                .show();
                     }
                 } else {
                     user.delete();
