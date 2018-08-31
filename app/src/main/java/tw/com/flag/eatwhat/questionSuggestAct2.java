@@ -202,7 +202,7 @@ public class questionSuggestAct2 extends AppCompatActivity
         }
     }
     public String setquestiontype(String ww){//問題型態變化設定
-        String[] questiontype ={"要吃" + ww + "嗎?","吃" + ww + "好嗎?","要不要吃" + ww + "呢?","不如吃" + ww + "?"};
+        String[] questiontype ={"對" + ww + "有興趣嗎?","吃" + ww + "好嗎?","要不要吃" + ww + "呢?","不如吃" + ww + "?"};
         int s =(int)(Math.random()*questiontype.length);
         return questiontype[s];
     }
@@ -277,7 +277,7 @@ public class questionSuggestAct2 extends AppCompatActivity
         if(!anstrue){//判斷使用者對於推薦答案是否有按OK
             if (aa<tmp1.length) {//3次答案
                 //question.setText("要吃" + ans[aa]);
-                question.setText("要吃" + tmp1[aa][6] + "嗎?\n價格是"+ tmp1[aa][7]+"元");
+                question.setText(setquestiontype(tmp1[aa][6])+"\n價格是"+ tmp1[aa][7]+"元");
             }else {
                 return0();
                 soso.setVisibility(View.VISIBLE);//還好鍵顯示
