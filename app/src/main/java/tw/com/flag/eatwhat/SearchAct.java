@@ -81,7 +81,7 @@ public class SearchAct extends AppCompatActivity
         radioButton10.setEnabled(false);
         radioButton9.setEnabled(false);
         radioButton8.setEnabled(false);
-
+        editText10 = findViewById(R.id.editText10);
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -99,6 +99,7 @@ public class SearchAct extends AppCompatActivity
                             radioButton9.setEnabled(true);
                             radioButton8.setEnabled(true);
                         }
+                        editText10.setQuery("", false);
                         break;
                     case 1:
                         isStore=false;
@@ -112,6 +113,7 @@ public class SearchAct extends AppCompatActivity
                         if(row2 != null){
                             radioButton10.setEnabled(true);
                         }
+                        editText10.setQuery("", false);
                         break;
                 }
             }
@@ -123,7 +125,7 @@ public class SearchAct extends AppCompatActivity
             }
         });
 
-        editText10 = findViewById(R.id.editText10);
+
         editText10.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
