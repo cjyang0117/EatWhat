@@ -99,17 +99,19 @@ public class StoreAct extends AppCompatActivity
         textView12.setText(date);
         textView13 = findViewById(R.id.textView13);
         submit = findViewById(R.id.submit);
-        ed1.setOnTouchListener(new View.OnTouchListener() {
+        showComment.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
-                if (ed1.hasFocus()) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
-                        case MotionEvent.ACTION_SCROLL:
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                            return true;
-                    }
-                }
+                findViewById(R.id.sc).getParent().requestDisallowInterceptTouchEvent(false);
+                return false;
+            }
+        });
+        ed1.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                // Disallow the touch request for parent scroll on touch of child view
+                sc.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
         });

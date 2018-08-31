@@ -21,6 +21,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -314,6 +315,8 @@ public class SearchAct extends AppCompatActivity
                                             gotostore(t.getTag().toString());
                                         }
                                     });
+
+
                                     TextView[] tw = new TextView[j2.length()];
                                     for(int j=0;j<j2.length()-2;j++){
                                         tw[j] = new TextView(SearchAct.this);
@@ -323,6 +326,15 @@ public class SearchAct extends AppCompatActivity
                                             ScrollView sc=new ScrollView(SearchAct.this);
                                             sc.addView(tw[j]);
                                             sc.setPadding(8,0,8,0);
+                                            final int ii = i;
+                                            tw[j].setOnClickListener(new View.OnClickListener() {
+                                                public void onClick(View v) {
+                                                    TableRow t=(TableRow) row2[ii];
+                                                    gotostore(t.getTag().toString());
+//                                                    String TAG = "123";
+//                                                    Log.v(TAG,"123");
+                                                }
+                                            });
                                             row2[i].addView(sc);
                                             TableRow.LayoutParams params=(TableRow.LayoutParams)sc.getLayoutParams();
                                             params.gravity=Gravity.CENTER;
