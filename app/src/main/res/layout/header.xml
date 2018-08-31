@@ -28,18 +28,21 @@
 
 
     <TextView
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:hint="@string/name"
-        android:textColor="@color/white"
+        android:textColor="@color/darkgray"
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:hint="@string/email"
-        android:textColor="@color/white" />
+        android:textColor="@color/darkgray"
+        android:textStyle="bold"/>
 
 </LinearLayout>

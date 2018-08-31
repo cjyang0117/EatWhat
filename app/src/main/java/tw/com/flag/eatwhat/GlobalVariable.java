@@ -7,4 +7,6 @@ public class GlobalVariable extends Application {
     public int recmdtime;
     public int cnum;
     public String account;
+    public String name;
+    public String email;
 }

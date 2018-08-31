@@ -184,7 +184,7 @@ public class StoreAct extends AppCompatActivity
         }
 
         try {
-            json_write = new JSONObject();
+                json_write = new JSONObject();
             b = this.getIntent().getExtras();
             sid = Integer.parseInt(b.getString("datanum"));//取得店號
             if(b.getBoolean("mode")){//從搜尋近店家頁面
