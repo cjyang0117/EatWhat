@@ -56,8 +56,8 @@ public class Main2Activity extends AppCompatActivity implements NavigationView.O
         View header = navigationView.inflateHeaderView(R.layout.header);
         TextView name = (TextView) header.findViewById(R.id.name);
         TextView email = (TextView) header.findViewById(R.id.email);
-        name.setText("名稱:"+globalVariable.name);
-        email.setText("信箱:"+globalVariable.email);
+        name.setText(globalVariable.name);
+        email.setText(globalVariable.email);
         DisplayMetrics metrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         int width = metrics.widthPixels;

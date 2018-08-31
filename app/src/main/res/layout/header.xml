@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:visibility="invisible"
         app:corner_radius="90dp">
 
         <ImageView
@@ -33,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:hint="@string/name"
-        android:textColor="@color/darkgray"
+        android:textColor="#FFF"
         android:textStyle="bold" />
 
     <TextView
@@ -42,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:hint="@string/email"
-        android:textColor="@color/darkgray"
-        android:textStyle="bold"/>
+        android:textColor="#FFF"
+        android:textStyle="bold" />
 
 </LinearLayout>
