@@ -22,13 +22,13 @@
     <string name="userSuggest">用戶推薦</string>
     <string name="followUserSuggest">追蹤用戶\n推薦</string>
     <string name="_followUserSuggest">追蹤用戶推薦</string>
-    <string name="contentSuggest">內容推薦</string>
+    <string name="contentSuggest">為您推薦</string>
     <string name="priceSort">依價格排序</string>
     <string name="distanceSort">依距離排序</string>
     <string name="starSort">依星級排序</string>
     <string name="randomSuggest">隨機推薦</string>
     <string name="randomSuggestRul">隨機推薦結果</string>
-    <string name="questionSuggest">提問推薦</string>
+    <string name="questionSuggest">你問我答</string>
     <string name="questionSuggestRul">提問推薦結果</string>
     <string name="record">紀錄</string>
     <string name="followUser">追蹤用戶</string>
@@ -74,6 +74,7 @@
     <string name="searchStoreMeal">"搜尋店名、料理"</string>
     <string name="_comment">"評論"</string>
     <string name="writeComment">請撰寫簡短的評論</string>
+    <string name="app_name">苗栗大小吃</string>
 
     <string-array name="dist2">
         <item>請選擇範圍(不限)</item>

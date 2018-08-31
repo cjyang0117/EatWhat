@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.LocationManager;
@@ -98,17 +99,19 @@ public class StoreAct extends AppCompatActivity
         textView12.setText(date);
         textView13 = findViewById(R.id.textView13);
         submit = findViewById(R.id.submit);
-        ed1.setOnTouchListener(new View.OnTouchListener() {
+        showComment.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
-                if (ed1.hasFocus()) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    switch (event.getAction() & MotionEvent.ACTION_MASK){
-                        case MotionEvent.ACTION_SCROLL:
-                            v.getParent().requestDisallowInterceptTouchEvent(false);
-                            return true;
-                    }
-                }
+                findViewById(R.id.sc).getParent().requestDisallowInterceptTouchEvent(false);
+                return false;
+            }
+        });
+        ed1.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event)
+            {
+                // Disallow the touch request for parent scroll on touch of child view
+                sc.getParent().requestDisallowInterceptTouchEvent(true);
                 return false;
             }
         });
@@ -371,9 +374,11 @@ public class StoreAct extends AppCompatActivity
                 TextView tw = new TextView(this);
                 tw.setText(j2.get(0).toString());
                 tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                tw.setTextColor(Color.BLACK);
+                tw.setTextColor(getResources().getColor(R.color.comment_user));
+                tw.setTypeface(null, Typeface.BOLD);
                 tw.setLayoutParams(textViewParam);
                 tw.setPaddingRelative(10,0,10,10);
+                tw.setTextSize(18);
                 row[z].addView(tw);
                 tw = new TextView(getApplicationContext());
                 tw.setText(j2.get(2).toString());
@@ -549,6 +554,9 @@ public class StoreAct extends AppCompatActivity
                 tw.setTextColor(Color.BLACK);
                 tw.setLayoutParams(textViewParam);
                 tw.setPaddingRelative(10,0,10,10);
+                tw.setTextColor(getResources().getColor(R.color.comment_user));
+                tw.setTypeface(null, Typeface.BOLD);
+                tw.setTextSize(18);
                 row[z].addView(tw);
                 tw = new TextView(getApplicationContext());
                 tw.setText(j2.get(2).toString());
