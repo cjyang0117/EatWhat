@@ -273,7 +273,7 @@
                 android:drawableTop="@drawable/thumb_signup"
                 android:enabled="false"
                 android:gravity="center"
-                android:text="店價評價"
+                android:text="店家評價"
                 android:textColor="@color/darkgray"
                 app:layout_constraintStart_toStartOf="@+id/imageView8"
                 app:layout_constraintTop_toBottomOf="@+id/imageView8" />

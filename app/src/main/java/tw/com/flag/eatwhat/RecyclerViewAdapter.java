@@ -58,6 +58,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Button ebtn;
     private JSONObject json_read, json_write;
     private GlobalVariable globalVariable;
+    private int[] c_f = new int[100];
+    private int[] e_f = new int[100];
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView m1;
         public TextView p1;
@@ -66,6 +69,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public Button e1;
         public Button c1;
         public ConstraintLayout row;
+        public TextView match;
 
         public ViewHolder(View v) {
             super(v);
@@ -76,6 +80,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             e1 =(Button) v.findViewById(R.id.e1);
             c1 =(Button) v.findViewById(R.id.c1);
             row = v.findViewById(R.id.row);
+            match = v.findViewById(R.id.match);
+
         }
     }
     public RecyclerViewAdapter(JSONArray j2) {
@@ -88,6 +94,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .inflate(R.layout.menu, parent, false);
         ViewHolder vh = new ViewHolder(v);
         globalVariable = (GlobalVariable) ContentSuggestAct.ActivityC.getApplicationContext().getApplicationContext();
+        c_f[0]=0;
+        e_f[0]=0;
         return vh;
     }
     @Override
@@ -115,7 +123,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 holder.s1.setText(j2.get(1).toString());//店名
                 holder.m1.setText(j2.get(6).toString());//菜名
                 holder.r1.setRating(Float.parseFloat(j2.get(4).toString()));//星星
-                holder.p1.setText(j2.get(7).toString());//價格
+                holder.p1.setText("$ "+j2.get(7).toString());//價格
+                holder.p1.setTag(j2.get(7).toString());
+                holder.match.setText(j2.get(8).toString()+"%");
+                holder.c1.setEnabled(true);
+                for(int j=1 ; j<c_f[0]; j++){
+                    if(i == c_f[j]) {
+                        holder.c1.setEnabled(false);
+                        break;
+                    }
+                }
                 holder.c1.setId(i);
                 holder.c1.setTag(j2.get(0).toString() + "," + j2.get(5).toString() + ",");
                 holder.c1.setOnClickListener(new View.OnClickListener() {
@@ -125,12 +142,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         try {
                             FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
 //                            String s = b.getTag().toString() + ((TextView) row[b.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + ",";
-                            String s = b.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getText().toString() + ",";
+                            String s = b.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getTag().toString() + ",";
                             out.write(s.getBytes());
                             out.close();
 
 //                            b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
                             b.setEnabled(false);
+                            c_f[0]++;
+                            c_f[ c_f[0] ] = b.getId();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -138,6 +157,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 });
                 holder.e1.setId(i);
                 holder.e1.setTag(j2.get(0).toString() + "," + j2.get(5).toString() + ",");
+                holder.e1.setEnabled(true);
+                for(int j=1 ; j<e_f[0]; j++){
+                    if(i == e_f[j]) {
+                        holder.e1.setEnabled(false);
+                        break;
+                    }
+                }
                 holder.e1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -152,10 +178,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                         try {
                                             FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput(globalVariable.account+"eat.txt", MODE_APPEND);
                                             String s;
-                                            s = ebtn.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getText().toString() + ",";
+                                            s = ebtn.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getTag().toString() + ",";
                                             out.write(s.getBytes());
                                             out.close();
                                             ebtn.setEnabled(false);
+                                            e_f[0]++;
+                                            e_f[ e_f[0] ] = ebtn.getId();
 
                                             s=ebtn.getTag().toString().substring(ebtn.getTag().toString().indexOf(",")+1);
                                             s=s.substring(0,s.indexOf(","));
