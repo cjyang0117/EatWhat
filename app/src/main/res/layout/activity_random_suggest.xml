@@ -57,10 +57,9 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:paddingTop="6dp"
             android:text="現在想吃"
-            app:layout_constraintStart_toStartOf="parent"
-            />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <CheckBox
             android:id="@+id/sw1"
@@ -71,10 +70,9 @@
             android:buttonTint="@color/colorGrassDark"
             android:checked="true"
             android:text="營業中店家"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toTopOf="@+id/radioGroup1"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-             />
+            app:layout_constraintTop_toTopOf="@+id/textView20" />
 
         <TextView
             android:id="@+id/textView21"
@@ -87,26 +85,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
-        <Button
-            android:id="@+id/button68"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/main2activity_button_activity"
-            android:onClick="gotoResult"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:text="@string/nextStep"
-            android:textColor="#9b855f"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
-
         <TextView
             android:id="@+id/textView18"
             android:layout_width="wrap_content"
@@ -118,6 +96,26 @@
             android:text="@string/setDistance"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+
+        <Button
+            android:id="@+id/button68"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/main2activity_button_activity"
+            android:onClick="gotoResult"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:text="@string/nextStep"
+            android:textColor="#9b855f"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup2" />
 
         <TextView
             android:id="@+id/textView"
