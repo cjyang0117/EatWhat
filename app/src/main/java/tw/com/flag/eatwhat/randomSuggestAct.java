@@ -13,6 +13,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -52,6 +53,15 @@ public class randomSuggestAct extends AppCompatActivity
         for (int id=0;id<chk_id.length;id++) {
             chk = (CheckBox) findViewById(chk_id[id]);
             chk.setTag(k_id[id]);
+        }
+
+        try {
+            json_write=new JSONObject();
+            json_write.put("action", "useLog");
+            json_write.put("Fid", 1);
+            globalVariable.c.send(json_write);
+        }catch (JSONException e){
+            e.printStackTrace();
         }
     }
 

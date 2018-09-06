@@ -107,6 +107,14 @@ public class userSuggestAct extends AppCompatActivity
             });
         }
 
+        try {
+            json_write=new JSONObject();
+            json_write.put("action", "useLog");
+            json_write.put("Fid", 3);
+            globalVariable.c.send(json_write);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
 
     }
     public void onRadioButtonClicked(View v){
@@ -271,9 +279,9 @@ public class userSuggestAct extends AppCompatActivity
                                 FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
                                 String s;
                                 if(Switch) {
-                                    s = b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    s = "3,"+b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
                                 }else{
-                                    s = b.getTag().toString()+((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row2[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    s = "3,"+b.getTag().toString()+((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row2[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
                                 }
                                 out.write(s.getBytes());
                                 out.close();
@@ -354,6 +362,11 @@ public class userSuggestAct extends AppCompatActivity
                         String reason;
                         reason = json_read.getString("data");
                         Toast.makeText(userSuggestAct.this, reason, Toast.LENGTH_SHORT).show();
+                    }else{
+                        json_write = new JSONObject();
+                        json_write.put("action", "eatLog");
+                        json_write.put("Fid", 3);
+                        globalVariable.c.send(json_write);
                     }
                 }else{
                     linkout=true;

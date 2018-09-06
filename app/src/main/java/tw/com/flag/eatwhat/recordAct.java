@@ -95,7 +95,10 @@ public class recordAct extends AppCompatActivity
                 while (s.contains(",")){
                     row.add(new TableRow(this));
                     row.get(count).setBackgroundResource(R.drawable.ripple);
-                    String sid,mid;
+                    String fid,sid,mid;
+                    idx=s.indexOf(",");
+                    fid = s.substring(0, idx);
+                    s=s.substring(idx+1);
                     idx=s.indexOf(",");
                     sid = s.substring(0, idx);
                     s=s.substring(idx+1);
@@ -126,6 +129,7 @@ public class recordAct extends AppCompatActivity
                             params.gravity=Gravity.CENTER;
                         }else{
                             tv[i].setGravity(Gravity.CENTER);
+                            tv[i].setTag(fid);
                             row.get(count).addView(tv[i]);
                         }
                         s=s.substring(idx+1);
@@ -383,7 +387,7 @@ public class recordAct extends AppCompatActivity
                 FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_PRIVATE);
                 String s="";
                 for(int i=0;i<row.size();i++){
-                    s+=row.get(i).getChildAt(1).getTag().toString()+","+ ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView) ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
+                    s+=row.get(i).getChildAt(3).getTag().toString()+","+row.get(i).getChildAt(1).getTag().toString()+","+ ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0).getTag().toString()+","+((TextView)row.get(i).getChildAt(1)).getText().toString()+","+((TextView) ((ScrollView) row.get(i).getChildAt(2)).getChildAt(0)).getText().toString()+","+((TextView)row.get(i).getChildAt(3)).getText().toString()+",";
                 }
                 out.write(s.getBytes());
                 out.close();
@@ -475,6 +479,11 @@ public class recordAct extends AppCompatActivity
                                             .show();
                                 }
                             }
+
+                            json_write = new JSONObject();
+                            json_write.put("action", "eatLog");
+                            json_write.put("Fid", Integer.parseInt(row.get(i).getChildAt(3).getTag().toString()));
+                            globalVariable.c.send(json_write);
 
                             tblayout.removeView(row.get(i));
                             row.remove(i);

@@ -142,7 +142,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         try {
                             FileOutputStream out = ContentSuggestAct.Acontext.openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
 //                            String s = b.getTag().toString() + ((TextView) row[b.getId()].getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(2)).getText().toString() + ",";
-                            String s = b.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getTag().toString() + ",";
+                            String s = "4,"+b.getTag().toString() + holder.s1.getText().toString() + "," + holder.m1.getText().toString() + "," + holder.p1.getTag().toString() + ",";
                             out.write(s.getBytes());
                             out.close();
 
@@ -198,6 +198,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                                                     String reason;
                                                     reason = json_read.getString("data");
                                                     Toast.makeText(ContentSuggestAct.ActivityC, reason, Toast.LENGTH_SHORT).show();
+                                                }else{
+                                                    json_write = new JSONObject();
+                                                    json_write.put("action", "eatLog");
+                                                    json_write.put("Fid", 4);
+                                                    globalVariable.c.send(json_write);
                                                 }
                                             }else{
                                                 AlertDialog.Builder b=new AlertDialog.Builder(ContentSuggestAct.ActivityC);

@@ -7,12 +7,17 @@ import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 public class questionSuggestAct extends AppCompatActivity {
     static Activity Activityqa;
     private double[] limit = {100000, 1000, 3000};//使用者距離限制
     private Spinner dist2;
     private CheckBox checkbox;
+    private GlobalVariable globalVariable;
+    private JSONObject json_write;
     Gps gps2;
 
     @Override
@@ -24,6 +29,16 @@ public class questionSuggestAct extends AppCompatActivity {
         checkbox = (CheckBox)findViewById(R.id.sw1);
         dist2 = (Spinner) findViewById(R.id.dist2);
         gps2 = new Gps(this);
+
+        globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
+        try {
+            json_write=new JSONObject();
+            json_write.put("action", "useLog");
+            json_write.put("Fid", 2);
+            globalVariable.c.send(json_write);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
 

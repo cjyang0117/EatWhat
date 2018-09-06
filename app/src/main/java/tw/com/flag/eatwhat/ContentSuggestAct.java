@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileOutputStream;
@@ -108,6 +109,14 @@ public class ContentSuggestAct extends AppCompatActivity implements DialogInterf
             }
         });
 
+        try {
+            json_write=new JSONObject();
+            json_write.put("action", "useLog");
+            json_write.put("Fid", 4);
+            globalVariable.c.send(json_write);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
     public void info(){
         recyclerView.setLayoutManager(mLayoutManager);

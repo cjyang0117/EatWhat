@@ -103,7 +103,7 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
                     Button b=(Button)v;
                     try {
                         FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
-                        String s=menunum.toString().trim()+","+num.toString().trim()+","+storename.toString().trim()+","+textViewmenu.getText().toString()+","+price.toString()+",";
+                        String s="1,"+menunum.toString().trim()+","+num.toString().trim()+","+storename.toString().trim()+","+textViewmenu.getText().toString()+","+price.toString()+",";
                         out.write(s.getBytes());
                         out.close();
                         b.setEnabled(false);
@@ -277,6 +277,11 @@ public class randomSuggestRul extends AppCompatActivity implements DialogInterfa
                         String reason;
                         reason = json_read.getString("data");
                         Toast.makeText(randomSuggestRul.this, reason, Toast.LENGTH_SHORT).show();
+                    }else{
+                        json_write = new JSONObject();
+                        json_write.put("action", "eatLog");
+                        json_write.put("Fid", 1);
+                        globalVariable.c.send(json_write);
                     }
                 } else {
                     linkout = true;

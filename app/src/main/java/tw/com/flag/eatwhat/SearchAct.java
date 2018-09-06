@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.FileOutputStream;
@@ -213,7 +214,7 @@ public class SearchAct extends AppCompatActivity
                                             Button b=(Button)v;
                                             try {
                                                 FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
-                                                String s=b.getTag().toString()+((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
+                                                String s="5,"+b.getTag().toString()+((TextView)row[b.getId()].getChildAt(0)).getText().toString()+",-,-,";
                                                 out.write(s.getBytes());
                                                 out.close();
 
@@ -358,7 +359,7 @@ public class SearchAct extends AppCompatActivity
                                             Button b=(Button)v;
                                             try {
                                                 FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
-                                                String s=b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView) ((ScrollView) row2[b.getId()].getChildAt(1)).getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
+                                                String s="5,"+b.getTag().toString()+((TextView)row2[b.getId()].getChildAt(0)).getText().toString()+","+((TextView) ((ScrollView) row2[b.getId()].getChildAt(1)).getChildAt(0)).getText().toString()+","+((TextView)row2[b.getId()].getChildAt(2)).getText().toString()+",";
                                                 out.write(s.getBytes());
                                                 out.close();
 
@@ -423,6 +424,15 @@ public class SearchAct extends AppCompatActivity
                 return true;
             }
         });
+
+        try {
+            json_write=new JSONObject();
+            json_write.put("action", "useLog");
+            json_write.put("Fid", 5);
+            globalVariable.c.send(json_write);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
     }
 
     public void onRadioButtonClicked(View v){
@@ -580,6 +590,11 @@ public class SearchAct extends AppCompatActivity
                 out.close();
                 ebtn.setBackgroundTintList(getResources().getColorStateList(R.color.lightBlue));
                 ebtn.setEnabled(false);
+
+                json_write = new JSONObject();
+                json_write.put("action", "eatLog");
+                json_write.put("Fid", 5);
+                globalVariable.c.send(json_write);
             }catch (Exception e){
                 e.printStackTrace();
             }
