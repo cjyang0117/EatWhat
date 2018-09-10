@@ -390,8 +390,8 @@ public class questionSuggestAct2 extends AppCompatActivity
                 if (!json_read.getBoolean("check")) {//如果查無資料回到距離限制頁面，重新選擇
                     String reason = json_read.getString("data");
                     Toast.makeText(this, reason, Toast.LENGTH_SHORT).show();
-                    android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
-                    startActivity(it);
+                    //android.content.Intent it = new android.content.Intent(this,questionSuggestAct.class);
+                    //startActivity(it);
                     this.finish();
                 } else {//接收距離內答案
                     JSONArray j1 = json_read.getJSONArray("data");

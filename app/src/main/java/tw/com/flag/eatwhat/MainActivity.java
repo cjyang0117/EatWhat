@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     page1.setAlpha((float) 1);
                     String reason;
                     reason = json_read.getString("data");
+                    sp.edit().putBoolean("checkemail", false).commit();
                     Toast.makeText(MainActivity.this, reason, Toast.LENGTH_SHORT).show();
                     Button b;
                     for(int i=0;i<btn.length;i++){
@@ -209,6 +210,12 @@ public class MainActivity extends AppCompatActivity {
                         page2.setVisibility(View.GONE);
                         page1.setAlpha((float) 1);
                         android.content.Intent it = new android.content.Intent(MainActivity.this, Main2Activity.class);
+                        sp.edit().putBoolean("ISCHECK", true).commit();
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("USER_NAME", account);
+                        editor.putString("PASSWORD", password);
+                        editor.putBoolean("checkemail", true);
+                        editor.commit();
                         startActivity(it);
                         finish();
                     }
