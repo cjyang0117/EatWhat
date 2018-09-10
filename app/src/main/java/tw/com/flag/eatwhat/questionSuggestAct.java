@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 public class questionSuggestAct extends AppCompatActivity {
     static Activity Activityqa;
-    private double[] limit = {100000, 1000, 3000};//使用者距離限制
+    private double[] limit = {1000000, 1000, 3000};//使用者距離限制
     private Spinner dist2;
     private CheckBox checkbox;
     private GlobalVariable globalVariable;

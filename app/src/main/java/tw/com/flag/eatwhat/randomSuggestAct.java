@@ -28,7 +28,7 @@ public class randomSuggestAct extends AppCompatActivity
     private int[] k_id = {16, 19, 36, 10, 7, 9, 25, 26};
     //private String[] eatime;int123
     private int[] eatime={2,1,33};//主食、早餐、點心
-    private double[] limit = {100000, 300, 1000, 3000};
+    private double[] limit = {1000000, 300, 1000, 3000};
     private CheckBox sw1;
     TextView tv;
     Gps gps1;

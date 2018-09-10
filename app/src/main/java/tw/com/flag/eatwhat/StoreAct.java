@@ -132,7 +132,7 @@ public class StoreAct extends AppCompatActivity
                 textView13.setText(text+"/100");
                 selectionStart = ed1.getSelectionStart();
                 selectionEnd = ed1.getSelectionEnd();
-                if (temp.length() > limittext) {
+                if (temp.length() > limittext || temp.toString().indexOf("%")!=-1) {
                     s.delete(selectionStart - 1, selectionEnd);
                     int tempSelection = selectionEnd;
                     ed1.setText(s);
