@@ -89,6 +89,7 @@ public class StoreAct extends AppCompatActivity
 
         getSupportActionBar().setElevation(0);
         centerTitle();
+        gps3 = new Gps(this);
         showComment=findViewById(R.id.showComment);
         showInf=findViewById(R.id.showInf);
         showMenu=findViewById(R.id.showMenu);
@@ -425,7 +426,6 @@ public class StoreAct extends AppCompatActivity
     }
     public  void openMaptw(String storeaddr){//google map 路徑
         if (status.isProviderEnabled(LocationManager.GPS_PROVIDER) ||status.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            gps3 = new Gps(this);
             getGPFromAddress(storeaddr);
             Uri uri = Uri.parse("http://maps.google.com/maps?f=d&saddr=" + String.valueOf(gps3.getGPSLatitude()) + "," + String.valueOf(gps3.getGPSLongitude()) + "&daddr=" + geoLatitude + "," + geoLongitude + "&hl=tw");
             Intent it = new Intent(Intent.ACTION_VIEW);
@@ -434,6 +434,17 @@ public class StoreAct extends AppCompatActivity
                 startActivity(it);
             }
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gps3.delete();
+    }
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        gps3.update();
     }
     public void getGPFromAddress(String addr) {//地址轉經緯
         if (!addr.equals("")) {
