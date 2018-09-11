@@ -25,7 +25,7 @@
         app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.3"
+        app:layout_constraintVertical_bias="0.32"
         app:srcCompat="@color/Transparent" />
 
     <WebView
@@ -77,7 +77,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="45dp"
         android:clickable="true"
         android:drawableRight="@drawable/baseline_code_black_48dp"
         android:textColor="#b08a4e"

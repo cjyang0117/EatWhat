@@ -382,6 +382,7 @@ public class userSuggestAct extends AppCompatActivity
                 out.write(s.getBytes());
                 out.close();
                 ebtn.setEnabled(false);
+                ebtn.setBackgroundTintList(getResources().getColorStateList(R.color.lightBlue));
             }catch (Exception e){
                 e.printStackTrace();
             }
