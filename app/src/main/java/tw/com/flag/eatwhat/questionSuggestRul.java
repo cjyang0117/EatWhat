@@ -148,11 +148,7 @@ public class questionSuggestRul extends AppCompatActivity implements DialogInter
         public  void openMap(){//google map 路徑
             getGPFromAddress(addr);
             Uri uri;
-            if(b.getInt("check")!=2) {
-                uri = Uri.parse("http://maps.google.com/maps?f=d&saddr=" + b.getString("Latitude") + "," + b.getString("Longitude") + "&daddr=" + geoLatitude + "," + geoLongitude + "&hl=tw");
-            }else{
-                uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+b.getString("Latitude2")+","+b.getString("Longitude2")+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
-            }
+            uri = Uri.parse("http://maps.google.com/maps?f=d&saddr="+b.getString("Latitude2")+","+b.getString("Longitude2")+"&daddr="+geoLatitude+","+geoLongitude+"&hl=tw");
             Intent it = new Intent(Intent.ACTION_VIEW);
             it.setData(uri);
             if (it.resolveActivity(getPackageManager()) != null) {
