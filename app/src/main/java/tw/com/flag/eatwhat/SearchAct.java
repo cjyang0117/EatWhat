@@ -132,6 +132,15 @@ public class SearchAct extends AppCompatActivity
             public boolean onQueryTextSubmit(String query) {
                 isSort=false;isSort2=false;isSort3=false;
                 times++;
+                if(query.indexOf("%")!=-1){
+                    String query1="";
+                    String[] tokens = query.split("%");
+                    for(String token : tokens) {
+                        query1+= token;
+                    }
+                    query = query1;
+                    editText10.setQuery(query, true);
+                }
                 if(isStore){
                     try {
                         if(tblayout!=null) tblayout.removeAllViews();
@@ -421,9 +430,6 @@ public class SearchAct extends AppCompatActivity
             }
             @Override
             public boolean onQueryTextChange(String query) {
-                if(query.length()!=0 && query.substring(query.length()-1).equals("%")){
-                    editText10.setQuery(query.substring(0,query.length()-1),true);
-                }
                 return true;
             }
         });
