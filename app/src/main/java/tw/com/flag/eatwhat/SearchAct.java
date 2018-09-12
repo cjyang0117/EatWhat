@@ -421,6 +421,9 @@ public class SearchAct extends AppCompatActivity
             }
             @Override
             public boolean onQueryTextChange(String query) {
+                if(query.length()!=0 && query.substring(query.length()-1).equals("%")){
+                    editText10.setQuery(query.substring(0,query.length()-1),true);
+                }
                 return true;
             }
         });
