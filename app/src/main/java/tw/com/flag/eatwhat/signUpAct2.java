@@ -186,8 +186,8 @@ public class signUpAct2 extends AppCompatActivity implements CompoundButton.OnCh
                                 .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Intent i = new Intent(signUpAct2.this, MainActivity.class);
-                                        startActivity(i);
+                                        //Intent i = new Intent(signUpAct2.this, MainActivity.class);
+                                        //startActivity(i);
                                         signUpAct2.this.finish();
                                     }
                                 })

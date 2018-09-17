@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                                             user = auth.getCurrentUser();
                                             if(!user.isEmailVerified()){
                                                 page2.setVisibility(View.GONE);
+                                                page1.setAlpha((float) 1);
                                                 Toast.makeText(MainActivity.this,"請前往信箱開通帳號",Toast.LENGTH_LONG).show();
                                                 try {
                                                     globalVariable.c.close();
@@ -189,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                                                 editor.putBoolean("checkemail", true);
                                                 editor.commit();
                                                 page2.setVisibility(View.GONE);
+                                                page1.setAlpha((float) 1);
                                                 finish();
                                             }
                                         } else {
@@ -219,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(it);
                         finish();
                     }
-
                 }
             } else {
                 Toast.makeText(MainActivity.this, "連線逾時", Toast.LENGTH_LONG).show();
