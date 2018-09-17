@@ -63,6 +63,7 @@ public class userSuggestAct extends AppCompatActivity
         setContentView(R.layout.activity_user_suggest);
         ActivityU=this;
         globalVariable = (GlobalVariable) getApplicationContext().getApplicationContext();
+        radioButton10 = findViewById(R.id.radioButton10);
 
         DisplayMetrics dm = new DisplayMetrics();   //取得螢幕寬度並設定ScrollView尺寸
         getWindowManager().getDefaultDisplay().getMetrics(dm);
@@ -75,7 +76,6 @@ public class userSuggestAct extends AppCompatActivity
             row2 = loadUserData(false, R.id.tb2Layout, row2);
             mTabLayout = findViewById(R.id.mTabLayout);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
-            radioButton10 = findViewById(R.id.radioButton10);
             mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -85,6 +85,11 @@ public class userSuggestAct extends AppCompatActivity
                             isSort = false; sort=false;
                             toolbar.setTitle(TollBarTitle[0]);
                             Switch = true;
+                            if(row!= null){
+                                radioButton10.setEnabled(true);
+                            }else{
+                                radioButton10.setEnabled(false);
+                            }
                             NestedScrollView sc = findViewById(R.id.sc1);
                             sc.setVisibility(View.VISIBLE);
                             sc = findViewById(R.id.sc2);
@@ -95,6 +100,11 @@ public class userSuggestAct extends AppCompatActivity
                             isSort = false; sort=false;
                             toolbar.setTitle(TollBarTitle[1]);
                             Switch = false;
+                            if(row2!= null){
+                                radioButton10.setEnabled(true);
+                            }else{
+                                radioButton10.setEnabled(false);
+                            }
                             NestedScrollView sc2 = findViewById(R.id.sc2);
                             sc2.setVisibility(View.VISIBLE);
                             sc2 = findViewById(R.id.sc1);
@@ -210,130 +220,137 @@ public class userSuggestAct extends AppCompatActivity
                 tblayout.setColumnShrinkable(2,true);
                 tblayout.setColumnStretchable(2, true);
 
-                if(tblayout!=null) tblayout.removeAllViews();
-                JSONArray j1 = json_read.getJSONArray("data");
-                JSONArray j2;
-                r = new TableRow[j1.length()];
-                for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
-                    r[i] = new TableRow(this);
-                    r[i].setBackgroundResource(R.drawable.ripple);
-                    r[i].setId(i);
-                    tblayout.addView(r[i]);
-                    TableLayout.LayoutParams params=(TableLayout.LayoutParams)r[i].getLayoutParams();
-                    params.setMargins(0,12,0,12);
-                }
+                if (!json_read.getBoolean("check")) {
+                    tblayout.removeAllViews();
+                    for(int i = 0 ; i < r.length ; i++ ){
+                        r[i].removeAllViews();
+                    }
+                }else{
+                    if(tblayout!=null) tblayout.removeAllViews();
+                    JSONArray j1 = json_read.getJSONArray("data");
+                    JSONArray j2;
+                    r = new TableRow[j1.length()];
+                    for (int i = 0; i < j1.length(); i++) { //動態產生TableRow
+                        r[i] = new TableRow(this);
+                        r[i].setBackgroundResource(R.drawable.ripple);
+                        r[i].setId(i);
+                        tblayout.addView(r[i]);
+                        TableLayout.LayoutParams params=(TableLayout.LayoutParams)r[i].getLayoutParams();
+                        params.setMargins(0,12,0,12);
+                    }
 
-                for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
-                    j2 = j1.getJSONArray(i);
-                    r[i].setTag(j2.get(2).toString());
-                    r[i].setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            TableRow t=(TableRow) v;
-                            gotostore(t.getTag().toString());
-                        }
-                    });
-                    TextView tw = new TextView(this);
-                    tw.setText(j2.get(1).toString());
-                    tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    tw.setTag(j2.get(0).toString());
-                    tw.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            TextView t =(TextView)v;
-                            commitrate(t.getText().toString(),Integer.parseInt(t.getTag().toString()));
-                        }
-                    });
-                    tw.setBackgroundColor( getResources().getColor(R.color.user));
-                    tw.setPadding(0,8,0,8);
-                    tw.setGravity(Gravity.CENTER);
-                    r[i].addView(tw);
+                    for (int i = 0; i < j1.length(); i++) { //拆解接收的JSON包並製作表格顯示
+                        j2 = j1.getJSONArray(i);
+                        r[i].setTag(j2.get(2).toString());
+                        r[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                TableRow t=(TableRow) v;
+                                gotostore(t.getTag().toString());
+                            }
+                        });
+                        TextView tw = new TextView(this);
+                        tw.setText(j2.get(1).toString());
+                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        tw.setTag(j2.get(0).toString());
+                        tw.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                TextView t =(TextView)v;
+                                commitrate(t.getText().toString(),Integer.parseInt(t.getTag().toString()));
+                            }
+                        });
+                        tw.setBackgroundColor( getResources().getColor(R.color.user));
+                        tw.setPadding(0,8,0,8);
+                        tw.setGravity(Gravity.CENTER);
+                        r[i].addView(tw);
 
-                    tw = new TextView(this);
-                    tw.setText(j2.get(3).toString());
-                    tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    tw.setPadding(8,0,8,0);
-                    r[i].addView(tw);
+                        tw = new TextView(this);
+                        tw.setText(j2.get(3).toString());
+                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        tw.setPadding(8,0,8,0);
+                        r[i].addView(tw);
 
-                    tw = new TextView(this);
-                    tw.setText(j2.get(8).toString());
-                    tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    final int ii = i;
-                    final TableRow rr = r[i];
-                    tw.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View v) {
-                            TableRow t=(TableRow)rr;
-                            gotostore(t.getTag().toString());
+                        tw = new TextView(this);
+                        tw.setText(j2.get(8).toString());
+                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        final int ii = i;
+                        final TableRow rr = r[i];
+                        tw.setOnClickListener(new View.OnClickListener() {
+                            public void onClick(View v) {
+                                TableRow t=(TableRow)rr;
+                                gotostore(t.getTag().toString());
 //                                                    String TAG = "123";
 //                                                    Log.v(TAG,"123");
-                        }
-                    });
-                    ScrollView sc=new ScrollView(this);
-                    sc.addView(tw);
-                    r[i].addView(sc);
-                    TableRow.LayoutParams params=(TableRow.LayoutParams)sc.getLayoutParams();
-                    params.gravity=Gravity.CENTER;
-
-                    tw = new TextView(this);
-                    tw.setText(" "+j2.get(9).toString());
-                    tw.setGravity(Gravity.CENTER);
-                    tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    r[i].addView(tw);
-
-                    Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                    btn.setText("考慮");
-                    btn.setTextColor(Color.WHITE);
-                    btn.setTypeface(null, Typeface.BOLD);
-                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
-                    btn.setId(i);
-                    btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
-                    btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Button b=(Button)v;
-                            try {
-                                FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
-                                String s;
-                                if(Switch) {
-                                    s = "3,"+b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
-                                }else{
-                                    s = "3,"+b.getTag().toString()+((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row2[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
-                                }
-                                out.write(s.getBytes());
-                                out.close();
-
-                                b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
-                                b.setEnabled(false);
-                            }catch (IOException e){
-                                e.printStackTrace();
                             }
-                        }
-                    });
-                    r[i].addView(btn);
+                        });
+                        ScrollView sc=new ScrollView(this);
+                        sc.addView(tw);
+                        r[i].addView(sc);
+                        TableRow.LayoutParams params=(TableRow.LayoutParams)sc.getLayoutParams();
+                        params.gravity=Gravity.CENTER;
 
-                    btn=new Button(this, null, android.R.attr.buttonStyleSmall);
-                    btn.setText("吃");
-                    btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
-                    btn.setTextColor(Color.WHITE);
-                    btn.setTypeface(null, Typeface.BOLD);
-                    btn.setId(i);
-                    btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
-                    btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ebtn=(Button)v;
-                            AlertDialog.Builder b=new AlertDialog.Builder(userSuggestAct.this);
-                            //串聯呼叫法
-                            b.setTitle("確認")
-                                    .setMessage("確定要吃這個嗎?")
-                                    .setPositiveButton("GO", userSuggestAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
-                                    .setNegativeButton("Cancel", null)
-                                    .show();
-                        }
-                    });
-                    r[i].addView(btn);
+                        tw = new TextView(this);
+                        tw.setText(" "+j2.get(9).toString());
+                        tw.setGravity(Gravity.CENTER);
+                        tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        r[i].addView(tw);
+
+                        Button btn=new Button(this, null, android.R.attr.buttonStyleSmall);
+                        btn.setText("考慮");
+                        btn.setTextColor(Color.WHITE);
+                        btn.setTypeface(null, Typeface.BOLD);
+                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.pink));
+                        btn.setId(i);
+                        btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
+                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Button b=(Button)v;
+                                try {
+                                    FileOutputStream out = openFileOutput(globalVariable.account+"think.txt", MODE_APPEND);
+                                    String s;
+                                    if(Switch) {
+                                        s = "3,"+b.getTag().toString()+((TextView) row[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    }else{
+                                        s = "3,"+b.getTag().toString()+((TextView) row2[b.getId()].getChildAt(1)).getText().toString() + "," + ((TextView) ((ScrollView) row2[b.getId()].getChildAt(2)).getChildAt(0)).getText().toString() + "," + ((TextView) row2[b.getId()].getChildAt(3)).getText().toString() + ",";
+                                    }
+                                    out.write(s.getBytes());
+                                    out.close();
+
+                                    b.setBackgroundTintList(getResources().getColorStateList(R.color.lightPink));
+                                    b.setEnabled(false);
+                                }catch (IOException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        r[i].addView(btn);
+
+                        btn=new Button(this, null, android.R.attr.buttonStyleSmall);
+                        btn.setText("吃");
+                        btn.setBackgroundTintList(getResources().getColorStateList(R.color.waterBlue));
+                        btn.setTextColor(Color.WHITE);
+                        btn.setTypeface(null, Typeface.BOLD);
+                        btn.setId(i);
+                        btn.setTag(j2.get(2).toString()+","+j2.get(7).toString()+",");
+                        btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ebtn=(Button)v;
+                                AlertDialog.Builder b=new AlertDialog.Builder(userSuggestAct.this);
+                                //串聯呼叫法
+                                b.setTitle("確認")
+                                        .setMessage("確定要吃這個嗎?")
+                                        .setPositiveButton("GO", userSuggestAct.this)       //若只是要顯示文字窗，沒有處理事件，第二個參數為null
+                                        .setNegativeButton("Cancel", null)
+                                        .show();
+                            }
+                        });
+                        r[i].addView(btn);
+                    }
                 }
                 return r;
             }else{
