@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.provider.MediaStore;
 import android.support.design.widget.TabItem;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -21,6 +22,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -54,6 +56,7 @@ public class userSuggestAct extends AppCompatActivity
     private TabLayout mTabLayout;
     private Toolbar toolbar;
     private int[] TollBarTitle = {R.string.userSuggest,R.string._followUserSuggest};
+    private RadioButton radioButton10 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,11 +75,13 @@ public class userSuggestAct extends AppCompatActivity
             row2 = loadUserData(false, R.id.tb2Layout, row2);
             mTabLayout = findViewById(R.id.mTabLayout);
             toolbar = (Toolbar) findViewById(R.id.toolbar);
+            radioButton10 = findViewById(R.id.radioButton10);
             mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() { //用戶推薦or追蹤用戶推薦
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     switch (tab.getPosition()) {
                         case 0:
+//                            radioButton10.setChecked(false);
                             isSort = false; sort=false;
                             toolbar.setTitle(TollBarTitle[0]);
                             Switch = true;
@@ -86,6 +91,7 @@ public class userSuggestAct extends AppCompatActivity
                             sc.setVisibility(View.INVISIBLE);
                             break;
                         case 1:
+//                            radioButton10.setChecked(false);
                             isSort = false; sort=false;
                             toolbar.setTitle(TollBarTitle[1]);
                             Switch = false;
@@ -121,6 +127,7 @@ public class userSuggestAct extends AppCompatActivity
         int id= v.getId();
         switch (id){
             case R.id.radioButton10:
+//                radioButton10.setChecked(true);
                 if(Switch){
                     tblayout = (TableLayout) findViewById(R.id.tbLayout);
                     tblayout.removeAllViews();
@@ -251,6 +258,16 @@ public class userSuggestAct extends AppCompatActivity
                     tw = new TextView(this);
                     tw.setText(j2.get(8).toString());
                     tw.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+                    final int ii = i;
+                    final TableRow rr = r[i];
+                    tw.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            TableRow t=(TableRow)rr;
+                            gotostore(t.getTag().toString());
+//                                                    String TAG = "123";
+//                                                    Log.v(TAG,"123");
+                        }
+                    });
                     ScrollView sc=new ScrollView(this);
                     sc.addView(tw);
                     r[i].addView(sc);

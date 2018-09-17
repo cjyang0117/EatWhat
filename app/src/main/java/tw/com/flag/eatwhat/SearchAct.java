@@ -130,6 +130,9 @@ public class SearchAct extends AppCompatActivity
         editText10.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+//                radioButton10.setChecked(false);
+//                radioButton9.setChecked(false);
+//                radioButton8.setChecked(false);
                 isSort=false;isSort2=false;isSort3=false;
                 times++;
                 if(query.indexOf("%")!=-1){
@@ -464,6 +467,7 @@ public class SearchAct extends AppCompatActivity
                         tblayout2.addView(row2[i]);
                     }
                 }
+//                radioButton10.setChecked(true);
                 break;
             case R.id.radioButton8:
                 isSort3=false; sort3=false;
@@ -483,6 +487,7 @@ public class SearchAct extends AppCompatActivity
                         tblayout.addView(row[i]);
                     }
                 }
+//                radioButton8.setChecked(true);
                 break;
             case R.id.radioButton9:
                 isSort2=false; sort2=false;
@@ -502,6 +507,7 @@ public class SearchAct extends AppCompatActivity
                         tblayout.addView(row[i]);
                     }
                 }
+//                radioButton9.setChecked(true);
                 break;
         }
     }

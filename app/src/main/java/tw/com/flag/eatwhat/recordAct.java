@@ -120,8 +120,17 @@ public class recordAct extends AppCompatActivity
                             row.get(count).addView(tv[i]);
                         }else if(i==1){
                             tv[i].setTag(mid);
-
+                            final int ii = count;
+                            tv[i].setOnClickListener(new View.OnClickListener() {
+                                public void onClick(View v) {
+                                    TableRow t=(TableRow) row.get(ii);
+                                    gotostore(t.getChildAt(1).getTag().toString());
+//                                                    String TAG = "123";
+//                                                    Log.v(TAG,"123");
+                                }
+                            });
                             ScrollView sc=new ScrollView(this);
+
                             sc.addView(tv[i]);
                             sc.setPadding(8,0,8,0);
                             row.get(count).addView(sc);
@@ -245,7 +254,7 @@ public class recordAct extends AppCompatActivity
                                     tblayout2.setColumnShrinkable(1,true);
                                     tblayout2.setColumnStretchable(1, true);
 
-                                    ArrayList<TableRow> row2=new ArrayList<>();
+                                    final ArrayList<TableRow> row2=new ArrayList<>();
                                     count2=0;
                                     while (s.contains(",")){
                                         row2.add(new TableRow(recordAct.this));
@@ -262,11 +271,19 @@ public class recordAct extends AppCompatActivity
                                             idx=s.indexOf(",");
                                             tv[i]=new TextView(recordAct.this);
                                             tv[i].setText(s.substring(0, idx));
+                                            tv[i].setTag(sid);
                                             if(i==0){
                                                 tv[i].setTag(sid);
                                                 row2.get(count2).addView(tv[i]);
                                             }else if(i==1){
                                                 ScrollView sc3=new ScrollView(recordAct.this);
+                                                tv[i].setOnClickListener(new View.OnClickListener() {
+                                                    public void onClick(View v) {
+                                                        gotostore(v.getTag().toString());
+//                                                    String TAG = "123";
+//                                                    Log.v(TAG,"123");
+                                                    }
+                                                });
                                                 sc3.addView(tv[i]);
                                                 sc3.setPadding(8,0,8,0);
                                                 row2.get(count2).addView(sc3);
